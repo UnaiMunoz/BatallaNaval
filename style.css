@@ -4,14 +4,13 @@
 /* ******************************* */
 
 * {
-    margin: 0 5%;
+    margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
 body {
     font-family: Arial, sans-serif;
-    margin: 20px;
     background: url(img/fondoGeometrico.jpg);
     background-color: rgba(34, 1, 1);
     background-blend-mode: overlay;
@@ -19,7 +18,7 @@ body {
 }
 
 h1{
-    margin: 4% 0;
+    margin: 3% 0;
     text-align: center;
     font-size: 55px;
     color: #710100;
@@ -30,6 +29,9 @@ h1{
 /* CSS for index.php */
 /* ******************************* */
 
+main {
+    margin: 0 5%;
+}
 #indexMain{
     display: flex;
 }
@@ -66,19 +68,15 @@ h1{
 /* CSS for game.php */
 /* ******************************* */
 
-h1 {
-    text-align: center;
-    margin-bottom: 1%;
-}
 /* Divisores */
 #game_Container {
     display: flex;
     width: 100%;
     height: 100%;
+    background-color: #fff;
 }
 
 .section {
-    margin-top: 3%;
     padding: 20px;
     border: 1px solid #000;
 }
