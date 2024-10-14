@@ -1,0 +1,49 @@
+/*General---------------------------------------*/
+body {
+    background: url(img/fondoGeometrico.jpg);
+    background-color: rgba(34, 1, 1);
+    background-blend-mode: overlay;
+    background-size: cover;
+}
+
+h1{
+    margin: 4% 0;
+    text-align: center;
+    font-size: 55px;
+    color: #710100;
+}
+main{
+    margin: 0 5%;
+}
+/*Index-----------------------------------------*/
+#indexMain{
+    display: flex;
+}
+#indexMain div{
+    width: 50%;
+}
+#indexText p{
+    color: #36ebf2;
+    font-size: 22px;
+}
+#indexButton{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+#indexButton button{
+    border: none;
+    background-color: #00000075;
+    color: #710100;
+    width: 350px;
+    text-align: justify;
+    padding: 12px;
+    font-size: 24px;
+    box-shadow: 0 0 7px 6px #710100;
+}
+#indexButton button:hover{
+    color: #36ebf2;
+    background-color: #36ecf23b;
+    box-shadow: 0 0 7px 6px #36ebf2;
+}
