@@ -70,7 +70,7 @@ function addPoints() {
 
     // Si se ha presionado "Sumar puntos" dos veces y el reductionApplied sigue en false, reducir el porcentaje de reducción a 0%
     if (addPointsClickCount === 2 && !reductionApplied) {
-        pointReductionPercentage = 0; 
+        playerPoints += 3000
         reductionApplied = true; 
     }
 
