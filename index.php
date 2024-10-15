@@ -9,7 +9,18 @@
 <body>
     <header>
         <h1>Ship Battle</h1>
-    </header>    
+    </header>
+
+    <!-- Mensaje que aparece si JavaScript no está habilitado -->
+    <noscript>
+        <div class="js-warning">
+            <strong>Advertencia:</strong> JavaScript está deshabilitado en tu navegador. 
+            <br>Para jugar a este juego, necesitas habilitar JavaScript.<br>
+            <a href="https://www.enable-javascript.com/es/" target="_blank">Haz clic aquí para saber cómo habilitar JavaScript</a>.
+        </div>
+
+    </noscript>
+
     <main id="indexMain">
         <div id="indexText">
             <p>Duis laborum id ut consequat consectetur dolor. Incididunt voluptate 
@@ -21,9 +32,14 @@
                 officia anim</p>
         </div>
         <div id="indexButton">
-            <a href="game.php"><button >Classic Game</button></a>
+            <a href="game.php">
+                <button class="disabled" disabled>Classic Game</button>
+            </a>
             <a href="ranking.php"><button>Hall of Fame</button></a>
         </div>
     </main>
+
+
+
 </body>
 </html>

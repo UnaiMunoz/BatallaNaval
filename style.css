@@ -24,6 +24,26 @@
     box-sizing: border-box;
 }
 
+.js-warning {
+    background-color: #ffcccc;
+    border: 1px solid #ff0000;
+    padding: 10px;
+    margin: 10px 0;
+    margin-bottom: 200px;
+    text-align: center;
+    font-size: 3.2em;
+  }
+  
+.js-warning a {
+    color: #ff0000;
+    text-decoration: underline;
+}
+
+.disabled {
+    cursor: not-allowed; /* Cursor de prohibido */
+    opacity: 0.5; /* Opcional: hacer el botón más tenue para indicar que está deshabilitado */
+}
+
 body {
     font-family: Arial, sans-serif;
     background: url(img/fondoGeometrico.jpg);
