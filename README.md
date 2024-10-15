@@ -62,8 +62,7 @@ A continuación, se listan los principales lenguajes, frameworks y bibliotecas e
 * **PHP**: Para la gestión del backend y la lógica de negocio.
 * **JavaScript**: Para la creación de la interfaz interactiva del usuario.
 * **HTML5/CSS3**: Para la estructura y el diseño de la aplicación.
-* **[Bootstrap][Bootstrap-url]**: Para un diseño responsivo y optimización del UI.
-* **[JQuery][JQuery-url]**: Para facilitar la manipulación del DOM y la interacción del frontend.
+
 
 <!-- GETTING STARTED -->
 ## Comenzando
@@ -75,8 +74,7 @@ A continuación, se explica cómo configurar el proyecto localmente para fines d
 Asegúrate de tener instalados los siguientes componentes:
 
 * PHP >= 7.4
-* Un servidor web (por ejemplo, Apache o Nginx)
-* Composer (si utilizas paquetes de PHP)
+* Un servidor web (por ejemplo, Apache)
 * Un navegador moderno con soporte para JavaScript
 
 ### Instalación
