@@ -134,7 +134,7 @@ main {
 }
 
 /* Game Board */
-table {
+#boardTable {
     width: 30vw;
     height: 30vw;
     text-align: center;
