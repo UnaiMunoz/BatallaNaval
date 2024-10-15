@@ -95,7 +95,7 @@ main {
 }
 
 /* Game Board */
-.board > table {
+/*.board > table {
     width: 50%;
     aspect-ratio: 1 / 1;
     border-collapse: collapse;
@@ -103,4 +103,23 @@ main {
 
 td {
     width: 100px;
+}*/
+
+table{
+    width: 70%;
+    margin: auto;
+    text-align: center;
+    border: 1px solid black; 
+    border-collapse: collapse;
+}
+
+tr{
+    width: 100%;
+    display: flex;
+}
+
+td{
+    width: 100%;
+    border: 1px solid black; 
+    border-collapse: collapse;
 }
