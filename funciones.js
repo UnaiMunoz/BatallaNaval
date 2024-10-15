@@ -1,3 +1,12 @@
+
+// Script para habilitar el botón Classic Game si JavaScript está habilitado
+document.addEventListener('DOMContentLoaded', function() {
+    var classicGameBtn = document.getElementById('classicGameBtn');
+    classicGameBtn.classList.remove('disabled'); // Elimina la clase disabled
+    classicGameBtn.removeAttribute('disabled'); // Quita el atributo disabled
+});
+
+// Booleando para comprobar si la partida ha terminado
 let partidaActiva = true;
 
 /* ******************************* */

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Ship Battle</title>
+    <script src="funciones.js"></script>
+
 </head>
 <body>
     <header>
@@ -18,7 +20,6 @@
             <br>Para jugar a este juego, necesitas habilitar JavaScript.<br>
             <a href="https://www.enable-javascript.com/es/" target="_blank">Haz clic aquí para saber cómo habilitar JavaScript</a>.
         </div>
-
     </noscript>
 
     <main id="indexMain">
@@ -28,18 +29,19 @@
                 nulla nostrud proident id do dolore. Culpa aute mollit proident non 
                 consectetur magna dolor reprehenderit mollit occaecat dolor anim 
                 pariatur sit. Quis in est eiusmod sint commodo consequat Lorem 
-                exercitation et cupidatat.Veniam adipisicing qui sint ullamco nisi 
+                exercitation et cupidatat. Veniam adipisicing qui sint ullamco nisi 
                 officia anim</p>
         </div>
         <div id="indexButton">
             <a href="game.php">
-                <button class="disabled" disabled>Classic Game</button>
+                <button id="classicGameBtn" class="disabled" disabled>Classic Game</button>
             </a>
             <a href="ranking.php"><button>Hall of Fame</button></a>
         </div>
     </main>
 
+    <script>
 
-
+    </script>
 </body>
 </html>
