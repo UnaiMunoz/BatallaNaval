@@ -140,7 +140,7 @@ Notas:
                                     // Colocar el barco en la matriz
                                     for ($j = 0; $j < $tamañoBarco; $j++) {
                                         // Inicializa con la letra del barco
-                                        // $tabla[$altura][$posicion + $j] = substr($barco->tipo, 0, 1); //Printea los barcos horizontal
+                                        $tabla[$altura][$posicion + $j] = substr($barco->tipo, 0, 1); //Printea los barcos horizontal
                                         // Guarda las coordenadas
                                         $coordenadas[] = [$altura, $posicion + $j]; 
                                     }
@@ -154,7 +154,7 @@ Notas:
                                     // Colocar el barco en la matriz
                                     for ($i = 0; $i < $tamañoBarco; $i++) {
                                         // Inicializa con la letra del barco
-                                        // $tabla[$altura + $i][$posicion] = substr($barco->tipo, 0, 1); //Printea los barcos vertical
+                                        $tabla[$altura + $i][$posicion] = substr($barco->tipo, 0, 1); //Printea los barcos vertical
                                         // Guarda las coordenadas
                                         $coordenadas[] = [$altura + $i, $posicion]; 
                                     }
