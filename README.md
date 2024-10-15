@@ -12,7 +12,10 @@
   <h3 align="center">ShipBattle Game</h3>
 
   <p align="center">
-    An awesome README template to jumpstart your projects!
+    Este proyecto es una adaptación del clasico juego ShipBattle con una trama hacking y un aspecto cyberpunk.
+    <br>
+    Te convertirás en un hacker que deberá de descrubir y destruir todos los nodos para conseguir el control total de la red de servidores.
+    A medida que consigas acceso a los servidores conseguiras dinero que obtendrás vendiendo la información a terceros y dejarás una firma en la red que intimidirá a todos.
 </div>
 
 
