@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Hack The Server</title>
     <link rel="stylesheet" href="style.css">
+    <script src="funciones.js"></script>
 </head>
 <body>
 
@@ -47,15 +48,20 @@ Notas:
                     }
                 }
 
+                // Pasar el tablero a JS
+                $jsonTable = json_encode($tabla);
+
                 // Clase Barco
                 class Barco {
                     public $tipo;
                     public $tamaño;
                     public $coordenadas = [];
+                    public $vida;
 
                     public function __construct($tipo, $tamaño) {
                         $this->tipo = $tipo;
                         $this->tamaño = $tamaño;
+                        $this->vida = $tamaño;
                     }
 
                     public function establecerCoordenadas($coordenadas) {
@@ -70,6 +76,9 @@ Notas:
                     new Barco("Destructor", 4),
                     new Barco("Portaaviones", 5)
                 ];
+
+                // String para saber las coordenadas de cada barcos
+                $StringBarcos = "";
 
                 // Función para verificar si hay espacio disponible
                 function hayEspacioDisponible($tabla, $altura, $posicion, $tamañoBarco, $sentido) {
@@ -115,7 +124,6 @@ Notas:
                         $posicion = rand(1, $numero);
                         $altura = rand(1, $numero);
 
-                        // Ajustar el rango según la dirección del barco
                         if ($sentido == 0) { // Horizontal
                             // Limite horizontal = Tablero - tamaño del barco
                             if ($posicion <= $numero - $tamañoBarco + 1) {
@@ -123,7 +131,7 @@ Notas:
                                     // Colocar el barco en la matriz
                                     for ($j = 0; $j < $tamañoBarco; $j++) {
                                         // Inicializa con la letra del barco
-                                        // $tabla[$altura][$posicion + $j] = substr($barco->tipo, 0, 1);
+                                        $tabla[$altura][$posicion + $j] = substr($barco->tipo, 0, 1); //Printea los barcos horizontal
                                         // Guarda las coordenadas
                                         $coordenadas[] = [$altura, $posicion + $j]; 
                                     }
@@ -137,7 +145,7 @@ Notas:
                                     // Colocar el barco en la matriz
                                     for ($i = 0; $i < $tamañoBarco; $i++) {
                                         // Inicializa con la letra del barco
-                                        // $tabla[$altura + $i][$posicion] = substr($barco->tipo, 0, 1);
+                                        $tabla[$altura + $i][$posicion] = substr($barco->tipo, 0, 1); //Printea los barcos vertical
                                         // Guarda las coordenadas
                                         $coordenadas[] = [$altura + $i, $posicion]; 
                                     }
@@ -150,10 +158,15 @@ Notas:
                     // Guardar coordenadas en el objeto barco
                     $barco->establecerCoordenadas($coordenadas);
 
-                    // Mostrar todas las coordenadas
-                    foreach ($coordenadas as $coord) {
-                        // echo chr($coord[0] + 64) . $coord[1] . " ";
-                    }
+                    // Formatear las coordenadas para el string
+                    $coordenadasStr = implode(", ", array_map(function($coord) {
+                        return chr($coord[0] + 64) . $coord[1]; // Convierte las coordenadas en formato A1, B2, etc.
+                    }, $coordenadas));
+
+                    // Agregar al string de barcos
+                    $StringBarcos .= "[{$barco->tipo}] -> [{$coordenadasStr}]<br>";
+                    
+                    
                     // echo "<br><br>";
                 }
 
@@ -176,18 +189,58 @@ Notas:
                 for ($i = 0; $i < $numero + 1; $i++) {
                     echo "<tr>";
                     for ($j = 0; $j < $numero + 1; $j++) {
-                        echo "<td>" . $tabla[$i][$j] . "</td>";
+                        if ($i==0 || $j==0){
+                            echo "<td>" . $tabla[$i][$j] . "</td>";
+                        }
+                        else{
+                            if($tabla[$i][$j] == "F"){
+                                echo "<td name='Fragata' class='codeName' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                            } elseif($tabla[$i][$j] == "S"){
+                                echo "<td name='Submarino' class='codeName' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                            }elseif($tabla[$i][$j] == "D"){
+                                echo "<td name='Destructor' class='codeName' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                            }elseif($tabla[$i][$j] == "P"){
+                                echo "<td name='Portaaviones' class='codeName' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                            }else{
+                                echo "<td name=' ' class='codeName' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                            }
+                            
+                        }
                     }
                     echo "</tr>";
                 }
                 echo "</table>";
 
+                // Imprimir el string de barcos
+                echo "<div id='ShipCoords'>$StringBarcos</div>";
+
+                echo    "<script>
+                            var barcos = " . json_encode($barcos) . ";
+                        </script>";
+
+
                 // echo "Número de barcos creados: " . count($barcos) . "<br>";
 
             ?>
+
         </div>
 
         <div class="section info">
+
+            <!-- Timer -->
+             <p class="timer">00:00</p>
+
+            <!-- Puntos -->
+             <p class="points">Puntos: 99.999</p>
+
+            <!-- Notificaciones del juego -->
+            <p class="notification"> </p>
+
+            <!-- Botones -->
+            <div class="buttons" style="display: none;">
+                <a href="index.php"><button>Home</button></a>
+                <a href="ranking.php"><button>Ranking</button></a>
+            </div>
 
         </div>
         
