@@ -36,19 +36,19 @@ Notas:
                 for ($i = 0; $i <= $numero; $i++) {
                     for ($j = 0; $j <= $numero; $j++) {
                         if ($i == 0 && $j == 0) {
-                            $tabla[$i][$j] = "vacio";
+                            $tabla[$i][$j] = " ";
                         } elseif ($j == 0) {
                             $ascii = chr($i + 64);
                             $tabla[$i][$j] = $ascii;
                         } elseif ($i == 0) {
                             $tabla[$i][$j] = $j;
                         } else {
-                            $tabla[$i][$j] = "vacio";
+                            $tabla[$i][$j] = " ";
                         }
                     }
                 }
 
-                //Pasar el arry a JS
+                // Pasar el tablero a JS
                 $jsonTable = json_encode($tabla);
 
                 // Clase Barco
@@ -56,10 +56,12 @@ Notas:
                     public $tipo;
                     public $tamaño;
                     public $coordenadas = [];
+                    public $vida;
 
                     public function __construct($tipo, $tamaño) {
                         $this->tipo = $tipo;
                         $this->tamaño = $tamaño;
+                        $this->vida = $tamaño;
                     }
 
                     public function establecerCoordenadas($coordenadas) {
@@ -75,6 +77,9 @@ Notas:
                     new Barco("Portaaviones", 5)
                 ];
 
+                // String para saber las coordenadas de cada barcos
+                $StringBarcos = "";
+
                 // Función para verificar si hay espacio disponible
                 function hayEspacioDisponible($tabla, $altura, $posicion, $tamañoBarco, $sentido) {
                     // Veirificar celdas del alrededor
@@ -82,20 +87,20 @@ Notas:
                     for ($i = 0; $i < $tamañoBarco; $i++) {
                         // Horizontal
                         if ($sentido == 0) { 
-                            if ($tabla[$altura][$posicion + $i] != "vacio" || 
-                                ($posicion + $i > 1 && $tabla[$altura][$posicion + $i - 1] != "vacio") || 
-                                ($posicion + $i < count($tabla) - 1 && $tabla[$altura][$posicion + $i + 1] != "vacio") || 
-                                ($altura > 1 && $tabla[$altura - 1][$posicion + $i] != "vacio") || 
-                                ($altura < count($tabla) - 1 && $tabla[$altura + 1][$posicion + $i] != "vacio")) {
+                            if ($tabla[$altura][$posicion + $i] != " " || 
+                                ($posicion + $i > 1 && $tabla[$altura][$posicion + $i - 1] != " ") || 
+                                ($posicion + $i < count($tabla) - 1 && $tabla[$altura][$posicion + $i + 1] != " ") || 
+                                ($altura > 1 && $tabla[$altura - 1][$posicion + $i] != " ") || 
+                                ($altura < count($tabla) - 1 && $tabla[$altura + 1][$posicion + $i] != " ")) {
                                 return false;
                             }
                         // Vertical
                         } else { 
-                            if ($tabla[$altura + $i][$posicion] != "vacio" || 
-                                ($altura + $i > 1 && $tabla[$altura + $i - 1][$posicion] != "vacio") || 
-                                ($altura + $i < count($tabla) - 1 && $tabla[$altura + $i + 1][$posicion] != "vacio") || 
-                                ($posicion > 1 && $tabla[$altura + $i][$posicion - 1] != "vacio") || 
-                                ($posicion < count($tabla) - 1 && $tabla[$altura + $i][$posicion + 1] != "vacio")) {
+                            if ($tabla[$altura + $i][$posicion] != " " || 
+                                ($altura + $i > 1 && $tabla[$altura + $i - 1][$posicion] != " ") || 
+                                ($altura + $i < count($tabla) - 1 && $tabla[$altura + $i + 1][$posicion] != " ") || 
+                                ($posicion > 1 && $tabla[$altura + $i][$posicion - 1] != " ") || 
+                                ($posicion < count($tabla) - 1 && $tabla[$altura + $i][$posicion + 1] != " ")) {
                                 return false;
                             }
                         }
@@ -119,7 +124,6 @@ Notas:
                         $posicion = rand(1, $numero);
                         $altura = rand(1, $numero);
 
-                        // Ajustar el rango según la dirección del barco
                         if ($sentido == 0) { // Horizontal
                             // Limite horizontal = Tablero - tamaño del barco
                             if ($posicion <= $numero - $tamañoBarco + 1) {
@@ -154,10 +158,15 @@ Notas:
                     // Guardar coordenadas en el objeto barco
                     $barco->establecerCoordenadas($coordenadas);
 
-                    // Mostrar todas las coordenadas
-                    foreach ($coordenadas as $coord) {
-                         echo chr($coord[0] + 64) . $coord[1] . " ";
-                    }
+                    // Formatear las coordenadas para el string
+                    $coordenadasStr = implode(", ", array_map(function($coord) {
+                        return chr($coord[0] + 64) . $coord[1]; // Convierte las coordenadas en formato A1, B2, etc.
+                    }, $coordenadas));
+
+                    // Agregar al string de barcos
+                    $StringBarcos .= "[{$barco->tipo}] -> [{$coordenadasStr}]<br>";
+                    
+                    
                     // echo "<br><br>";
                 }
 
@@ -193,7 +202,7 @@ Notas:
                             }elseif($tabla[$i][$j] == "P"){
                                 echo "<td name='Portaaviones' class='codeName' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
                             }else{
-                                echo "<td name='vacio' class='codeName' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                                echo "<td name=' ' class='codeName' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
                             }
                             
                         }
@@ -202,16 +211,36 @@ Notas:
                 }
                 echo "</table>";
 
+                // Imprimir el string de barcos
+                echo "<div id='ShipCoords'>$StringBarcos</div>";
+
+                echo    "<script>
+                            var barcos = " . json_encode($barcos) . ";
+                        </script>";
+
+
                 // echo "Número de barcos creados: " . count($barcos) . "<br>";
 
             ?>
-            <script>
-                // Pasar la matriz PHP a JS
-                var jsTable = <?php echo $jsonTable; ?>;
-            </script>
+
         </div>
 
         <div class="section info">
+
+            <!-- Timer -->
+             <p class="timer">00:00</p>
+
+            <!-- Puntos -->
+             <p class="points">Puntos: 99.999</p>
+
+            <!-- Notificaciones del juego -->
+            <p class="notification"> </p>
+
+            <!-- Botones -->
+            <div class="buttons" style="display: none;">
+                <a href="index.php"><button>Home</button></a>
+                <a href="ranking.php"><button>Ranking</button></a>
+            </div>
 
         </div>
         
