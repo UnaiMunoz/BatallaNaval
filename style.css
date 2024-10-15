@@ -1,5 +1,31 @@
-/*General---------------------------------------*/
+/* ******************************* */
+/* Color variables */
+/* ******************************* */
+
+:root {
+    --black: #272932;
+    --red: #710000;
+    --yellow: #FDF500;
+    --keppel: #1AC5B0;
+    --blue: #37EBF3;
+    --purple: #9370DB;
+    --frostbite: #E455AE;
+    --pink: #CB1DCD;
+    --silver: #D1C5C0;
+}
+
+/* ******************************* */
+/* General CSS */
+/* ******************************* */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
+    font-family: Arial, sans-serif;
     background: url(img/fondoGeometrico.jpg);
     background-color: rgba(34, 1, 1);
     background-blend-mode: overlay;
@@ -7,15 +33,20 @@ body {
 }
 
 h1{
-    margin: 4% 0;
+    margin: 3% 0;
     text-align: center;
     font-size: 55px;
     color: #710100;
 }
-main{
+
+
+/* ******************************* */
+/* CSS for index.php */
+/* ******************************* */
+
+main {
     margin: 0 5%;
 }
-/*Index-----------------------------------------*/
 #indexMain{
     display: flex;
 }
@@ -46,4 +77,132 @@ main{
     color: #36ebf2;
     background-color: #36ecf23b;
     box-shadow: 0 0 7px 6px #36ebf2;
+}
+
+/* ******************************* */
+/* CSS for game.php */
+/* ******************************* */
+
+/* Divisores */
+#game_Container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+}
+
+.section {
+    padding: 20px;
+    border: 1px solid #000;
+}
+
+.board {
+    flex-basis: 70%;
+    border: 1px solid #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.info {
+    flex-basis: 30%;
+    border: 1px solid #000;
+}
+
+/* Game Board */
+.board > table {
+    width: 50%;
+    aspect-ratio: 1 / 1;
+    border-collapse: collapse;
+}
+
+td {
+    width: 100px;
+}
+
+/* ******************************* */
+/* CSS for ranking.php */
+/* ******************************* */
+
+/* Ranking Board */
+#bodyRanking {
+    background-color: #0a0a0a;
+    font-size: 1em;
+}
+
+#table-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    max-width: 80%;
+    color: #00ff00;
+}
+
+
+#rankingTable {
+    border-collapse: separate;
+    border-spacing: 0 15px;
+    width: 100%;
+    font-size: 1.2em;
+}
+
+#rankingTable th, #rankingTable td {
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 1px;
+
+}
+
+#rankingTable th {
+    background-color: #001100;
+    color: #ff00ff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+#rankingTable tr:hover {
+    background-color: rgba(0, 255, 0, 0.1);
+}
+
+#rankingTable tr:hover:not(:has(th)) {
+    background-color: rgba(0, 255, 0, 0.1);
+    position: relative;
+    box-shadow: 0 5px 0 0 #00ff00, 0 -5px 0 0 #00ff00;
+}
+
+/* Ranking Board Pager */
+
+#paginador {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 50px 0 50px;
+}
+
+#paginador a {
+    text-decoration: none;
+    color: #00ff00; 
+    margin: 0 5px; 
+    padding: 5px 10px; 
+    border: 1px solid #00ff00;
+    border-radius: 5px; 
+    transition: background-color 0.3s, box-shadow 0.3s; 
+}
+
+#paginador a:hover {
+    background-color: #00ff00; 
+    color: #000;
+    box-shadow: 0 0 5px 5px rgba(0, 255, 0, 0.7); 
+}
+
+#paginador strong {
+    margin: 0 5px; 
+    color: #000;
+    background-color: #00ff00;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 15px 5px rgba(0, 255, 0, 0.7); 
+    cursor: not-allowed;
 }
