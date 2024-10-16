@@ -392,10 +392,10 @@ function saveScore() {
             name: playerName,
             score: points,
             date: formattedDate // Usar la fecha formateada
-        };
+        };  
 
         // Enviar los datos al archivo PHP mediante fetch
-        fetch('guardar_puntuacion.php', {
+        fetch('ranking.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
