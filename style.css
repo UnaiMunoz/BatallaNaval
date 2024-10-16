@@ -1,71 +1,159 @@
+/* ******************************* */
+/* MARK: Color variables */
+/* ******************************* */
+
+:root {
+    --black: #272932;
+    --red: #710000;
+    --yellow: #FDF500;
+    --keppel: #1AC5B0;
+    --blue: #37EBF3;
+    --purple: #9370DB;
+    --frostbite: #E455AE;
+    --pink: #CB1DCD;
+    --silver: #D1C5C0;
+}
 
 /* ******************************* */
-/* General CSS */
+/* MARK: General CSS */
 /* ******************************* */
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Courier New', Courier, monospace !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    text-transform: none !important;
+    font-weight: unset !important;
 }
 
-body {
+.js-warning {
+    background-color: #ffcccc;
+    border: 1px solid #ff0000;
+    padding: 10px;
+    margin: 10px 0;
+    margin-bottom: 200px;
+    text-align: center;
+    font-size: 3.2em;
+  }
+  
+.js-warning a {
+    color: #ff0000;
+    text-decoration: underline;
+}
+
+.disabled {
+    cursor: not-allowed; /* Cursor de prohibido */
+    opacity: 0.5; /* Opcional: hacer el botón más tenue para indicar que está deshabilitado */
+}
+
+#index {
     font-family: Arial, sans-serif;
-    background: url(img/fondoGeometrico.jpg);
-    background-color: rgba(34, 1, 1);
+    background: url(img/fondoHacker.jpg);
+    background-color: #00000054;
     background-blend-mode: overlay;
     background-size: cover;
 }
 
+#game {
+    font-family: Arial, sans-serif;
+    background: url(img/fondoCalabera.jpg);
+    background-color: #000000ab;
+    background-blend-mode: overlay;
+    background-size: cover;
+}
+
+#bodyRanking {
+    font-family: Arial, sans-serif;
+    background: url(img/fondoOjos.jpg);
+    background-color: #00000093;
+    background-blend-mode: overlay;
+}
+
 h1{
+    font-weight: normal;
     margin: 3% 0;
     text-align: center;
     font-size: 55px;
-    color: #710100;
 }
 
+/* Botones */
+button {
+    margin-top: 2%;
+    padding: 0.5vw 0;
+    width: 25vw;
+    font-size: 1.6vw;
+    background-color: unset;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background: linear-gradient(to right, #3700ff00 0%, #3700ff 50%, #3700ff00 100%);
+}
+
+/* Estilo del botón de control del sonido */
+#audioControlButton {
+    width: 14vw;
+    position: absolute;
+    top: 2px;
+    right: 3vw;
+    cursor: pointer;
+}
 
 /* ******************************* */
-/* CSS for index.php */
+/* MARK: CSS for index.php */
 /* ******************************* */
 
 main {
     margin: 0 5%;
 }
 #indexMain{
+    margin-top: 35vh;
     display: flex;
+    align-items: flex-end;
 }
 #indexMain div{
     width: 50%;
 }
 #indexText p{
-    color: #36ebf2;
-    font-size: 22px;
+    margin-top: 8px;
+    font-size: 16px;
 }
 #indexButton{
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
+    align-items: flex-start;
 }
-#indexButton button{
-    border: none;
-    background-color: #00000075;
-    color: #710100;
-    width: 350px;
-    text-align: justify;
-    padding: 12px;
-    font-size: 24px;
-    box-shadow: 0 0 7px 6px #710100;
+
+.indexGame::before {
+    content: '[ ] ';
 }
-#indexButton button:hover{
-    color: #36ebf2;
-    background-color: #36ecf23b;
-    box-shadow: 0 0 7px 6px #36ebf2;
+
+.indexGame:hover::before {
+    content: '[#] ';
+}
+
+.indexHallOfFame::before {
+    content: '[ ] ';
+}
+
+.indexHallOfFame:hover::before {
+    content: '[#] ';
+}
+
+#audioControlButton:hover::before{
+    content: '[';
+}
+
+#audioControlButton:hover::after{
+    content: ']';
 }
 
 /* ******************************* */
-/* CSS for game.php */
+/* MARK: CSS for game.php */
 /* ******************************* */
 
 /* Divisores */
@@ -73,34 +161,245 @@ main {
     display: flex;
     width: 100%;
     height: 100%;
-    background-color: #fff;
-}
-
-.section {
-    padding: 20px;
-    border: 1px solid #000;
 }
 
 .board {
     flex-basis: 70%;
-    border: 1px solid #000;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
 }
 
 .info {
     flex-basis: 30%;
-    border: 1px solid #000;
 }
 
 /* Game Board */
-.board > table {
-    width: 50%;
-    aspect-ratio: 1 / 1;
+#gameTable {
+    width: 30vw;
+    height: 30vw;
+    text-align: center;
     border-collapse: collapse;
+    table-layout: fixed;
 }
 
-td {
-    width: 100px;
+#gameTable td{
+    padding: 7px;
+    text-align: center;
+}
+
+#gameTable tr{
+    border: 2px dashed #ffffff;
+}
+
+#gameTable td:not(:last-of-type){
+    border-right: 2px dashed #ffffff;
+}
+
+#gameTable td.codeName:hover{
+    cursor: crosshair;
+}
+
+#gameTable td:hover{
+    cursor: default;
+}
+
+/* Coordenadas de los barcos */
+#ShipCoords {
+    margin-top: .5vw;
+}
+
+/* Panel de información */
+.section.info {
+    width: 50%;
+    margin: 0 auto;
+    padding: 2vw;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Notificaciones del juego */
+.notification {
+    margin-top: 1vw;
+    padding: 1vw;
+    font-size: 1vw;
+    color: #000;
+    text-align: center;
+    min-height: 3.1vw;
+    max-height: 3.1vw;
+}
+
+
+
+/* Timer */
+.timer {
+    font-size: 4vw;
+    margin-top: 1vw;
+    font-weight: bold;
+}
+
+/* Puntos */
+.points {
+    font-size: 2vw;
+    margin-top: 1vw;
+    font-weight: bold;
+}
+
+/* Escribir nombre */
+input[type="text"] {
+    width: 80%;
+    padding: 1vw;
+    margin-top: 1.5vw;
+    font-size: 1.2vw;
+    border-radius: 5px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #f7f7f7;
+    text-align: center;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* Placeholder estilo */
+/*input[type="text"]::placeholder {
+    color: #aaa;
+}*/
+
+/* Focus efecto */
+input[type="text"]:focus {
+    outline: none;
+    border-color: #36ebf2;
+    box-shadow: 0 0 8px rgba(54, 235, 242, 0.7);
+}
+
+/* Ocultar botones Home y Ranking */
+.buttons {
+    display: none; /* Ocultar botones por defecto */
+}
+
+.buttons button:hover::before{
+    content: '[';
+}
+
+.buttons button:hover::after{
+    content: ']';
+}
+
+/* ******************************* */
+/* MARK: CSS for ranking.php */
+/* ******************************* */
+
+/* Ranking Board */
+
+#table-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    max-width: 80%;
+}
+
+
+#rankingTable {
+    border-collapse: collapse;
+    border-spacing: 0 15px;
+    width: 100%;
+    font-size: 1.2em;
+}
+
+#rankingTable tr{
+    text-align: center;
+}
+
+#rankingTable th, #rankingTable td {
+    padding: 15px;
+    margin-bottom: 1px;
+
+}
+
+#rankingTable th {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+#rankingTable tr:first-of-type {
+    border-bottom: 2px dashed #ffffff;
+}
+
+#rankingTable th:not(:last-of-type), #rankingTable td:not(:last-of-type){
+    border-right: 2px dashed #ffffff;
+}
+
+#rankingTable tr:hover:not(:has(th)) {
+    background: linear-gradient(to right, #3700ff00 0%, #3700ff 50%, #3700ff00 100%);
+    position: relative;
+}
+.selecRanking{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.selecRanking::before {
+    content: '[ ]';
+}
+
+tr:hover .selecRanking::before {
+    content: '[#]';
+}
+
+/* Ranking Board Pager */
+
+#paginador {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 50px 0 50px;
+}
+
+#paginador a {
+    text-decoration: none;
+    padding: 5px 10px; 
+}
+
+#paginador a:hover {
+    background: linear-gradient(to right, #3700ff00 0%, #3700ff 50%, #3700ff00 100%);
+}
+
+#paginador a:hover::before {
+    content: '[';
+}
+
+#paginador a:hover::after {
+    content: ']';
+}
+
+#paginador strong {
+    padding: 5px 0;
+    background: linear-gradient(to right, #3700ff00 0%, #3700ff 50%, #3700ff00 100%);
+    cursor: not-allowed;
+}
+
+#paginador strong::before{
+    content: '[';
+}
+
+#paginador strong::after{
+    content: ']';
+}
+
+#paginador a,strong{
+    text-align: center;
+    width: 78px;
+}
+
+#goBackRanking:hover::before{
+    content: '[';
+}
+
+#goBackRanking:hover::after{
+    content: ']';
+}
+
+#goBackRanking{
+    margin-bottom: 5%;
 }
