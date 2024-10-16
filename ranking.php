@@ -140,8 +140,6 @@ El paginador se muestra si hay más de 25 registros.
             echo "No se encuentra el archivo ranking.txt";
         }
     ?>
-    
-
 
     </main>
 
