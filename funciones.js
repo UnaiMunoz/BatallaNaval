@@ -255,7 +255,7 @@ function changeDataCell(td) {
             // Rompe la cadena de hundir sin fallar
             hundidoSinFallar = false; 
         } else {
-            // Impacto en un barco7
+            // Impacto en un barco
             hundidoSinFallar = true; 
             for (let barco of barcos) {
                 if (barco.tipo === name) {
@@ -269,6 +269,7 @@ function changeDataCell(td) {
                             td.innerHTML = "X"; // Indicar que el barco ha sido tocado
                             mostrarMensaje(`¡Has tocado ${barco.tipo}!`);
                             puntos += 50; // Sumar 50 puntos por tocar un barco
+
                             mostrarMensajePuntos("+50 puntos por atacar un servidor")
                             actualizarPuntos();
 
@@ -416,6 +417,88 @@ function saveScore() {
     }
 }
 
+//Para que se escuche la musica de fondo
+document.addEventListener('DOMContentLoaded', () => {
+    const bodyId = document.body.id;
+    let audioSrc;
 
+    switch (bodyId) {
+        case 'index':
+            audioSrc = 'sounds/backgroundSoundIndex.mp3';
+            break;
+        case 'bodyRanking':
+            audioSrc = 'sounds/backgroundSoundRanking.mp3';
+            break;
+        case 'game':
+            audioSrc = 'sounds/backgroundSoundGame.mp3';
+            break;
+        default:
+            console.error('No audio source found for this page.');
+            return;
+    }
 
+    const audioContainer = document.getElementById('audioContainer');
+    let audio = document.getElementById('backgroundSound');
 
+    if (!audio) {
+        audio = document.createElement('audio');
+        audio.id = 'backgroundSound';
+        audio.autoplay = true;
+        audio.loop = true;
+        audioContainer.appendChild(audio);
+    }
+
+    audio.src = audioSrc;
+
+    // Aplicar el estado guardado del audio
+    if (localStorage.getItem('audioMuted') === 'true') {
+        audio.muted = true;
+        document.getElementById('audioControlButton').textContent = 'Unmute';
+    } else {
+        audio.muted = false;
+        document.getElementById('audioControlButton').textContent = 'Mute';
+    }
+
+    // Control del botón de sonido
+    const audioControlButton = document.getElementById('audioControlButton');
+    if (audioControlButton) {
+        audioControlButton.addEventListener('click', () => {
+            if (audio.muted) {
+                audio.muted = false;
+                audioControlButton.textContent = 'Mute';
+                localStorage.setItem('audioMuted', 'false');
+            } else {
+                audio.muted = true;
+                audioControlButton.textContent = 'Unmute';
+                localStorage.setItem('audioMuted', 'true');
+            }
+        });
+    }
+});
+
+//Sonido botones
+document.addEventListener("DOMContentLoaded", function() {
+    const buttons = document.querySelectorAll('.keySound');
+    
+    buttons.forEach(button => {
+        button.addEventListener('mouseover', function() {
+            const sound = new Audio('sounds/KeySound1.mp3');
+            sound.play().catch(error => {
+                console.error('Error al reproducir el sonido:', error);
+            });
+        });
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    const buttons = document.querySelectorAll('.attackSound');
+    
+    buttons.forEach(button => {
+        button.addEventListener('click', function() {
+            const sound = new Audio('sounds/attackSound.mp3');
+            sound.play().catch(error => {
+                console.error('Error al reproducir el sonido:', error);
+            });
+        });
+    });
+});

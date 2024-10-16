@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ca">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,11 +21,10 @@ Notas:
 - Los barcos son: Fragata (2), Submarino (3), Destructor (4) y Portaaviones (5).
 -->
 
-    <div class="content">
-        <h1 id= "gameTitle" class="text">
-            Hack the server
-        </h1>
-    </div>
+    <header>
+        <button id="audioControlButton">Mute</button>
+        <h1>Hack the server</h1>
+    </header>
 
     <!-- Mensaje que aparece si JavaScript no está habilitado -->
     <noscript>
@@ -206,16 +205,15 @@ Notas:
                             echo "<td>" . $tabla[$i][$j] . "</td>";
                         }
                         else{
-                            if($tabla[$i][$j] == "F"){
-                                echo "<td name='Fragata' class='codeName' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                                echo "<td name='Fragata' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
                             } elseif($tabla[$i][$j] == "S"){
-                                echo "<td name='Submarino' class='codeName' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                                echo "<td name='Submarino' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
                             }elseif($tabla[$i][$j] == "D"){
-                                echo "<td name='Destructor' class='codeName' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                                echo "<td name='Destructor' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
                             }elseif($tabla[$i][$j] == "P"){
-                                echo "<td name='Portaaviones' class='codeName' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                                echo "<td name='Portaaviones' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
                             }else{
-                                echo "<td name=' ' class='codeName' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                                echo "<td name=' ' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
                             }
                             
                         }
@@ -261,12 +259,12 @@ Notas:
             <div class="buttons" style="display: none;">
                 <a href="index.php"><button>Home</button></a>
                 <a href="ranking.php"><button>Ranking</button></a>
+
             </div>
 
         </div>
         
     </div>
-
 
 </body>
 </html>

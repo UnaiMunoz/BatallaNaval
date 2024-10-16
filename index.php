@@ -6,12 +6,14 @@
     <link rel="stylesheet" href="style.css">
     <title>Ship Battle</title>
     <script src="funciones.js"></script>
-
 </head>
 <body id="index">
     <header>
+        <button id="audioControlButton">Mute</button>
         <h1>Ship Battle</h1>
     </header>
+  
+    <div id="audioContainer"></div>
 
     <!-- Mensaje que aparece si JavaScript no está habilitado -->
     <noscript>
@@ -25,10 +27,10 @@
     <main id="indexMain">
         <div id="indexButton">
             <a href="game.php">
-                <button class="indexGame" class="disabled"></button>
+                <button class="indexGame keySound disabled">Classic Game</button>
             </a>
             <a href="ranking.php">
-                <button class="indexHallOfFame"></button>
+                <button class="indexHallOfFame keySound">Hall of Fame</button>
             </a>
         </div>
         <div id="indexText">
@@ -45,5 +47,6 @@
                 plunge?</p>
         </div>
     </main>
+
 </body>
 </html>

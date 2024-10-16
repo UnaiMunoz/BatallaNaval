@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ca">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ranking</title>
     <link rel="stylesheet" href="style.css">
+    <script src="funciones.js"></script>
 </head>
 
 <!-- 
@@ -20,8 +21,11 @@ El paginador se muestra si hay más de 25 registros.
 
 <body id="bodyRanking">
     <header>
+    <button id="audioControlButton">Mute</button>
         <h1>Ranking</h1>
     </header>
+
+    <div id="audioContainer"></div>
     <main>
 
     <div id="table-container">
@@ -93,7 +97,7 @@ El paginador se muestra si hay más de 25 registros.
                 $date = $registros[$i]['date'];
 
                 // Mostrar fila
-                echo "<tr>";
+                echo "<tr class='keySound'>";
                 echo "<td class='selecRanking'>$posicion</td>";
                 echo "<td>$name</td>";
                 echo "<td>$points</td>";
@@ -119,22 +123,23 @@ El paginador se muestra si hay más de 25 registros.
                 // Botones de las páginas
                 for ($i = 1; $i <= $totalPaginas; $i++) {
                     if ($i == $paginaActual) {
-                        echo "<strong>$i</strong> "; // Página actual en negrita
+                        echo "<strong class='keySound'>$i</strong> "; // Página actual en negrita
                     } else {
-                        echo "<a href='?pagina=$i'>$i</a> ";
+                        echo "<a href='?pagina=$i' class='keySound'>$i</a> ";
                     }
                 }
 
                 // Botón de "Siguiente"
                 if ($paginaActual < $totalPaginas) {
                     $siguiente = $paginaActual + 1;
-                    echo "<a href='?pagina=$siguiente'> => </a>";
+                    echo "<a href='?pagina=$siguiente' class='keySound'> => </a>";
                 }
 
                 echo "</div>";
             }
 
-            echo '<a href="index.php"><button id="goBackRanking">Go Home</button></a>';
+            echo '<a href="index.php"><button id="goBackRanking" class="keySound">Go Home</button></a>';
+
             
         } else {
             echo "No se encuentra el archivo ranking.txt";
