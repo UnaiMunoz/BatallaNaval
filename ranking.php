@@ -26,7 +26,6 @@ El paginador se muestra si hay más de 25 registros.
     </header>
 
     <div id="audioContainer"></div>
-
     <main>
 
     <div id="table-container">
@@ -140,6 +139,7 @@ El paginador se muestra si hay más de 25 registros.
             }
 
             echo '<a href="index.php"><button id="goBackRanking" class="keySound">Go Home</button></a>';
+
             
         } else {
             echo "No se encuentra el archivo ranking.txt";

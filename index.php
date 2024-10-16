@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Ship Battle</title>
-    <script src="funciones.js" defer></script>
+    <script src="funciones.js"></script>
 </head>
 <body id="index">
     <header>
         <button id="audioControlButton">Mute</button>
         <h1>Ship Battle</h1>
     </header>
-
+  
     <div id="audioContainer"></div>
 
     <!-- Mensaje que aparece si JavaScript no está habilitado -->

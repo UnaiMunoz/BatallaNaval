@@ -7,10 +7,6 @@
     <link rel="stylesheet" href="style.css">
     <script src="funciones.js"></script>
 </head>
-    <header>
-        <button id="audioControlButton">Mute</button>
-        <h1>Hack the server</h1>
-    </header>
 <body id="game">
 
 <!--
@@ -25,7 +21,10 @@ Notas:
 - Los barcos son: Fragata (2), Submarino (3), Destructor (4) y Portaaviones (5).
 -->
 
-    <div id="audioContainer"></div>
+    <header>
+        <button id="audioControlButton">Mute</button>
+        <h1>Hack the server</h1>
+    </header>
 
     <!-- Mensaje que aparece si JavaScript no está habilitado -->
     <noscript>
@@ -206,7 +205,6 @@ Notas:
                             echo "<td>" . $tabla[$i][$j] . "</td>";
                         }
                         else{
-                            if($tabla[$i][$j] == "F"){
                                 echo "<td name='Fragata' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
                             } elseif($tabla[$i][$j] == "S"){
                                 echo "<td name='Submarino' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
@@ -246,13 +244,22 @@ Notas:
             <!-- Puntos -->
              <p class="points">Puntos: 0</p>
 
+            <!-- Notificación puntos -->
+            <p class="point-info"></p>
+            
             <!-- Notificaciones del juego -->
             <p class="notification"> </p>
 
+            <!-- Escribir nombre -->
+            <input type="text" id="name" placeholder="Escribe tu nombre" required class="hidden">
+            <button id="buttonName" onclick="saveScore()">Enviar</button>
+            <p id="errorMessage">El nombre debe tener al menos 3 caracteres.</p>
+
             <!-- Botones -->
             <div class="buttons" style="display: none;">
-                <a href="index.php"><button class="keySound">Home</button></a>
-                <a href="ranking.php"><button class="keySound">Ranking</button></a>
+                <a href="index.php"><button>Home</button></a>
+                <a href="ranking.php"><button>Ranking</button></a>
+
             </div>
 
         </div>
