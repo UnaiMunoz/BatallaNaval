@@ -237,10 +237,10 @@ Notas:
         <div class="section info">
 
             <!-- Timer -->
-             <p class="timer">00:00</p>
+             <p class="timer">00:00:00</p>
 
             <!-- Puntos -->
-             <p class="points">Puntos: 99.999</p>
+             <p class="points">Puntos: 0</p>
 
             <!-- Notificaciones del juego -->
             <p class="notification"> </p>
