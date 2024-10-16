@@ -255,7 +255,8 @@ function changeDataCell(td) {
             // Rompe la cadena de hundir sin fallar
             hundidoSinFallar = false; 
         } else {
-            // Impacto en un barco
+            // Impacto en un barco7
+            hundidoSinFallar = true; 
             for (let barco of barcos) {
                 if (barco.tipo === name) {
                     let row = td.parentElement.rowIndex; // Obtener índice de fila
@@ -337,15 +338,15 @@ function calcularBonificacionPorTiempo() {
 
     if (totalSegundos <= 300) { // Si tardas menos de 5 minutos
         bonificacion = 1000;
-        mostrarMensajePuntos("+"+bonificacion+"puntos por hacerte con el control en menos de 5 minutos")
+        //mostrarMensajePuntos("+"+bonificacion+"puntos por hacerte con el control en menos de 5 minutos")
 
     } else if (totalSegundos <= 600) { // Entre 5 y 10 minutos
         bonificacion = 500;
-        mostrarMensajePuntos("+"+bonificacion+"puntos por hacerte con el control entre 5 y 10 minutos")
+        //mostrarMensajePuntos("+"+bonificacion+"puntos por hacerte con el control entre 5 y 10 minutos")
 
     } else {
         bonificacion = 100; // Más de 10 minutos
-        mostrarMensajePuntos("+"+bonificacion+"puntos por hacerte con el control en más de 10 minutos")
+        //mostrarMensajePuntos("+"+bonificacion+"puntos por hacerte con el control en más de 10 minutos")
 
     }
 
@@ -395,7 +396,7 @@ function saveScore() {
         };  
 
         // Enviar los datos al archivo PHP mediante fetch
-        fetch('ranking.php', {
+        fetch('lose.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
