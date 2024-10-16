@@ -21,7 +21,11 @@ Notas:
 - Los barcos son: Fragata (2), Submarino (3), Destructor (4) y Portaaviones (5).
 -->
 
-    <h1>Hack the server</h1>
+    <div class="content">
+        <h1 id= "gameTitle" class="text">
+            Hack the server
+        </h1>
+    </div>
 
     <!-- Mensaje que aparece si JavaScript no está habilitado -->
     <noscript>

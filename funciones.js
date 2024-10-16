@@ -141,11 +141,68 @@ let turnosTotales = 0;
 let hundidoSinFallar = true; 
 let puntosAntesDeHundir = 0; 
 
+function applyEasterEgg() {
+    // Variables para el Easter Egg (Tienes que pulsar la casilla C4)
+    let clickCounterC4 = 0; // Contador de clics para "C4"
+    const originalTitle = "Hack the server"; // Título original
+
+    return function() {
+        clickCounterC4++; // Incrementar el contador
+
+        if (clickCounterC4 === 5) {
+
+            const gameTitleElement = document.getElementById("gameTitle");
+            
+            // Cambiar el título a vacío para ocultar el texto original
+            gameTitleElement.innerText = "";
+
+            // Aplicar la clase
+            gameTitleElement.classList.add("glitchTitle");
+
+            // Cambiar el título a lo que deseas mostrar durante la animación
+            setTimeout(() => {
+                gameTitleElement.innerText = "¡Security Breach: Full Access Granted!!";
+            }, 0); // Mostrar el texto del Easter Egg inmediatamente
+
+            setTimeout(() => {
+                gameTitleElement.innerText = originalTitle; // Restaurar el título original
+                // Eliminar la clase
+                gameTitleElement.classList.remove("glitchTitle");
+            }, 5000); // Eliminar después de 5 segundos
+
+            clickCounterC4 = 0; // Reiniciar el contador
+
+            // Para el timer
+            clearInterval(cronometro);
+            mostrarMensaje("¡Has ganado la partida!");
+            partidaActiva = false; // Desactivar la partida
+            mostrarBotones();
+            calcularBonificacionPorTiempo(); // Llama a la bonificación final
+            mostrarPopupNombre(); // Mostrar el popup para ingresar el nombre
+
+
+        }
+    };
+}
+
+
+
+// Crear una instancia de la función de Easter Egg
+const activateEasterEgg = applyEasterEgg();
+
 function changeDataCell(td) {
     if (!partidaActiva) return; // Si la partida no está activa, no hacer nada
 
     // Obtener el atributo 'name' de la celda (nombre del barco o vacío)
     let name = td.getAttribute('name'); 
+
+    // Verificar si es la casilla "C4"
+    let row = td.parentElement.rowIndex; // Obtener índice de fila
+    let col = td.cellIndex; // Obtener índice de columna
+
+    if (row === 3 && col === 4) { // C4 corresponde a la fila 3 y columna 4
+        activateEasterEgg(); // Llamar a la función para manejar el título
+    }
 
     // Comprobar si el clic corresponde a una casilla con un barco
     if (td.classList.contains("codeName")) {
