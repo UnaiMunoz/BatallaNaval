@@ -194,7 +194,7 @@ Notas:
                     ";
 
                 # Mostrar la tabla
-                echo "<table>";
+                echo "<table id='gameTable'>";
                 for ($i = 0; $i < $numero + 1; $i++) {
                     echo "<tr>";
                     for ($j = 0; $j < $numero + 1; $j++) {

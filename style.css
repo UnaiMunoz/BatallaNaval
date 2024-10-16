@@ -154,7 +154,7 @@ main {
 }
 
 /* Game Board */
-table {
+#gameTable {
     width: 30vw;
     height: 30vw;
     text-align: center;
@@ -328,3 +328,22 @@ input[type="text"]:focus {
     box-shadow: 0 0 15px 5px rgba(0, 255, 0, 0.7); 
     cursor: not-allowed;
 }
+
+/* Ranking Go Back Button */
+#goBackRanking {
+    margin-bottom: 100px;
+    color: #000;
+    font-size: 1.2em;
+    background-color: #00ff00;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 15px 5px rgba(0, 255, 0, 0.7); 
+    border: 1px solid #00ff00;
+    transition: background-color 0.3s, box-shadow 0.3s; 
+}
+
+#goBackRanking:hover {
+    background-color: #00ff00; 
+    box-shadow: 0 0 5px 5px rgba(0, 255, 0, 0.7);
+}
+

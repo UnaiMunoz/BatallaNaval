@@ -134,6 +134,8 @@ El paginador se muestra si hay más de 25 registros.
                 echo "</div>";
             }
 
+            echo '<a href="index.php"><button id="goBackRanking">Go Home</button></a>';
+
         } else {
             echo "No se encuentra el archivo ranking.txt";
         }
