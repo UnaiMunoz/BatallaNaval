@@ -8,7 +8,7 @@
     <script src="funciones.js"></script>
 
 </head>
-<body>
+<body id="index">
     <header>
         <h1>Ship Battle</h1>
     </header>
@@ -23,25 +23,27 @@
     </noscript>
 
     <main id="indexMain">
-        <div id="indexText">
-            <p>Duis laborum id ut consequat consectetur dolor. Incididunt voluptate 
-                aliqua est labore sit sit sint fugiat Lorem fugiat reprehenderit 
-                nulla nostrud proident id do dolore. Culpa aute mollit proident non 
-                consectetur magna dolor reprehenderit mollit occaecat dolor anim 
-                pariatur sit. Quis in est eiusmod sint commodo consequat Lorem 
-                exercitation et cupidatat. Veniam adipisicing qui sint ullamco nisi 
-                officia anim</p>
-        </div>
         <div id="indexButton">
             <a href="game.php">
-                <button id="classicGameBtn" class="disabled" disabled>Classic Game</button>
+                <button class="indexGame" class="disabled"></button>
             </a>
-            <a href="ranking.php"><button>Hall of Fame</button></a>
+            <a href="ranking.php">
+                <button class="indexHallOfFame"></button>
+            </a>
+        </div>
+        <div id="indexText">
+            <p>Welcome, XXXXX</p>
+
+            <p>You have a mission. Your objective is to infiltrate highly protected 
+                servers and execute precise attacks without leaving a trace. Use your 
+                hacker skills to overcome firewalls, crack codes and evade advanced 
+                security systems.</p>
+
+            <p>Each compromised server brings us closer to our ultimate goal. Discretion 
+                and efficiency are key. The faster and more efficient you are, the more 
+                cryptocurrencies you will earn for this job. Are you ready to take the 
+                plunge?</p>
         </div>
     </main>
-
-    <script>
-
-    </script>
 </body>
 </html>

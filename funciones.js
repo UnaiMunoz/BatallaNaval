@@ -157,7 +157,7 @@ function changeDataCell(td) {
 
         if (name === " ") {
             // Casilla vacía (agua)
-            td.innerHTML = "X"; 
+            td.innerHTML = "~"; 
             mostrarMensaje("¡Fallaste!");
             turnosAguaSeguidos++; // Incrementa la cantidad de turnos sin tocar un barco
 
@@ -182,7 +182,7 @@ function changeDataCell(td) {
                         if (coord[0] === row && coord[1] === col) {
                             // Reducir la vida del barco
                             barco.vida -= 1; 
-                            td.innerHTML = "·"; // Indicar que el barco ha sido tocado
+                            td.innerHTML = "X"; // Indicar que el barco ha sido tocado
                             mostrarMensaje(`¡Has tocado ${barco.tipo}!`);
                             puntos += 50; // Sumar 50 puntos por tocar un barco
                             actualizarPuntos();

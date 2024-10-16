@@ -78,7 +78,7 @@ El paginador se muestra si hay más de 25 registros.
 
             // Crear una tabla HTML
             echo "<table id='rankingTable'>";
-            echo "<tr><th >Position</th><th>name</th><th>Points</th><th>date</th></tr>";
+            echo "<tr><th>Position</th><th>Name</th><th>Points</th><th>Date</th></tr>";
 
             // Mostrar los registros de la página actual
             $registroFinal = min($registroInicial + $registrosPorPagina, $totalRegistros);
@@ -94,7 +94,7 @@ El paginador se muestra si hay más de 25 registros.
 
                 // Mostrar fila
                 echo "<tr>";
-                echo "<td>$posicion</td>";
+                echo "<td class='selecRanking'>$posicion</td>";
                 echo "<td>$name</td>";
                 echo "<td>$points</td>";
                 echo "<td>$date</td>";
@@ -135,7 +135,7 @@ El paginador se muestra si hay más de 25 registros.
             }
 
             echo '<a href="index.php"><button id="goBackRanking">Go Home</button></a>';
-
+            
         } else {
             echo "No se encuentra el archivo ranking.txt";
         }

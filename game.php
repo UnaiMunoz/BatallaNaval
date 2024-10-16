@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="funciones.js"></script>
 </head>
-<body>
+<body id="game">
 
 <!--
 Este codigo genera un tablero desde una matriz y coloca barcos de diferentes tamaños en el tablero.

@@ -1,5 +1,5 @@
 /* ******************************* */
-/* Color variables */
+/* MARK: Color variables */
 /* ******************************* */
 
 :root {
@@ -15,13 +15,18 @@
 }
 
 /* ******************************* */
-/* General CSS */
+/* MARK: General CSS */
 /* ******************************* */
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Courier New', Courier, monospace !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    text-transform: none !important;
+    font-weight: unset !important;
 }
 
 .js-warning {
@@ -44,22 +49,38 @@
     opacity: 0.5; /* Opcional: hacer el botón más tenue para indicar que está deshabilitado */
 }
 
-body {
+#index {
+    font-family: Arial, sans-serif;
+    background: url(img/fondoHacker.jpg);
+    background-color: #000000bf;
+    background-blend-mode: overlay;
+    background-size: cover;
+}
+
+#game {
     font-family: Arial, sans-serif;
     background: url(img/fondoGeometrico.jpg);
-    background-color: rgba(34, 1, 1);
+    background-color: #000000eb;
+    background-blend-mode: overlay;
+    background-size: cover;
+}
+
+#bodyRanking {
+    font-family: Arial, sans-serif;
+    background: url(img/rankingBackground.jpg);
+    background-color: #000000bf;
     background-blend-mode: overlay;
     background-size: cover;
 }
 
 h1{
+    font-weight: normal;
     margin: 3% 0;
     text-align: center;
     font-size: 55px;
-    color: #710100;
 }
 
-#indexButton > button{
+/*#indexButton > button{
     border: none;
     background-color: #00000075;
     color: #710100;
@@ -74,56 +95,67 @@ h1{
     color: #36ebf2;
     background-color: #36ecf23b;
     box-shadow: 0 0 7px 6px #36ebf2;
-}
+}*/
 
 /* Botones */
 button {
-    font-size: 1.2vw;
-    padding: 0.5vw 1.5vw;
-    margin: 1vw 0.5vw;
-    background-color: #36ebf2;
+    margin-top: 2%;
+    padding: 0.5vw 0;
+    width: 25vw;
+    font-size: 1.6vw;
+    background-color: unset;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    color: #000;
 }
 
 button:hover {
-    background-color: #2bb2ba;
+    background: linear-gradient(to right, #3700ff00 0%, #3700ff 50%, #3700ff00 100%);
 }
-
-button:active {
-    background-color: #28a0a7;
-}
-
 
 /* ******************************* */
-/* CSS for index.php */
+/* MARK: CSS for index.php */
 /* ******************************* */
 
 main {
     margin: 0 5%;
 }
 #indexMain{
+    margin-top: 35vh;
     display: flex;
+    align-items: flex-end;
 }
 #indexMain div{
     width: 50%;
 }
 #indexText p{
+    margin-top: 8px;
     color: #36ebf2;
-    font-size: 22px;
+    font-size: 16px;
 }
 #indexButton{
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
+    align-items: flex-start;
+}
+
+.indexGame::before {
+    content: '[ ] Classic Game';
+}
+
+.indexGame:hover::before {
+    content: '[#] Classic Game';
+}
+
+.indexHallOfFame::after {
+    content: '[ ] Hall of Fame';
+}
+
+.indexHallOfFame:hover::after {
+    content: '[#] Hall of Fame';
 }
 
 /* ******************************* */
-/* CSS for game.php */
+/* MARK: CSS for game.php */
 /* ******************************* */
 
 /* Divisores */
@@ -131,26 +163,22 @@ main {
     display: flex;
     width: 100%;
     height: 100%;
-    background-color: #fff;
+    /*background-color: #fff;*/
 }
 
-.section {
-    padding: 20px;
+/*.section {
     border: 1px solid #000;
-}
+}*/
 
 .board {
     flex-basis: 70%;
-    border: 1px solid #000;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
 }
 
 .info {
     flex-basis: 30%;
-    border: 1px solid #000;
 }
 
 /* Game Board */
@@ -158,9 +186,29 @@ main {
     width: 30vw;
     height: 30vw;
     text-align: center;
-    border: 1px solid black;
     border-collapse: collapse;
     table-layout: fixed;
+}
+
+#gameTable td{
+    padding: 7px;
+    text-align: center;
+}
+
+#gameTable tr{
+    border: 2px dashed #ffffff;
+}
+
+#gameTable td:not(:last-of-type){
+    border-right: 2px dashed #ffffff;
+}
+
+#gameTable td.codeName:hover{
+    cursor: crosshair;
+}
+
+#gameTable td:hover{
+    cursor: default;
 }
 
 /* Coordenadas de los barcos */
@@ -173,7 +221,7 @@ main {
     width: 50%;
     margin: 0 auto;
     padding: 2vw;
-    background-color: #fff;
+    /*background-color: #fff;*/
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -184,8 +232,6 @@ main {
     margin-top: 1vw;
     padding: 1vw;
     font-size: 1vw;
-    border: 1px solid #000;
-    background-color: #36ebf2;
     color: #000;
     text-align: center;
     min-height: 3.1vw;
@@ -216,7 +262,6 @@ input[type="text"] {
     padding: 1vw;
     margin-top: 1.5vw;
     font-size: 1.2vw;
-    border: 1px solid #000;
     border-radius: 5px;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: #f7f7f7;
@@ -242,15 +287,23 @@ input[type="text"]:focus {
     display: none; /* Ocultar botones por defecto */
 }
 
+.buttons button:hover::before{
+    content: '[';
+}
+
+.buttons button:hover::after{
+    content: ']';
+}
+
 /* ******************************* */
-/* CSS for ranking.php */
+/* MARK: CSS for ranking.php */
 /* ******************************* */
 
 /* Ranking Board */
-#bodyRanking {
+/*#bodyRanking {
     background-color: #0a0a0a;
     font-size: 1em;
-}
+}*/
 
 #table-container {
     display: flex;
@@ -264,34 +317,50 @@ input[type="text"]:focus {
 
 
 #rankingTable {
-    border-collapse: separate;
+    border-collapse: collapse;
     border-spacing: 0 15px;
     width: 100%;
     font-size: 1.2em;
 }
 
+#rankingTable tr{
+    text-align: center;
+}
+
 #rankingTable th, #rankingTable td {
     padding: 15px;
-    text-align: center;
     margin-bottom: 1px;
 
 }
 
 #rankingTable th {
-    background-color: #001100;
-    color: #ff00ff;
     text-transform: uppercase;
     letter-spacing: 2px;
 }
 
-#rankingTable tr:hover {
-    background-color: rgba(0, 255, 0, 0.1);
+#rankingTable tr:first-of-type {
+    border-bottom: 2px dashed #ffffff;
+}
+
+#rankingTable th:not(:last-of-type), #rankingTable td:not(:last-of-type){
+    border-right: 2px dashed #ffffff;
 }
 
 #rankingTable tr:hover:not(:has(th)) {
-    background-color: rgba(0, 255, 0, 0.1);
+    background: linear-gradient(to right, #3700ff00 0%, #3700ff 50%, #3700ff00 100%);
     position: relative;
-    box-shadow: 0 5px 0 0 #00ff00, 0 -5px 0 0 #00ff00;
+}
+.selecRanking{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.selecRanking::before {
+    content: '[ ]';
+}
+
+tr:hover .selecRanking::before {
+    content: '[#]';
 }
 
 /* Ranking Board Pager */
@@ -305,45 +374,48 @@ input[type="text"]:focus {
 
 #paginador a {
     text-decoration: none;
-    color: #00ff00; 
-    margin: 0 5px; 
     padding: 5px 10px; 
-    border: 1px solid #00ff00;
-    border-radius: 5px; 
-    transition: background-color 0.3s, box-shadow 0.3s; 
 }
 
 #paginador a:hover {
-    background-color: #00ff00; 
-    color: #000;
-    box-shadow: 0 0 5px 5px rgba(0, 255, 0, 0.7); 
+    background: linear-gradient(to right, #3700ff00 0%, #3700ff 50%, #3700ff00 100%);
+}
+
+#paginador a:hover::before {
+    content: '[';
+}
+
+#paginador a:hover::after {
+    content: ']';
 }
 
 #paginador strong {
-    margin: 0 5px; 
-    color: #000;
-    background-color: #00ff00;
-    padding: 5px 10px;
-    border-radius: 5px;
-    box-shadow: 0 0 15px 5px rgba(0, 255, 0, 0.7); 
+    padding: 5px 0;
+    background: linear-gradient(to right, #3700ff00 0%, #3700ff 50%, #3700ff00 100%);
     cursor: not-allowed;
 }
 
-/* Ranking Go Back Button */
-#goBackRanking {
-    margin-bottom: 100px;
-    color: #000;
-    font-size: 1.2em;
-    background-color: #00ff00;
-    padding: 5px 10px;
-    border-radius: 5px;
-    box-shadow: 0 0 15px 5px rgba(0, 255, 0, 0.7); 
-    border: 1px solid #00ff00;
-    transition: background-color 0.3s, box-shadow 0.3s; 
+#paginador strong::before{
+    content: '[';
 }
 
-#goBackRanking:hover {
-    background-color: #00ff00; 
-    box-shadow: 0 0 5px 5px rgba(0, 255, 0, 0.7);
+#paginador strong::after{
+    content: ']';
 }
 
+#paginador a,strong{
+    text-align: center;
+    width: 78px;
+}
+
+#goBackRanking:hover::before{
+    content: '[';
+}
+
+#goBackRanking:hover::after{
+    content: ']';
+}
+
+#goBackRanking{
+    margin-bottom: 5%;
+}
