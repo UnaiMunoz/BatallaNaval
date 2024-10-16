@@ -69,6 +69,16 @@ function mostrarBotones() {
     }
 }
 
+function mostrarNombre(){
+    const input = document.querySelector('input[type="text"]');
+    const button = document.querySelector('button');
+
+    if (input && button) {
+        input.style.display = 'block'; // Mostrar el input
+        button.style.display = 'block'; // Mostrar el botón
+    }
+}
+
 // Función para comprobar si todos los barcos han sido destruidos
 function todosBarcosDestruidos() {
     for (let barco of barcos) {
@@ -92,6 +102,22 @@ function mostrarMensaje(mensaje) {
         // Si no existe, crearla (aunque debería existir por el HTML inicial)
         const mensajeP = document.createElement('p');
         mensajeP.classList.add('notification');
+        mensajeP.textContent = mensaje;
+        document.querySelector('.info').appendChild(mensajeP); // Añadir al contenedor de info
+    }
+}
+
+// Función para mostrar el mesaje de points-info
+function mostrarMensajePuntos(mensaje) {
+    const notificationP = document.querySelector('.info .points-info'); // Seleccionar el <p> con la clase 'notification'
+    
+    if (notificationP) {
+        // Si la etiqueta <p> con clase 'notification' existe, actualizar su contenido
+        notificationP.textContent = mensaje;
+    } else {
+        // Si no existe, crearla (aunque debería existir por el HTML inicial)
+        const mensajeP = document.createElement('p');
+        mensajeP.classList.add('points-info');
         mensajeP.textContent = mensaje;
         document.querySelector('.info').appendChild(mensajeP); // Añadir al contenedor de info
     }
@@ -185,6 +211,7 @@ function changeDataCell(td) {
                             td.innerHTML = "X"; // Indicar que el barco ha sido tocado
                             mostrarMensaje(`¡Has tocado ${barco.tipo}!`);
                             puntos += 50; // Sumar 50 puntos por tocar un barco
+                            mostrarMensajePuntos("+50 puntos por atacar un servidor")
                             actualizarPuntos();
 
                             turnosAguaSeguidos = 0; // Reinicia el contador de turnos de agua
@@ -203,8 +230,9 @@ function changeDataCell(td) {
 
                                     // Aplicar el multiplicador correctamente
                                     puntos += puntosAntesMultiplicador * (multiplicador - 1); 
+                                    mostrarMensajePuntos("+" + (puntos- puntosAntesMultiplicador) + " por destruir una red")
                                     actualizarPuntos();
-                                    mostrarMensaje(`¡Puntos multiplicados por ${multiplicador} al hundir ${barco.tipo}!`);
+                                    /*mostrarMensaje(`¡Puntos multiplicados por ${multiplicador} al hundir ${barco.tipo}!`);*/
                                 }
 
                                 // **Multiplicador especial para Fragata**
@@ -214,6 +242,7 @@ function changeDataCell(td) {
                                         puntos *= 2; // Multiplicador adicional
                                         actualizarPuntos();
                                         mostrarMensaje("¡Bonus de puntos por hundir la Fragata en 2 turnos!");
+                                        mostrarMensajePuntos("+6000 por destruir la red más pequeña a la primera")
                                     }
                                 }
 
@@ -223,8 +252,8 @@ function changeDataCell(td) {
                                     mostrarMensaje("¡Has ganado la partida!");
                                     partidaActiva = false; // Desactivar la partida
                                     mostrarBotones();
+                                    mostrarNombre()
                                     calcularBonificacionPorTiempo(); // Llama a la bonificación final
-                                    mostrarPopupNombre(); // Mostrar el popup para ingresar el nombre
                                 }
                             }
                             return; // Salir del ciclo
@@ -251,15 +280,84 @@ function calcularBonificacionPorTiempo() {
 
     if (totalSegundos <= 300) { // Si tardas menos de 5 minutos
         bonificacion = 1000;
+        mostrarMensajePuntos("+"+bonificacion+"puntos por hacerte con el control en menos de 5 minutos")
+
     } else if (totalSegundos <= 600) { // Entre 5 y 10 minutos
         bonificacion = 500;
+        mostrarMensajePuntos("+"+bonificacion+"puntos por hacerte con el control entre 5 y 10 minutos")
+
     } else {
         bonificacion = 100; // Más de 10 minutos
+        mostrarMensajePuntos("+"+bonificacion+"puntos por hacerte con el control en más de 10 minutos")
+
     }
 
     puntos += bonificacion;
-    mostrarMensaje(`¡Bonificación de ${bonificacion} puntos por el tiempo!`);
+    /*mostrarMensaje(`¡Bonificación de ${bonificacion} puntos por el tiempo!`);*/
     actualizarPuntos();
 }
+
+
+// Guardar Nombre, Puntos y Fecha en ranking.txt
+
+function saveScore() {
+    var playerName = document.getElementById("name").value;
+    var points = document.querySelector(".points").textContent.split(": ")[1];  // Obtener puntos
+    var options = { 
+        timeZone: "Europe/Madrid", 
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit', 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        hour12: false 
+    };
+    var now = new Date();
+    var dateTimeFormat = new Intl.DateTimeFormat('es-ES', options);
+    var formattedDate = dateTimeFormat.format(now).replace(/\//g, '-').replace(',', '');
+
+    // Separar fecha y hora
+    var [date, time] = formattedDate.split(' ');
+    formattedDate = date + ' ' + time.split(':').join(':');
+
+    const errorMessage = document.getElementById('errorMessage');
+
+    if (playerName.length < 3) {
+        errorMessage.style.display = 'block'; // Mostrar mensaje de error
+        return; // No continuar si el nombre es demasiado corto
+    } else {
+        errorMessage.style.display = 'none'; // Ocultar mensaje si es válido
+    }
+
+    if (playerName !== "") {
+        // Crear un objeto con los datos del jugador
+        var playerData = {
+            name: playerName,
+            score: points,
+            date: formattedDate // Usar la fecha formateada
+        };
+
+        // Enviar los datos al archivo PHP mediante fetch
+        fetch('guardar_puntuacion.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(playerData)
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log('Puntuación guardada:', data);
+            alert("Jugador guardado!");
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    } else {
+        alert("Por favor, ingresa tu nombre.");
+    }
+}
+
+
 
 

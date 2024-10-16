@@ -242,8 +242,16 @@ Notas:
             <!-- Puntos -->
              <p class="points">Puntos: 0</p>
 
+            <!-- Notificación puntos -->
+            <p class="point-info"></p>
+            
             <!-- Notificaciones del juego -->
             <p class="notification"> </p>
+
+            <!-- Escribir nombre -->
+            <input type="text" id="name" placeholder="Escribe tu nombre" required class="hidden">
+            <button id="buttonName" onclick="saveScore()">Enviar</button>
+            <p id="errorMessage">El nombre debe tener al menos 3 caracteres.</p>
 
             <!-- Botones -->
             <div class="buttons" style="display: none;">
