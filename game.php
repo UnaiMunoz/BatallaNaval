@@ -6,7 +6,7 @@
     <title>Binary Battleship</title>
     <link rel="stylesheet" href="style.css">
     <script src="funciones.js"></script>
-    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
 </head>
 
 <body id="game">
@@ -31,7 +31,6 @@ Notas:
         </div>
     </header>
 
-    <button id="audioControlButton">Mute</button>
     <a href="index.php" id="goBackButton"><button id="goBack" class="keySound">Go Home</button></a>
 
 
@@ -39,7 +38,7 @@ Notas:
     <noscript>
         <div class="js-warning">
             Advertència: JavaScript està deshabilitat al teu navegador. 
-            <br>Per jugar a aquest joc, necessites habilitar JavaScript.<br>
+            <br>Per jugar a aquest joc necessites habilitar JavaScript.<br>
             <a href="https://www.enable-javascript.com/es/" target="_blank">Fes clic aquí per saber com habilitar JavaScript</a>
         </div>
     </noscript>
