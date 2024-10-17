@@ -52,21 +52,21 @@
 }
 
 #index {
-    background: url(img/fondoHacker.jpg);
+    background: url(images/fondoHacker.jpg);
     background-color: #00000054;
     background-blend-mode: overlay;
     background-size: cover;
 }
 
 #game {
-    background: url(img/fondoCalabera.jpg);
+    background: url(images/fondoCalabera.jpg);
     background-color: #000000ab;
     background-blend-mode: overlay;
     background-size: cover;
 }
 
 #bodyRanking {
-    background: url(img/fondoOjos.jpg);
+    background: url(images/fondoOjos.jpg);
     background-color: #00000093;
     background-blend-mode: overlay;
 }
@@ -90,15 +90,6 @@ button {
 
 button:hover {
     background: linear-gradient(to right, #3700ff00 0%, #3700ff 50%, #3700ff00 100%);
-}
-
-/* Estilo del botón de control del sonido */
-#audioControlButton {
-    width: 14vw;
-    position: absolute;
-    top: 20px;
-    right: 0;
-    cursor: pointer;
 }
 
 /* ******************************* */
