@@ -8,52 +8,53 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
 
-  <h3 align="center">ShipBattle Game</h3>
+  <h3 align="center">Binary Battleship Game</h3>
 
   <p align="center">
-    Una adaptación del clásico juego ShipBattle con una trama hacking.
+    An adaptation of the classic game Battleship with a hacking plot.
     <br>
-    Conviértete en un hacker, destruye nodos y toma el control de la red de servidores.
-  </p>
+Become a hacker, destroy nodes, and take control of the server network.  </p>
 </div>
 
-## Acerca del Proyecto
+## About the Project
 
-Binary Battleship es un juego web desarrollado como parte del segundo curso de Desarrollo de Aplicaciones Web (DAW). Implementa el clásico juego de Batalla Naval con una trama hacking, utilizando PHP en el backend y JavaScript en el frontend.
+Binary Battleship is a web game developed as part of the second year of Web Application Development (DAW). It implements the classic Battleship game with a hacking plot, using PHP for the backend and JavaScript for the frontend.
 
 ### Características principales
 
-- **Tema cyberpunk**: Ambientación futurista con elementos de hacking.
-- **Progresión del jugador**: Gana dinero y deja tu firma en la red.
-- **Ranking**: Compite para ser el mejor hacker.
-- **Interfaz interactiva**: Diseño moderno y fácil de usar.
+- **Terminal Theme**: Futuristic setting with hacking elements
+- **Ranking**: Compete to be the best hacker.
+- **Interactive Interface**: Modern and user-friendly design.
 
-### Tecnologías Utilizadas
+
+
+### Technologies Used
 
 - ![PHP](https://img.shields.io/badge/PHP-7.4+-777BB4?style=for-the-badge&logo=php&logoColor=white)
 - ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 - ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 - ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 
-## Comenzando
+## Getting Started
 
-### Prerrequisitos
+### Prerequisites
 
 - PHP >= 7.4
-- Navegador moderno con soporte para JavaScript
+- Modern browser with JavaScript support
 
-### Instalación
+### Installation
 
-1. Clona el repositorio:
+1. Clone the repository::
    ```sh
    git clone https://github.com/UnaiMunoz/BatallaNaval.git
    ```  
-2. Abre el directorio BatallaNaval desde la Terminal.
+2. Open the BatallaNaval directory from the Terminal.
 
-3. Ejecuta el comando:
+3. Run the command:
     ```sh
    php -S localhost:8080
    ```
-4. Abre la URL http://localhost:8080 desde cualquier navegador.
+4. Enter the URL http://localhost:8080 with your browser.
 
-5. ¡Disfruta del juego y trata de alcanzar la cima del ranking!
+5. Enjoy the game and try to reach the top of the ranking!
+
