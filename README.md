@@ -48,7 +48,7 @@ Binary Battleship es un juego web desarrollado como parte del segundo curso de D
    ```sh
    git clone https://github.com/UnaiMunoz/BatallaNaval.git
    ```  
-2. Abre el directorio BatallaNaval desde la línea de comandos (CMD).
+2. Abre el directorio BatallaNaval desde la Terminal.
 
 3. Ejecuta el comando:
     ```sh
