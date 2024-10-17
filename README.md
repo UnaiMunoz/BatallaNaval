@@ -1,7 +1,5 @@
 # BatallaNaval
 
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -12,12 +10,12 @@
   <h3 align="center">ShipBattle Game</h3>
 
   <p align="center">
-    Este proyecto es una adaptación del clasico juego ShipBattle con una trama hacking y un aspecto cyberpunk.
+    Este proyecto es una adaptación del clásico juego ShipBattle con una trama de hacking y un aspecto cyberpunk.
     <br>
-    Te convertirás en un hacker que deberá de descrubir y destruir todos los nodos para conseguir el control total de la red de servidores.
-    A medida que consigas acceso a los servidores conseguiras dinero que obtendrás vendiendo la información a terceros y dejarás una firma en la red que intimidirá a todos.
+    Te convertirás en un hacker que deberá descubrir y destruir todos los nodos para conseguir el control total de la red de servidores.
+    A medida que consigas acceso a los servidores, obtendrás dinero que podrás vender a terceros y dejarás una firma en la red que intimidirá a todos.
+  </p>
 </div>
-
 
 <!-- ABOUT THE PROJECT -->
 ## Acerca del Proyecto
@@ -33,7 +31,6 @@ A continuación, se listan los principales lenguajes, frameworks y bibliotecas e
 * **PHP**: Para la gestión del backend y la lógica de negocio.
 * **JavaScript**: Para la creación de la interfaz interactiva del usuario.
 * **HTML5/CSS3**: Para la estructura y el diseño de la aplicación.
-
 
 <!-- GETTING STARTED -->
 ## Comenzando
@@ -54,14 +51,13 @@ Asegúrate de tener instalados los siguientes componentes:
 
    ```sh
    git clone https://github.com/UnaiMunoz/BatallaNaval.git
+   ```
+2. Abre el directorio BatallaNaval desde la línea de comandos (CMD).
 
+3. Ejecuta el comando:
+    ```sh
+   php -S localhost:8080
+   ```
+4. Abre la URL http://localhost:8080 desde cualquier navegador.
 
-
-
-
-
-
-
-
-
-
+5. ¡Intenta superar el ranking y quedar primero!
