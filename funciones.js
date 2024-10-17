@@ -4,7 +4,12 @@ document.addEventListener('DOMContentLoaded', function() {
     var classicGameBtn = document.getElementById('classicGameBtn');
     classicGameBtn.classList.remove('disabled'); // Elimina la clase disabled
     classicGameBtn.removeAttribute('disabled'); // Quita el atributo disabled
+    classicGameBtn.onclick = function() {
+        window.location.href = 'game.php'; // Redirige al hacer clic
+    };
 });
+
+
 
 // Booleando para comprobar si la partida ha terminado
 let partidaActiva = true;
@@ -61,13 +66,27 @@ function mostrarBotones() {
     }
 }
 
-// Función para mostrar los botones
-function mostrarBotones() {
-    const buttons = document.querySelector('.buttons');
-    if (buttons) {
-        buttons.style.display = 'block'; // Asegúrate de que los botones se muestren
+function mostrarNombre() {
+    const input = document.querySelector('#name');
+    const button = document.querySelector('#buttonName');
+
+    if (input && button) {
+        input.style.display = 'block'; // Mostrar el input
+        button.style.display = 'block'; // Mostrar el botón
     }
 }
+
+
+function ocultarNombre() {
+    const input = document.querySelector('#name'); // Usa el ID específico
+    const button = document.querySelector('#buttonName'); // Usa el ID específico
+
+    if (input && button) {
+        input.style.display = 'none'; // Ocultar el input
+        button.style.display = 'none'; // Ocultar el botón
+    }
+}
+
 
 // Función para comprobar si todos los barcos han sido destruidos
 function todosBarcosDestruidos() {
@@ -94,6 +113,42 @@ function mostrarMensaje(mensaje) {
         mensajeP.classList.add('notification');
         mensajeP.textContent = mensaje;
         document.querySelector('.info').appendChild(mensajeP); // Añadir al contenedor de info
+    }
+}
+
+// Función para mostrar el mesaje de points-info
+function mostrarMensajePuntos(mensaje) {
+    const notificationP = document.querySelector('.info .points-info');
+    
+    // Convertir los saltos de línea en <br> para HTML
+    const mensajeHTML = mensaje.replace(/\n/g, '<br>');
+
+    if (notificationP) {
+        // Dividir el contenido actual en mensajes individuales
+        let mensajes = notificationP.innerHTML.split('<br>').filter(m => m.trim() !== '');
+        
+        // Añadir el nuevo mensaje
+        mensajes.push(mensajeHTML);
+        
+        // Mantener solo los últimos 3 mensajes
+        if (mensajes.length > 5) {
+            mensajes = mensajes.slice(-5);
+        }
+        
+        // Unir los mensajes con <br> y actualizar el contenido
+        notificationP.innerHTML = mensajes.join('<br>');
+    } else {
+        const mensajeP = document.createElement('p');
+        mensajeP.classList.add('points-info');
+        mensajeP.innerHTML = mensajeHTML;
+        document.querySelector('.info').appendChild(mensajeP);
+    }
+}
+
+function vaciarMensajePuntos() {
+    const notificationP = document.querySelector('.info .points-info');
+    if (notificationP) {
+        notificationP.textContent = '';
     }
 }
 
@@ -141,11 +196,75 @@ let turnosTotales = 0;
 let hundidoSinFallar = true; 
 let puntosAntesDeHundir = 0; 
 
+function applyEasterEgg() {
+    // Variables para el Easter Egg (Tienes que pulsar la casilla C4)
+    let clickCounterC4 = 0; // Contador de clics para "C4"
+    const originalTitle = "Hack the server"; // Título original
+
+    return function() {
+        clickCounterC4++; // Incrementar el contador
+
+        if (clickCounterC4 === 5) {
+
+            const gameTitleElement = document.getElementById("gameTitle");
+            
+            // Cambiar el título a vacío para ocultar el texto original
+            gameTitleElement.innerText = "";
+
+            // Aplicar la clase
+            gameTitleElement.classList.add("glitchTitle");
+
+            // Cambiar el título a lo que deseas mostrar durante la animación
+            setTimeout(() => {
+                gameTitleElement.innerText = "¡Security Breach: Full Access Granted!!";
+            }, 0); // Mostrar el texto del Easter Egg inmediatamente
+
+            setTimeout(() => {
+                gameTitleElement.innerText = originalTitle; // Restaurar el título original
+                // Eliminar la clase
+                gameTitleElement.classList.remove("glitchTitle");
+            }, 5000); // Eliminar después de 5 segundos
+
+            clickCounterC4 = 0; // Reiniciar el contador
+
+            // Para el timer
+            clearInterval(cronometro);
+            mostrarMensaje("¡Has ganado la partida!");
+            partidaActiva = false; // Desactivar la partida
+            calcularBonificacionPorTiempo(); // Llama a la bonificación final
+            mostrarNombre();
+            mostrarBotones();
+
+
+        }
+    };
+}
+
+
+
+// Crear una instancia de la función de Easter Egg
+const activateEasterEgg = applyEasterEgg();
+
+let debeVaciarMensajes = false;
+
 function changeDataCell(td) {
     if (!partidaActiva) return; // Si la partida no está activa, no hacer nada
 
+    if (debeVaciarMensajes) {
+        vaciarMensajePuntos();
+        debeVaciarMensajes = false; // Resetear la bandera
+    }
+
     // Obtener el atributo 'name' de la celda (nombre del barco o vacío)
     let name = td.getAttribute('name'); 
+
+    // Verificar si es la casilla "C4"
+    let row = td.parentElement.rowIndex; // Obtener índice de fila
+    let col = td.cellIndex; // Obtener índice de columna
+
+    if (row === 3 && col === 4) { // C4 corresponde a la fila 3 y columna 4
+        activateEasterEgg(); // Llamar a la función para manejar el título
+    }
 
     // Comprobar si el clic corresponde a una casilla con un barco
     if (td.classList.contains("codeName")) {
@@ -165,14 +284,15 @@ function changeDataCell(td) {
             if (turnosAguaSeguidos >= 5) {
                 puntos -= 50;
                 actualizarPuntos();
-                mostrarMensaje("¡Has perdido 50 puntos!");
+                mostrarMensajePuntos("¡Has perdido 50 puntos!");
                 turnosAguaSeguidos = 0; // Reinicia el contador de turnos de agua seguidos
             }
 
             // Rompe la cadena de hundir sin fallar
             hundidoSinFallar = false; 
         } else {
-            // Impacto en un barco
+            // Impacto en un barco7
+            hundidoSinFallar = true; 
             for (let barco of barcos) {
                 if (barco.tipo === name) {
                     let row = td.parentElement.rowIndex; // Obtener índice de fila
@@ -185,6 +305,7 @@ function changeDataCell(td) {
                             td.innerHTML = "X"; // Indicar que el barco ha sido tocado
                             mostrarMensaje(`¡Has tocado ${barco.tipo}!`);
                             puntos += 50; // Sumar 50 puntos por tocar un barco
+                            mostrarMensajePuntos("+50 puntos por atacar un servidor\n")
                             actualizarPuntos();
 
                             turnosAguaSeguidos = 0; // Reinicia el contador de turnos de agua
@@ -193,6 +314,7 @@ function changeDataCell(td) {
                             if (barco.vida === 0) {
                                 barcosHundidos++; // Incrementar barcos hundidos
                                 mostrarMensaje(`¡Has hundido ${barco.tipo}!`);
+                                debeVaciarMensajes = true;
 
                                 // **Multiplicador si hundes sin fallar**
                                 if (hundidoSinFallar) {
@@ -203,8 +325,9 @@ function changeDataCell(td) {
 
                                     // Aplicar el multiplicador correctamente
                                     puntos += puntosAntesMultiplicador * (multiplicador - 1); 
+                                    mostrarMensajePuntos("+" + (puntos- puntosAntesMultiplicador) + " por destruir una red")
                                     actualizarPuntos();
-                                    mostrarMensaje(`¡Puntos multiplicados por ${multiplicador} al hundir ${barco.tipo}!`);
+                                    mostrarMensajePuntos(`¡Puntos multiplicados por ${multiplicador} al hundir ${barco.tipo}!`);
                                 }
 
                                 // **Multiplicador especial para Fragata**
@@ -213,18 +336,20 @@ function changeDataCell(td) {
                                         puntos += 3000; // Bonus por hundir la Fragata en 2 turnos
                                         puntos *= 2; // Multiplicador adicional
                                         actualizarPuntos();
-                                        mostrarMensaje("¡Bonus de puntos por hundir la Fragata en 2 turnos!");
+                                        mostrarMensajePuntos("¡Bonus de puntos por hundir la Fragata en 2 turnos!");
+                                        mostrarMensajePuntos("+6000 por destruir la red más pequeña a la primera")
                                     }
                                 }
 
-                                hundidoSinFallar = true; 
+
+                                hundidoSinFallar = true;
 
                                 if (todosBarcosDestruidos()) {
                                     mostrarMensaje("¡Has ganado la partida!");
                                     partidaActiva = false; // Desactivar la partida
                                     mostrarBotones();
+                                    mostrarNombre();
                                     calcularBonificacionPorTiempo(); // Llama a la bonificación final
-                                    mostrarPopupNombre(); // Mostrar el popup para ingresar el nombre
                                 }
                             }
                             return; // Salir del ciclo
@@ -251,15 +376,85 @@ function calcularBonificacionPorTiempo() {
 
     if (totalSegundos <= 300) { // Si tardas menos de 5 minutos
         bonificacion = 1000;
+        mostrarMensajePuntos("+"+bonificacion+" puntos por hacerte con el control en menos de 5 minutos")
+
     } else if (totalSegundos <= 600) { // Entre 5 y 10 minutos
         bonificacion = 500;
+        mostrarMensajePuntos("+"+bonificacion+" puntos por hacerte con el control entre 5 y 10 minutos")
+
     } else {
         bonificacion = 100; // Más de 10 minutos
+        mostrarMensajePuntos("+"+bonificacion+" puntos por hacerte con el control en más de 10 minutos")
+
     }
 
     puntos += bonificacion;
-    mostrarMensaje(`¡Bonificación de ${bonificacion} puntos por el tiempo!`);
+    // mostrarMensajePuntos(`¡Bonificación de ${bonificacion} puntos por el tiempo!`);
     actualizarPuntos();
+}
+
+
+// Guardar Nombre, Puntos y Fecha en ranking.txt
+
+function saveScore() {
+    var playerName = document.getElementById("name").value;
+    var points = document.querySelector(".points").textContent.split(": ")[1];  // Obtener puntos
+    var options = { 
+        timeZone: "Europe/Madrid", 
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit', 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        hour12: false 
+    };
+    var now = new Date();
+    var dateTimeFormat = new Intl.DateTimeFormat('es-ES', options);
+    var formattedDate = dateTimeFormat.format(now).replace(/\//g, '-').replace(',', '');
+
+    // Separar fecha y hora
+    var [date, time] = formattedDate.split(' ');
+    formattedDate = date + ' ' + time.split(':').join(':');
+
+    const errorMessage = document.getElementById('errorMessage');
+
+    if (playerName.length < 3) {
+        errorMessage.style.display = 'block'; // Mostrar mensaje de error
+        return; // No continuar si el nombre es demasiado corto
+    } else {
+        errorMessage.style.display = 'none'; // Ocultar mensaje si es válido
+    }
+
+    if (playerName !== "") {
+        // Crear un objeto con los datos del jugador
+        var playerData = {
+            name: playerName,
+            score: points,
+            date: formattedDate // Usar la fecha formateada
+        };  
+
+        // Enviar los datos al archivo PHP mediante fetch
+        fetch('win.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(playerData)
+        })
+        .then(response => response.text())
+        .then(data => {
+            // console.log('Puntuación guardada:', data);
+            // alert("Jugador guardado!");
+            mostrarMensaje("Felicidades " + playerData.name + "! Revisa el ranking para ver tu puesto");
+            ocultarNombre();
+
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    } else {
+        alert("Por favor, ingresa tu nombre.");
+    }
 }
 
 //Para que se escuche la musica de fondo
@@ -347,3 +542,26 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
+
+// Notificaciones CSS
+function showNotification(message, type) {
+    var notification = document.createElement('div');
+    notification.className = 'CSSnotification ' + type; // Usa la nueva clase
+    notification.textContent = message;
+
+    document.getElementById('CSSnotificationContainer').appendChild(notification);
+
+    // Desvanecer la notificación después de 3 segundos
+    setTimeout(function() {
+        notification.style.opacity = '0';
+        setTimeout(function() {
+            notification.remove();
+        }, 500); // Esperar a que se desvanezca antes de eliminar
+    }, 3000);
+}
+
+// Ejemplo de uso
+showNotification('¡Success!', 'CSSsuccess');
+showNotification('Info.', 'CSSinfo');
+showNotification('Error', 'CSSerror');
+showNotification('Warning', 'CSSwarning');

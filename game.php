@@ -7,10 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="funciones.js"></script>
 </head>
-    <header>
-        <button id="audioControlButton">Mute</button>
-        <h1>Hack the server</h1>
-    </header>
+
 <body id="game">
 
 <!--
@@ -27,12 +24,21 @@ Notas:
 
     <div id="audioContainer"></div>
 
+    <header>
+        <div class="contentEasterEgg">
+            <h1 class="text" id="gameTitle">Hack the server</h1>
+        </div>
+    </header>
+
+    <button id="audioControlButton">Mute</button>
+
+
     <!-- Mensaje que aparece si JavaScript no está habilitado -->
     <noscript>
         <div class="js-warning">
-            <strong>Advertencia:</strong> JavaScript está deshabilitado en tu navegador. 
+            Advertencia: JavaScript está deshabilitado en tu navegador. 
             <br>Para jugar a este juego, necesitas habilitar JavaScript.<br>
-            <a href="https://www.enable-javascript.com/es/" target="_blank">Haz clic aquí para saber cómo habilitar JavaScript</a>.
+            <a href="https://www.enable-javascript.com/es/" target="_blank">Haz clic aquí para saber cómo habilitar JavaScript</a>
         </div>
     </noscript>
 
@@ -225,7 +231,10 @@ Notas:
                 echo "</table>";
 
                 // Imprimir el string de barcos
-                echo "<div id='ShipCoords'>$StringBarcos</div>";
+                // echo "<div id='ShipCoords'>$StringBarcos</div>";
+
+                // Imprimir en la consola del navegador
+                echo "<script>console.log('Secret Locations: ". json_encode($StringBarcos) . "');</script>";
 
                 echo    "<script>
                             var barcos = " . json_encode($barcos) . ";
@@ -233,6 +242,7 @@ Notas:
 
 
                 // echo "Número de barcos creados: " . count($barcos) . "<br>";
+
 
             ?>
 
@@ -246,18 +256,33 @@ Notas:
             <!-- Puntos -->
              <p class="points">Puntos: 0</p>
 
+            <!-- Notificación puntos -->
+            <p class="points-info"></p>
+            
             <!-- Notificaciones del juego -->
-            <p class="notification"> </p>
+            <p class="notification"></p>
+
+            <!-- Escribir nombre -->
+             
+            <div class="input-group">
+                <input type="text" id="name" placeholder="Escribe tu nombre" required class="hidden" maxlength="20">
+                <button id="buttonName" class="keySound" onclick="saveScore()">Enviar</button>
+            </div>
+            <p id="errorMessage">El nombre debe tener al menos 3 caracteres.</p>
 
             <!-- Botones -->
-            <div class="buttons" style="display: none;">
+            <div class="buttons">
                 <a href="index.php"><button class="keySound">Home</button></a>
                 <a href="ranking.php"><button class="keySound">Ranking</button></a>
             </div>
 
         </div>
-        
+
     </div>
+
+    <a href="index.php"><button id="goBack" class="keySound">Go Home</button></a>
+
+    <div id="CSSnotificationContainer"></div>
 
 </body>
 </html>

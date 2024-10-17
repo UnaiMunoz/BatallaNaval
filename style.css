@@ -27,6 +27,7 @@
     text-decoration: none !important;
     text-transform: none !important;
     font-weight: unset !important;
+    overflow-x: hidden !important;
 }
 
 .js-warning {
@@ -34,14 +35,15 @@
     border: 1px solid #ff0000;
     padding: 10px;
     margin: 10px 0;
-    margin-bottom: 200px;
     text-align: center;
     font-size: 3.2em;
+    color:#000 !important;
+    position: absolute;
   }
   
 .js-warning a {
-    color: #ff0000;
-    text-decoration: underline;
+    color: #ff0000 !important;
+    text-decoration: underline !important;
 }
 
 .disabled {
@@ -74,14 +76,13 @@
 
 h1{
     font-weight: normal;
-    margin: 3% 0;
+    margin: 2% 0;
     text-align: center;
     font-size: 55px;
 }
 
 /* Botones */
 button {
-    margin-top: 2%;
     padding: 0.5vw 0;
     width: 25vw;
     font-size: 1.6vw;
@@ -111,12 +112,13 @@ main {
     margin: 0 5%;
 }
 #indexMain{
-    margin-top: 35vh;
+    margin-top: 50vh;
     display: flex;
     align-items: flex-end;
 }
 #indexMain div{
     width: 50%;
+    padding-top: 0vw;
 }
 #indexText p{
     margin-top: 8px;
@@ -156,6 +158,133 @@ main {
 /* MARK: CSS for game.php */
 /* ******************************* */
 
+/* Easter Egg */
+.contentEasterEgg h1 {
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.glitchTitle {
+    position: relative;
+    font-size: 3em; /* Ajusta según el tamaño del texto que desees */
+    color: #00FF00; /* Color verde para el título */
+    animation: glitch-animation 1s infinite;
+}
+
+/* Animación principal del glitch */
+@keyframes glitch-animation {
+    0% {
+        text-shadow: 2px 2px 0 #ff0000, -2px -2px 0 #0000ff; /* Sombras rojas y azules */
+        transform: translate(0);
+    }
+    20% {
+        text-shadow: -2px -2px 0 #ff0000, 2px 2px 0 #0000ff;
+        transform: translate(-2px, -2px);
+    }
+    40% {
+        text-shadow: 2px 2px 0 #ff0000, -2px -2px 0 #0000ff;
+        transform: translate(2px, 2px);
+    }
+    60% {
+        text-shadow: -2px -2px 0 #ff0000, 2px 2px 0 #0000ff;
+        transform: translate(-1px, 2px);
+    }
+    80% {
+        text-shadow: 2px 2px 0 #ff0000, -2px -2px 0 #0000ff;
+        transform: translate(1px, -1px);
+    }
+    100% {
+        text-shadow: -2px -2px 0 #ff0000, 2px 2px 0 #0000ff;
+        transform: translate(0);
+    }
+}
+
+/* Fragmentos de texto glitch */
+.glitchTitle::before,
+.glitchTitle::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: none;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0); /* Inicialmente escondido */
+}
+
+/* Antes (en rojo) */
+.glitchTitle::before {
+    left: -2px;
+    text-shadow: -2px 0 red;
+    animation: glitch-before 2s infinite linear alternate-reverse;
+}
+
+.glitchTitle::before {
+    left: -10px; /* Aumentado para mover más a la izquierda */
+    text-shadow: -2px 0 blue;
+    animation: glitch-before 1.5s infinite linear alternate-reverse;
+}
+
+.glitchTitle::after {
+    left: 10px; /* Aumentado para mover más a la derecha */
+    text-shadow: 2px 0 red;
+    animation: glitch-after 1.5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-before {
+    0% {
+        clip: rect(0, 900px, 0, 0);
+        transform: translate(-5px, -5px); /* Aumentado desplazamiento */
+    }
+    20% {
+        clip: rect(10px, 900px, 60px, 0);
+        transform: translate(5px, 0);
+    }
+    40% {
+        clip: rect(30px, 900px, 90px, 0);
+        transform: translate(-5px, 5px); /* Aumentado desplazamiento */
+    }
+    60% {
+        clip: rect(50px, 900px, 120px, 0);
+        transform: translate(0, -5px);
+    }
+    80% {
+        clip: rect(70px, 900px, 150px, 0);
+        transform: translate(5px, 5px); /* Aumentado desplazamiento */
+    }
+    100% {
+        clip: rect(0, 900px, 0, 0);
+        transform: translate(-5px, 0); /* Aumentado desplazamiento */
+    }
+}
+
+@keyframes glitch-after {
+    0% {
+        clip: rect(0, 900px, 0, 0);
+        transform: translate(5px, 5px); /* Aumentado desplazamiento */
+    }
+    20% {
+        clip: rect(20px, 900px, 80px, 0);
+        transform: translate(-5px, 0);
+    }
+    40% {
+        clip: rect(40px, 900px, 110px, 0);
+        transform: translate(5px, -5px); /* Aumentado desplazamiento */
+    }
+    60% {
+        clip: rect(60px, 900px, 140px, 0);
+        transform: translate(0, 5px);
+    }
+    80% {
+        clip: rect(80px, 900px, 170px, 0);
+        transform: translate(-5px, -5px); /* Aumentado desplazamiento */
+    }
+    100% {
+        clip: rect(0, 900px, 0, 0);
+        transform: translate(5px, 0); /* Aumentado desplazamiento */
+    }
+}
+
 /* Divisores */
 #game_Container {
     display: flex;
@@ -164,23 +293,25 @@ main {
 }
 
 .board {
-    flex-basis: 70%;
+    flex-basis: 60%;
     display: flex;
+    flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
 }
 
 .info {
-    flex-basis: 30%;
+    flex-basis: 40%;
 }
 
 /* Game Board */
 #gameTable {
-    width: 30vw;
-    height: 30vw;
+    width: 36vw;
+    height: 36vw;
     text-align: center;
     border-collapse: collapse;
     table-layout: fixed;
+    margin-bottom: 1vw;
 }
 
 #gameTable td{
@@ -220,55 +351,87 @@ main {
 }
 
 /* Notificaciones del juego */
-.notification {
-    margin-top: 1vw;
-    padding: 1vw;
-    font-size: 1vw;
-    color: #000;
-    text-align: center;
-    min-height: 3.1vw;
-    max-height: 3.1vw;
-}
-
 
 
 /* Timer */
 .timer {
     font-size: 4vw;
     margin-top: 1vw;
-    font-weight: bold;
 }
 
 /* Puntos */
 .points {
     font-size: 2vw;
     margin-top: 1vw;
-    font-weight: bold;
+}
+ /* Mensaje de Puntos */
+.points-info {
+    font-size: 1vw;
+    margin-top: 1vw;
+    margin-bottom: 2vw;
+    height: auto;
+    padding: 1%;
+}
+
+.notification {
+    font-size: 1.5vw;
+    margin-top: 1vw;
+    margin-bottom: 2vw;
+}
+
+/* Contenedor para input y botón */
+.input-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1.5vw;
+    margin-bottom: 1.5vw;
 }
 
 /* Escribir nombre */
 input[type="text"] {
-    width: 80%;
+    width: 100%;
     padding: 1vw;
-    margin-top: 1.5vw;
     font-size: 1.2vw;
+    color:  #000000 !important;
     border-radius: 5px;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: #f7f7f7;
     text-align: center;
     transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    display: none;
+    text-decoration-color: #000;
 }
 
 /* Placeholder estilo */
-/*input[type="text"]::placeholder {
-    color: #aaa;
-}*/
+input[type="text"]::placeholder {
+    color: #000000;
+}
 
 /* Focus efecto */
 input[type="text"]:focus {
     outline: none;
-    border-color: #36ebf2;
-    box-shadow: 0 0 8px rgba(54, 235, 242, 0.7);
+    border-color: #000000 !important;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
+}
+#buttonName{
+    display: none; /* Oculto inicialmente */
+    padding: 1vw;
+    font-size: 1.2vw;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 11px;
+}
+#buttonName:hover {
+    background-color: #333 !important;
+}
+#errorMessage{
+    color: red !important; 
+    display: none;
 }
 
 /* Ocultar botones Home y Ranking */
@@ -283,6 +446,7 @@ input[type="text"]:focus {
 .buttons button:hover::after{
     content: ']';
 }
+
 
 /* ******************************* */
 /* MARK: CSS for ranking.php */
@@ -353,7 +517,7 @@ tr:hover .selecRanking::before {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 50px 0 50px;
+    margin: 50px 0 20px;
 }
 
 #paginador a {
@@ -392,14 +556,52 @@ tr:hover .selecRanking::before {
     width: 78px;
 }
 
-#goBackRanking:hover::before{
+#goBack:hover::before{
     content: '[';
 }
 
-#goBackRanking:hover::after{
+#goBack:hover::after{
     content: ']';
 }
 
+#goBack{
+    margin-left: 17%;
+}
+
 #goBackRanking{
-    margin-bottom: 5%;
+    margin-top: 1vw;
+    margin-bottom: 3vw;
+}
+
+/* Notification CSS */
+#CSSnotificationContainer {
+    position: fixed; /* Posiciona las notificaciones en la parte superior */
+    top: 120px; /* Espacio desde la parte superior */
+    left: 20px; /* Espacio desde la derecha */
+    z-index: 1000; /* Asegúrate de que se superponga a otros elementos */
+}
+
+.CSSnotification {
+    margin: 10px; /* Espacio entre las notificaciones */
+    padding: 15px; /* Espacio interno */
+    border-radius: 5px; /* Bordes redondeados */
+    color: white; /* Color del texto */
+    opacity: 0.9; /* Transparencia */
+    transition: opacity 0.5s ease; /* Animación de desvanecimiento */
+}
+
+.CSSsuccess {
+    background-color: #4CAF50; /* Verde */
+}
+
+.CSSinfo {
+    background-color: #2196F3; /* Azul */
+}
+
+.CSSerror {
+    background-color: #f44336; /* Rojo */
+}
+
+.CSSwarning {
+    background-color: #ff9800; /* Naranja */
 }
