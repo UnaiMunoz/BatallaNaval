@@ -31,6 +31,7 @@ Notas:
     </header>
 
     <button id="audioControlButton">Mute</button>
+    <a href="index.php" id="goBackButton"><button id="goBack" class="keySound">Go Home</button></a>
 
 
     <!-- Mensaje que aparece si JavaScript no está habilitado -->
@@ -190,18 +191,6 @@ Notas:
                 }
 
                 // Imprimir la matriz 
-                echo "
-                        <style>
-                            table {
-                                border-collapse: collapse; 
-                            }
-                            td {
-                                border: 1px solid black;
-                                padding: 7px;
-                                text-align: center;
-                            }
-                        </style>
-                    ";
 
                 # Mostrar la tabla
                 echo "<table id='gameTable'>";
@@ -279,8 +268,6 @@ Notas:
         </div>
 
     </div>
-
-    <a href="index.php"><button id="goBack" class="keySound">Go Home</button></a>
 
     <div id="CSSnotificationContainer"></div>
 
