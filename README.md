@@ -1,11 +1,11 @@
-# BatallaNaval
+# Binary Battleship
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
+
+<img width="1512" alt="image" src="https://github.com/user-attachments/assets/275dd16a-e85c-414a-90ae-34865592e904">
+
 
   <h3 align="center">ShipBattle Game</h3>
 
