@@ -1,67 +1,60 @@
-# BatallaNaval
+# Binary Battleship
 
-
-
-<!-- PROJECT LOGO -->
-<br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
 
-  <h3 align="center">ShipBattle Game</h3>
+<img width="1512" alt="Binary Battleship Logo" src="https://github.com/user-attachments/assets/275dd16a-e85c-414a-90ae-34865592e904">
+
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/UnaiMunoz/BatallaNaval)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![Status](https://img.shields.io/badge/status-active-success.svg)]()
+
+  <h3 align="center">Binary Battleship Game</h3>
 
   <p align="center">
-    Este proyecto es una adaptación del clasico juego ShipBattle con una trama hacking y un aspecto cyberpunk.
+    An adaptation of the classic game Battleship with a hacking plot.
     <br>
-    Te convertirás en un hacker que deberá de descrubir y destruir todos los nodos para conseguir el control total de la red de servidores.
-    A medida que consigas acceso a los servidores conseguiras dinero que obtendrás vendiendo la información a terceros y dejarás una firma en la red que intimidirá a todos.
+Become a hacker, destroy nodes, and take control of the server network.  </p>
 </div>
 
+## About the Project
 
-<!-- ABOUT THE PROJECT -->
-## Acerca del Proyecto
+Binary Battleship is a web game developed as part of the second year of Web Application Development (DAW). It implements the classic Battleship game with a hacking plot, using PHP for the backend and JavaScript for the frontend.
 
-[![Captura de Pantalla del Producto][product-screenshot]](https://example.com)
+### Características principales
 
-Este proyecto, desarrollado como parte del segundo curso de Desarrollo de Aplicaciones Web (DAW), implementa el clásico juego de Batalla Naval con PHP en el backend y JavaScript en el frontend. El propósito principal es poner en práctica y demostrar nuestros conocimientos de estas tecnologías, al mismo tiempo que desarrollamos una aplicación web interactiva y funcional.
-
-### Tecnologías Utilizadas
-
-A continuación, se listan los principales lenguajes, frameworks y bibliotecas empleados en el desarrollo de este proyecto:
-
-* **PHP**: Para la gestión del backend y la lógica de negocio.
-* **JavaScript**: Para la creación de la interfaz interactiva del usuario.
-* **HTML5/CSS3**: Para la estructura y el diseño de la aplicación.
+- **Terminal Theme**: Futuristic setting with hacking elements
+- **Ranking**: Compete to be the best hacker.
+- **Interactive Interface**: Modern and user-friendly design.
 
 
-<!-- GETTING STARTED -->
-## Comenzando
 
-A continuación, se explica cómo configurar el proyecto localmente para fines de desarrollo y pruebas. Sigue estos sencillos pasos para obtener una copia local en funcionamiento:
+### Technologies Used
 
-### Prerrequisitos
+- ![PHP](https://img.shields.io/badge/PHP-7.4+-777BB4?style=for-the-badge&logo=php&logoColor=white)
+- ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+- ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+- ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 
-Asegúrate de tener instalados los siguientes componentes:
+## Getting Started
 
-* PHP >= 7.4
-* Un servidor web (por ejemplo, Apache)
-* Un navegador moderno con soporte para JavaScript
+### Prerequisites
 
-### Instalación
+- PHP >= 7.4
+- Modern browser with JavaScript support
 
-1. Clona el repositorio:
+### Installation
 
+1. Clone the repository::
    ```sh
    git clone https://github.com/UnaiMunoz/BatallaNaval.git
+   ```  
+2. Open the BatallaNaval directory from the Terminal.
 
+3. Run the command:
+    ```sh
+   php -S localhost:8080
+   ```
+4. Enter the URL http://localhost:8080 with your browser.
 
-
-
-
-
-
-
-
-
+5. Enjoy the game and try to reach the top of the ranking!
 
