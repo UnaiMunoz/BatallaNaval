@@ -109,7 +109,7 @@ main {
     margin: 0 5%;
 }
 #indexMain{
-    margin-top: 40vh;
+    margin-top: 35vh;
     display: flex;
     align-items: flex-end;
 }
@@ -580,6 +580,14 @@ tr:hover .selecRanking::before {
 #goBackRanking{
     margin-top: 1vw;
     margin-bottom: 3vw;
+}
+
+#goBackRanking:hover::before{
+    content: '[';
+}
+
+#goBackRanking:hover::after{
+    content: ']';
 }
 
 /* Notification CSS */
