@@ -19,7 +19,7 @@
 
 ## Acerca del Proyecto
 
-Binary Battleship es un juego web desarrollado como parte del segundo curso de Desarrollo de Aplicaciones Web (DAW). Implementa el clásico juego de Batalla Naval con un giro cyberpunk, utilizando PHP en el backend y JavaScript en el frontend.
+Binary Battleship es un juego web desarrollado como parte del segundo curso de Desarrollo de Aplicaciones Web (DAW). Implementa el clásico juego de Batalla Naval con una trama hacking, utilizando PHP en el backend y JavaScript en el frontend.
 
 ### Características principales
 
