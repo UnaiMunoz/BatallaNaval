@@ -3,9 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hack The Server</title>
+    <title>Binary Battleship</title>
     <link rel="stylesheet" href="style.css">
     <script src="funciones.js"></script>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
 </head>
 
 <body id="game">
@@ -26,7 +27,7 @@ Notas:
 
     <header>
         <div class="contentEasterEgg">
-            <h1 class="text" id="gameTitle">Hack the server</h1>
+            <h1 class="text" id="gameTitle">Binary Battleship</h1>
         </div>
     </header>
 
@@ -36,9 +37,9 @@ Notas:
     <!-- Mensaje que aparece si JavaScript no está habilitado -->
     <noscript>
         <div class="js-warning">
-            Advertencia: JavaScript está deshabilitado en tu navegador. 
-            <br>Para jugar a este juego, necesitas habilitar JavaScript.<br>
-            <a href="https://www.enable-javascript.com/es/" target="_blank">Haz clic aquí para saber cómo habilitar JavaScript</a>
+            Advertència: JavaScript està deshabilitat al teu navegador. 
+            <br>Per jugar a aquest joc, necessites habilitar JavaScript.<br>
+            <a href="https://www.enable-javascript.com/es/" target="_blank">Fes clic aquí per saber com habilitar JavaScript</a>
         </div>
     </noscript>
 
@@ -265,22 +266,22 @@ Notas:
             <!-- Escribir nombre -->
              
             <div class="input-group">
-                <input type="text" id="name" placeholder="Escribe tu nombre" required class="hidden" maxlength="20">
-                <button id="buttonName" class="keySound" onclick="saveScore()">Enviar</button>
+                <input type="text" id="name" placeholder="Escriu el teu nom" required class="hidden" maxlength="20">
+                <button id="buttonName" class="keySound" onclick="saveScore()">Envia</button>
             </div>
-            <p id="errorMessage">El nombre debe tener al menos 3 caracteres.</p>
+            <p id="errorMessage">El nom ha de tenir almenys 3 caràcters.</p>
 
             <!-- Botones -->
             <div class="buttons">
-                <a href="index.php"><button class="keySound">Home</button></a>
-                <a href="ranking.php"><button class="keySound">Ranking</button></a>
+                <a href="index.php"><button class="keySound">Inici</button></a>
+                <a href="ranking.php"><button class="keySound">Hall of Fame</button></a>
             </div>
 
         </div>
 
     </div>
 
-    <a href="index.php"><button id="goBack" class="keySound">Go Home</button></a>
+    <a href="index.php"><button id="goBack" class="keySound">Inici</button></a>
 
     <div id="CSSnotificationContainer"></div>
 

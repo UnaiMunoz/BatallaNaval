@@ -199,7 +199,7 @@ let puntosAntesDeHundir = 0;
 function applyEasterEgg() {
     // Variables para el Easter Egg (Tienes que pulsar la casilla C4)
     let clickCounterC4 = 0; // Contador de clics para "C4"
-    const originalTitle = "Hack the server"; // Título original
+    const originalTitle = "Hackeja-ho tot"; // Título original
 
     return function() {
         clickCounterC4++; // Incrementar el contador
@@ -229,7 +229,7 @@ function applyEasterEgg() {
 
             // Para el timer
             clearInterval(cronometro);
-            mostrarMensaje("¡Has ganado la partida!");
+            mostrarMensaje("Has guanyat la partida!");
             partidaActiva = false; // Desactivar la partida
             calcularBonificacionPorTiempo(); // Llama a la bonificación final
             mostrarNombre();
@@ -277,14 +277,14 @@ function changeDataCell(td) {
         if (name === " ") {
             // Casilla vacía (agua)
             td.innerHTML = "~"; 
-            mostrarMensaje("¡Fallaste!");
+            mostrarMensaje("¡Has fallat!");
             turnosAguaSeguidos++; // Incrementa la cantidad de turnos sin tocar un barco
 
             // Si hay 5 turnos de agua seguidos, restar 50 puntos
             if (turnosAguaSeguidos >= 5) {
                 puntos -= 50;
                 actualizarPuntos();
-                mostrarMensajePuntos("¡Has perdido 50 puntos!");
+                mostrarMensajePuntos("¡Has perdut 50 punts!");
                 turnosAguaSeguidos = 0; // Reinicia el contador de turnos de agua seguidos
             }
 
@@ -303,9 +303,10 @@ function changeDataCell(td) {
                             // Reducir la vida del barco
                             barco.vida -= 1; 
                             td.innerHTML = "X"; // Indicar que el barco ha sido tocado
-                            mostrarMensaje(`¡Has tocado ${barco.tipo}!`);
+                            // mostrarMensaje(`¡Has tocat ${barco.tipo}!`);
+                            mostrarMensaje(`¡Has tocat una xarxa de ${barco.tamaño}!`);
                             puntos += 50; // Sumar 50 puntos por tocar un barco
-                            mostrarMensajePuntos("+50 puntos por atacar un servidor\n")
+                            mostrarMensajePuntos("+50 punts per atacar un servidor\n");
                             actualizarPuntos();
 
                             turnosAguaSeguidos = 0; // Reinicia el contador de turnos de agua
@@ -313,7 +314,8 @@ function changeDataCell(td) {
                             // Verificar si el barco ha sido hundido
                             if (barco.vida === 0) {
                                 barcosHundidos++; // Incrementar barcos hundidos
-                                mostrarMensaje(`¡Has hundido ${barco.tipo}!`);
+                                // mostrarMensaje(`Has enfonsat ${barco.tipo}!`);
+                                mostrarMensaje(`¡Tens el control de la xarxa amb ${barco.tamaño} servidors`);
                                 debeVaciarMensajes = true;
 
                                 // **Multiplicador si hundes sin fallar**
@@ -325,19 +327,21 @@ function changeDataCell(td) {
 
                                     // Aplicar el multiplicador correctamente
                                     puntos += puntosAntesMultiplicador * (multiplicador - 1); 
-                                    mostrarMensajePuntos("+" + (puntos- puntosAntesMultiplicador) + " por destruir una red")
+                                    mostrarMensajePuntos("+" + (puntos - puntosAntesMultiplicador) + " per destruir una xarxa");
                                     actualizarPuntos();
-                                    mostrarMensajePuntos(`¡Puntos multiplicados por ${multiplicador} al hundir ${barco.tipo}!`);
+                                    // mostrarMensajePuntos(`¡Punts multiplicats per ${multiplicador} en enfonsar ${barco.tipo}!`);
+                                    mostrarMensajePuntos(`¡Punts multiplicats per ${multiplicador} en enfonsar una xarxa de ${barco.tamaño} servidors!`);
+
                                 }
 
                                 // **Multiplicador especial para Fragata**
-                                if (barco.tipo === "Fragata") {
+                                if (barco.tamaño === "2") {
                                     if (turnosTotales <= 2) {
                                         puntos += 3000; // Bonus por hundir la Fragata en 2 turnos
                                         puntos *= 2; // Multiplicador adicional
                                         actualizarPuntos();
-                                        mostrarMensajePuntos("¡Bonus de puntos por hundir la Fragata en 2 turnos!");
-                                        mostrarMensajePuntos("+6000 por destruir la red más pequeña a la primera")
+                                        mostrarMensajePuntos("¡Bonus de punts per enfonsar una xarxa en 2 torns!");
+                                        mostrarMensajePuntos("+6000 per destruir la xarxa més petita a la primera");                                        
                                     }
                                 }
 
@@ -345,7 +349,7 @@ function changeDataCell(td) {
                                 hundidoSinFallar = true;
 
                                 if (todosBarcosDestruidos()) {
-                                    mostrarMensaje("¡Has ganado la partida!");
+                                    mostrarMensaje("Has guanyat la partida!");
                                     partidaActiva = false; // Desactivar la partida
                                     mostrarBotones();
                                     mostrarNombre();
@@ -364,7 +368,7 @@ function changeDataCell(td) {
 
 // Función que actualiza los puntos en el HTML
 function actualizarPuntos() {
-    document.querySelector('.points').textContent = `Puntos: ${puntos}`;
+    document.querySelector('.points').textContent = `Punts: ${puntos}`;
 }
 
 // Función para calcular la bonificación por tiempo
@@ -376,15 +380,15 @@ function calcularBonificacionPorTiempo() {
 
     if (totalSegundos <= 300) { // Si tardas menos de 5 minutos
         bonificacion = 1000;
-        mostrarMensajePuntos("+"+bonificacion+" puntos por hacerte con el control en menos de 5 minutos")
+        mostrarMensajePuntos("+" + bonificacion + " punts per fer-te amb el control en menys de 5 minuts");
 
     } else if (totalSegundos <= 600) { // Entre 5 y 10 minutos
         bonificacion = 500;
-        mostrarMensajePuntos("+"+bonificacion+" puntos por hacerte con el control entre 5 y 10 minutos")
+        mostrarMensajePuntos("+" + bonificacion + " punts per fer-te amb el control entre 5 i 10 minuts");
 
     } else {
         bonificacion = 100; // Más de 10 minutos
-        mostrarMensajePuntos("+"+bonificacion+" puntos por hacerte con el control en más de 10 minutos")
+        mostrarMensajePuntos("+" + bonificacion + " punts per fer-te amb el control en més de 10 minuts");
 
     }
 

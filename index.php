@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Ship Battle</title>
+    <title>Binary Battleship</title>
     <script src="funciones.js" defer></script>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
 </head>
 <body id="index">
     <header>
         <button id="audioControlButton">Mute</button>
-        <h1>Ship Battle</h1>
+        <h1>Binary Battleship</h1>
     </header>
 
     <div id="audioContainer"></div>
@@ -18,29 +19,30 @@
     <!-- Mensaje que aparece si JavaScript no está habilitado -->
     <noscript>
         <div class="js-warning">
-            Advertencia: JavaScript está deshabilitado en tu navegador. 
-            <br>Para jugar a este juego, necesitas habilitar JavaScript.<br>
-            <a href="https://www.enable-javascript.com/es/" target="_blank">Haz clic aquí para saber cómo habilitar JavaScript</a>
+            Advertència: JavaScript està deshabilitat al teu navegador. 
+            <br>Per jugar a aquest joc, necessites habilitar JavaScript.<br>
+            <a href="https://www.enable-javascript.com/es/" target="_blank">Fes clic aquí per saber com habilitar JavaScript</a>
         </div>
     </noscript>
 
+
     <main id="indexMain">
     <div id="indexButton">
-        <button id="classicGameBtn" class="indexGame keySound disabled" disabled>Classic Game</button>
+        <button id="classicGameBtn" class="indexGame keySound disabled" disabled>Partida Clàssica</button>
         <a href="ranking.php">
             <button class="indexHallOfFame keySound">Hall of Fame</button>
         </a>
     </div>
     <div id="indexText">
-        <p>Welcome, XXXXX</p>
-        <p>You have a mission. Your objective is to infiltrate highly protected 
-            servers and execute precise attacks without leaving a trace. Use your 
-            hacker skills to overcome firewalls, crack codes and evade advanced 
-            security systems.</p>
-        <p>Each compromised server brings us closer to our ultimate goal. Discretion 
-            and efficiency are key. The faster and more efficient you are, the more 
-            cryptocurrencies you will earn for this job. Are you ready to take the 
-            plunge?</p>
+    <p>Benvingut, XXXXX</p>
+    <p>Tens una missió. El teu objectiu és infiltrar-te en servidors altament protegits 
+        i executar atacs precisos sense deixar rastre. Utilitza les teves 
+        habilitats de hacker per superar tallafocs, desxifrar codis i evadir sistemes 
+        de seguretat avançats.</p>
+    <p>Cada servidor compromès ens acosta més al nostre objectiu final. La discreció 
+        i l'eficiència són clau. Com més ràpid i eficient siguis, més 
+        criptomonedes guanyaràs per aquest treball. Estàs llest per fer el salt?
+    </p>
     </div>
     </main>
 

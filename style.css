@@ -76,7 +76,7 @@
 
 h1{
     font-weight: normal;
-    margin: 2% 0;
+    margin: 3% 0;
     text-align: center;
     font-size: 55px;
 }
@@ -565,6 +565,7 @@ tr:hover .selecRanking::before {
 }
 
 #goBack{
+    margin-top: 0.5%;
     margin-left: 17%;
 }
 
