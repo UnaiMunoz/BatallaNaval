@@ -131,8 +131,8 @@ function mostrarMensajePuntos(mensaje) {
         mensajes.push(mensajeHTML);
         
         // Mantener solo los últimos 3 mensajes
-        if (mensajes.length > 5) {
-            mensajes = mensajes.slice(-5);
+        if (mensajes.length > 8) {
+            mensajes = mensajes.slice(-8);
         }
         
         // Unir los mensajes con <br> y actualizar el contenido
@@ -199,7 +199,7 @@ let puntosAntesDeHundir = 0;
 function applyEasterEgg() {
     // Variables para el Easter Egg (Tienes que pulsar la casilla C4)
     let clickCounterC4 = 0; // Contador de clics para "C4"
-    const originalTitle = "Hackeja-ho tot"; // Título original
+    const originalTitle = "Binary Battleship"; // Título original
 
     return function() {
         clickCounterC4++; // Incrementar el contador
@@ -329,13 +329,13 @@ function changeDataCell(td) {
                                     puntos += puntosAntesMultiplicador * (multiplicador - 1); 
                                     mostrarMensajePuntos("+" + (puntos - puntosAntesMultiplicador) + " per destruir una xarxa");
                                     actualizarPuntos();
-                                    // mostrarMensajePuntos(`¡Punts multiplicats per ${multiplicador} en enfonsar ${barco.tipo}!`);
-                                    mostrarMensajePuntos(`¡Punts multiplicats per ${multiplicador} en enfonsar una xarxa de ${barco.tamaño} servidors!`);
+                                    // mostrarMensajePuntos(`¡Punts multiplicats per ${multiplicador} en enfonsar de cop ${barco.tipo}!`);
+                                    mostrarMensajePuntos(`¡Punts multiplicats per ${multiplicador} en enfonsar de cop una xarxa de ${barco.tamaño} servidors!`);
 
                                 }
 
                                 // **Multiplicador especial para Fragata**
-                                if (barco.tamaño === "2") {
+                                if (barco.tamaño == "2") {
                                     if (turnosTotales <= 2) {
                                         puntos += 3000; // Bonus por hundir la Fragata en 2 turnos
                                         puntos *= 2; // Multiplicador adicional
@@ -449,7 +449,7 @@ function saveScore() {
         .then(data => {
             // console.log('Puntuación guardada:', data);
             // alert("Jugador guardado!");
-            mostrarMensaje("Felicidades " + playerData.name + "! Revisa el ranking para ver tu puesto");
+            mostrarMensaje("Felicitats " + playerData.name + "! Revisa el ranking per veure la teva posició.");
             ocultarNombre();
 
         })

@@ -32,7 +32,7 @@ Notas:
     </header>
 
     <button id="audioControlButton">Mute</button>
-    <a href="index.php" id="goBackButton"><button id="goBack" class="keySound">Go Home</button></a>
+    <a href="index.php" id="goBackButton"><button id="goBack" class="keySound">Inici</button></a>
 
 
     <!-- Mensaje que aparece si JavaScript no está habilitado -->
@@ -244,7 +244,7 @@ Notas:
              <p class="timer">00:00:00</p>
 
             <!-- Puntos -->
-             <p class="points">Puntos: 0</p>
+             <p class="points">Punts: 0</p>
 
             <!-- Notificación puntos -->
             <p class="points-info"></p>
