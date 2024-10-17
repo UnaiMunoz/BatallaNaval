@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ranking</title>
+    <title>Binary Battleship</title>
     <link rel="stylesheet" href="style.css">
     <script src="funciones.js"></script>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
 </head>
 
 <!-- 
@@ -22,7 +23,7 @@ El paginador se muestra si hay más de 25 registros.
 <body id="bodyRanking">
     <header>
     <button id="audioControlButton">Mute</button>
-        <h1>Ranking</h1>
+        <h1>Hall of Fame</h1>
     </header>
 
     <div id="audioContainer"></div>
@@ -83,7 +84,7 @@ El paginador se muestra si hay más de 25 registros.
 
             // Crear una tabla HTML
             echo "<table id='rankingTable'>";
-            echo "<tr><th>Position</th><th>Name</th><th>Points</th><th>Date</th></tr>";
+            echo "<tr><th>Posició</th><th>Nom</th><th>Punts</th><th>Data</th></tr>";
 
             // Mostrar los registros de la página actual
             $registroFinal = min($registroInicial + $registrosPorPagina, $totalRegistros);
@@ -139,7 +140,7 @@ El paginador se muestra si hay más de 25 registros.
                 echo "</div>";
             }
 
-            echo '<a href="index.php"><button id="goBackRanking" class="keySound">Go Home</button></a>';
+            echo '<a href="index.php"><button id="goBackRanking" class="keySound">Inici</button></a>';
             
         } else {
             echo "No se encuentra el archivo ranking.txt";
