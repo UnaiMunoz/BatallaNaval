@@ -11,7 +11,7 @@
   <h3 align="center">ShipBattle Game</h3>
 
   <p align="center">
-    Una adaptación cyberpunk del clásico juego ShipBattle con una trama de hacking.
+    Una adaptación del clásico juego ShipBattle con una trama hacking.
     <br>
     Conviértete en un hacker, destruye nodos y toma el control de la red de servidores.
   </p>
