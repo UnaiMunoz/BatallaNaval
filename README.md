@@ -40,7 +40,6 @@ Binary Battleship es un juego web desarrollado como parte del segundo curso de D
 ### Prerrequisitos
 
 - PHP >= 7.4
-- Servidor web (por ejemplo, Apache)
 - Navegador moderno con soporte para JavaScript
 
 ### Instalación
