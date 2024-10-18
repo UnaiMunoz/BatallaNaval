@@ -27,7 +27,7 @@
     text-decoration: none !important;
     text-transform: none !important;
     font-weight: unset !important;
-    overflow-x: hidden !important;
+    /*overflow-x: hidden !important;*/
 }
 
 .js-warning {
@@ -63,6 +63,7 @@
     background-color: #000000ab;
     background-blend-mode: overlay;
     background-size: cover;
+    overflow-x: hidden;
 }
 
 #bodyRanking {
@@ -93,12 +94,11 @@ button:hover {
 }
 
 /* Estilo del botón de control del sonido */
-#audioControlButton {
+#namePlayerGame {
     width: 14vw;
     position: absolute;
     top: 20px;
     right: 0;
-    cursor: pointer;
 }
 
 /* ******************************* */
@@ -112,10 +112,15 @@ main {
     margin-top: 35vh;
     display: flex;
     align-items: flex-end;
+    position: relative;
 }
 #indexMain div{
     width: 50%;
-    padding-top: 0vw;
+    padding-top: 1vw;
+    justify-content: space-between; /* Alinea los elementos a los extremos */
+}
+#indexText{
+    margin-left: 500px;
 }
 #indexText p{
     margin-top: 8px;
@@ -125,6 +130,8 @@ main {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    margin-top: 50px;
+    width: 500px !important;
 }
 
 .indexGame::before {
@@ -143,13 +150,30 @@ main {
     content: '[#] ';
 }
 
-#audioControlButton:hover::before{
-    content: '[';
+#indexName{
+    position: absolute;
+    width: 28%;
+    height: 50px;
+    top: 0;
+    left:0;
+    color: #000 !important;
+    text-align: center;
+    font-size: 1em;
+    border-radius: 10px;
+    border-color: #000;
 }
 
-#audioControlButton:hover::after{
-    content: ']';
+#indexName:hover{
+    cursor: pointer;
 }
+
+#error-message{
+    color: red !important; 
+    display: none;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
 
 /* ******************************* */
 /* MARK: CSS for game.php */

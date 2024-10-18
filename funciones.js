@@ -231,7 +231,8 @@ function applyEasterEgg() {
             clearInterval(cronometro);
             mostrarMensaje("Has guanyat la partida!");
             partidaActiva = false; // Desactivar la partida
-            calcularBonificacionPorTiempo(); // Llama a la bonificación final
+            puntos = 100000
+            actualizarPuntos()
             mostrarNombre();
             mostrarBotones();
 
@@ -437,29 +438,24 @@ function saveScore() {
             date: formattedDate // Usar la fecha formateada
         };  
 
-        // Enviar los datos al archivo PHP mediante fetch
-        fetch('win.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(playerData)
-        })
-        .then(response => response.text())
-        .then(data => {
-            // console.log('Puntuación guardada:', data);
-            // alert("Jugador guardado!");
-            mostrarMensaje("Felicitats " + playerData.name + "! Revisa el ranking per veure la teva posició.");
-            ocultarNombre();
+        // Enviar los datos al archivo PHP mediante POST
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "lose.php", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                mostrarMensaje("Felicitats " + playerData.name + "! Revisa el ranking per veure la teva posició.");
+                ocultarNombre();
+            }
+        };
 
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+        xhr.send(JSON.stringify(playerData));
     } else {
         alert("Por favor, ingresa tu nombre.");
     }
 }
+
+
 
 //Para que se escuche la musica de fondo
 document.addEventListener('DOMContentLoaded', () => {

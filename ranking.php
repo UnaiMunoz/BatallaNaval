@@ -22,7 +22,6 @@ El paginador se muestra si hay más de 25 registros.
 
 <body id="bodyRanking">
     <header>
-    <button id="audioControlButton">Mute</button>
         <h1>Hall of Fame</h1>
     </header>
 
