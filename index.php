@@ -26,23 +26,24 @@
 
 
     <main id="indexMain">
-    <div id="indexButton">
-        <button id="classicGameBtn" class="indexGame keySound disabled" disabled>Partida Clàssica</button>
-        <a href="ranking.php">
-            <button class="indexHallOfFame keySound">Hall of Fame</button>
-        </a>
-    </div>
-    <div id="indexText">
-    <p>Benvingut, XXXXX</p>
-    <p>Tens una missió. El teu objectiu és infiltrar-te en servidors altament protegits 
-        i executar atacs precisos sense deixar rastre. Utilitza les teves 
-        habilitats de hacker per superar tallafocs, desxifrar codis i evadir sistemes 
-        de seguretat avançats.</p>
-    <p>Cada servidor compromès ens acosta més al nostre objectiu final. La discreció 
-        i l'eficiència són clau. Com més ràpid i eficient siguis, més 
-        criptomonedes guanyaràs per aquest treball. Estàs llest per fer el salt?
-    </p>
-    </div>
+        <div id="indexButton">
+            <button id="classicGameBtn" class="indexGame keySound disabled" disabled>Partida Clàssica</button>
+            <button id="practiceGameBtn" class="indexGame keySound disabled" disabled>Entrenament</button>
+            <a href="ranking.php">
+                <button class="indexHallOfFame keySound">Hall of Fame</button>
+            </a>
+        </div>
+        <div id="indexText">
+            <p>Benvingut, XXXXX</p>
+            <p>Tens una missió. El teu objectiu és infiltrar-te en servidors altament protegits 
+                i executar atacs precisos sense deixar rastre. Utilitza les teves 
+                habilitats de hacker per superar tallafocs, desxifrar codis i evadir sistemes 
+                de seguretat avançats.</p>
+            <p>Cada servidor compromès ens acosta més al nostre objectiu final. La discreció 
+                i l'eficiència són clau. Com més ràpid i eficient siguis, més 
+                criptomonedes guanyaràs per aquest treball. Estàs llest per fer el salt?
+            </p>
+        </div>
     </main>
 
 
