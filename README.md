@@ -20,7 +20,7 @@ Become a hacker, destroy nodes, and take control of the server network.  </p>
 
 Binary Battleship is a web game developed as part of the second year of Web Application Development (DAW). It implements the classic Battleship game with a hacking plot, using PHP for the backend and JavaScript for the frontend.
 
-### Características principales
+### Features
 
 - **Terminal Theme**: Futuristic setting with hacking elements
 - **Ranking**: Compete to be the best hacker.
