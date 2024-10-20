@@ -5,17 +5,17 @@ document.addEventListener('DOMContentLoaded', function() {
     classicGameBtn.classList.remove('disabled'); // Elimina la clase disabled
     classicGameBtn.removeAttribute('disabled'); // Quita el atributo disabled
     classicGameBtn.onclick = function() {
-        window.location.href = 'game.php'; // Redirige al hacer clic
+        window.location.href = 'game.php?mode=classic'; // Redirige con el parámetro mode=classic
     };
 
-    // Elimina la clase disabled para el botón Entrenament
     var practiceGameBtn = document.getElementById('practiceGameBtn');
     practiceGameBtn.classList.remove('disabled'); // Elimina la clase disabled
     practiceGameBtn.removeAttribute('disabled'); // Quita el atributo disabled
     practiceGameBtn.onclick = function() {
-        window.location.href = 'game.php'; // Redirige a la página de entrenamiento
+        window.location.href = 'game.php?mode=practice'; // Redirige con el parámetro mode=practice
     };
 });
+
 
 
 
