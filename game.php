@@ -70,10 +70,7 @@ Notas:
                                     }
                                 }
                             }
-            
-                            // Pasar el tablero a JS
-                            $jsonTable = json_encode($tabla);
-            
+
                             // Clase Barco
                             class Barco {
                                 public $tipo;
@@ -202,7 +199,7 @@ Notas:
                             // Imprimir la matriz 
             
                             # Mostrar la tabla
-                            echo "<table id='gameTable'>";
+                            echo "<table class='gameTable'>";
                             for ($i = 0; $i < $numero + 1; $i++) {
                                 echo "<tr>";
                                 for ($j = 0; $j < $numero + 1; $j++) {
@@ -309,9 +306,6 @@ Notas:
                             }
                         }
         
-                        // Pasar el tablero a JS
-                        $jsonTable = json_encode($tabla);
-        
                         // Clase Barco
                         class Barco {
                             public $tipo;
@@ -331,7 +325,7 @@ Notas:
                         }
         
                         // Array de barcos [nombre, tamaño]
-                        $barcos = [
+                        $practicePlayerBoats = [
                             new Barco("Barca", 1),
                             new Barco("Barca", 1),
                             new Barco("Barca", 1),
@@ -376,7 +370,7 @@ Notas:
                         }
         
                         // Iterar por cada objeto barco
-                        foreach ($barcos as $barco) {
+                        foreach ($practicePlayerBoats as $barco) {
                             // echo "<br>Tipo de barco: {$barco->tipo}<br>";
         
                             $tamañoBarco = $barco->tamaño;
@@ -424,24 +418,22 @@ Notas:
         
                             // Guardar coordenadas en el objeto barco
                             $barco->establecerCoordenadas($coordenadas);
-        
+
                             // Formatear las coordenadas para el string
                             $coordenadasStr = implode(", ", array_map(function($coord) {
                                 return chr($coord[0] + 64) . $coord[1]; // Convierte las coordenadas en formato A1, B2, etc.
                             }, $coordenadas));
         
                             // Agregar al string de barcos
-                            $StringBarcos .= "[{$barco->tipo}] -> [{$coordenadasStr}]<br>";
-                            
-                            
-                            // echo "<br><br>";
+                            $StringBarcos .= "\n[{$barco->tipo}] -> [{$coordenadasStr}]";
+
                         }
         
                         // Imprimir la matriz 
         
                         # Mostrar tabla jugador
                         echo '<p>Tablero del jugador</p>';
-                        echo "<table id='gameTable'>";
+                        echo "<table id='practicePlayergameTable' class='gameTable'>";
                         for ($i = 0; $i < $numero + 1; $i++) {
                             echo "<tr>";
                             for ($j = 0; $j < $numero + 1; $j++) {
@@ -450,17 +442,17 @@ Notas:
                                 }
                                 else{
                                     if($tabla[$i][$j] == "F"){
-                                        echo "<td name='Fragata' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name='Fragata' class='codeName'>" . $tabla[$i][$j] . "</td>";
                                     } elseif($tabla[$i][$j] == "B"){
-                                        echo "<td name='Barca' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name='Barca' class='codeName'>" . $tabla[$i][$j] . "</td>";
                                     }elseif($tabla[$i][$j] == "S"){
-                                        echo "<td name='Submarino' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name='Submarino' class='codeName'>" . $tabla[$i][$j] . "</td>";
                                     }elseif($tabla[$i][$j] == "D"){
-                                        echo "<td name='Destructor' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name='Destructor' class='codeName'>" . $tabla[$i][$j] . "</td>";
                                     }elseif($tabla[$i][$j] == "P"){
-                                        echo "<td name='Portaaviones' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name='Portaaviones' class='codeName'>" . $tabla[$i][$j] . "</td>";
                                     }else{
-                                        echo "<td name=' ' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name=' ' class='codeName'>" . $tabla[$i][$j] . "</td>";
                                     }
                                     
                                 }
@@ -471,13 +463,13 @@ Notas:
 
                         
                         // Imprimir en la consola del navegador
-                        echo "<script>console.log('Player: ". json_encode($StringBarcos) . "');</script>";
+                        echo "<script>console.log('Player Board: ". json_encode($StringBarcos) . "');</script>";
         
+                        // Enviar barcos a JavaScript
                         echo    "<script>
-                                    var barcos = " . json_encode($barcos) . ";
+                                    var practicePlayerBoats = " . json_encode($practicePlayerBoats) . ";
+                                    var practicePlayerBoard = " . json_encode($tabla) . ";
                                 </script>";
-        
-                    
         
                 echo '</div>';
     
@@ -537,12 +529,9 @@ Notas:
                                 }
                             }
                         }
-        
-                        // Pasar el tablero a JS
-                        $jsonTable = json_encode($tabla);
-        
+
                         // Array de barcos [nombre, tamaño]
-                        $barcos = [
+                        $practiceEnemyBoats = [
                             new Barco("Barca", 1),
                             new Barco("Barca", 1),
                             new Barco("Barca", 1),
@@ -559,7 +548,7 @@ Notas:
                         $StringBarcos = "";
         
                         // Iterar por cada objeto barco
-                        foreach ($barcos as $barco) {
+                        foreach ($practiceEnemyBoats as $barco) {
                             // echo "<br>Tipo de barco: {$barco->tipo}<br>";
         
                             $tamañoBarco = $barco->tamaño;
@@ -614,7 +603,7 @@ Notas:
                             }, $coordenadas));
         
                             // Agregar al string de barcos
-                            $StringBarcos .= "[{$barco->tipo}] -> [{$coordenadasStr}]<br>";
+                            $StringBarcos .= "\n[{$barco->tipo}] -> [{$coordenadasStr}]";
                             
                             
                             // echo "<br><br>";
@@ -622,9 +611,9 @@ Notas:
         
                         // Imprimir la matriz 
         
-                        # Mostrar tabla jugador
+                        # Mostrar tabla IA
                         echo '<p>Tablero IA</p>';
-                        echo "<table id='gameTable'>";
+                        echo "<table id='practiceEnemygameTable' class='gameTable'>";
                         for ($i = 0; $i < $numero + 1; $i++) {
                             echo "<tr>";
                             for ($j = 0; $j < $numero + 1; $j++) {
@@ -633,17 +622,17 @@ Notas:
                                 }
                                 else{
                                     if($tabla[$i][$j] == "F"){
-                                        echo "<td name='Fragata' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name='Fragata' class='codeName attackSound' onclick='changeDataCell(this, \"IA\")'>" . $tabla[$i][$j] . "</td>";
                                     } elseif($tabla[$i][$j] == "B"){
-                                        echo "<td name='Barca' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name='Barca' class='codeName attackSound' onclick='changeDataCell(this, \"IA\")'>" . $tabla[$i][$j] . "</td>";
                                     }elseif($tabla[$i][$j] == "S"){
-                                        echo "<td name='Submarino' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name='Submarino' class='codeName attackSound' onclick='changeDataCell(this, \"IA\")'>" . $tabla[$i][$j] . "</td>";
                                     }elseif($tabla[$i][$j] == "D"){
-                                        echo "<td name='Destructor' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name='Destructor' class='codeName attackSound' onclick='changeDataCell(this, \"IA\")'>" . $tabla[$i][$j] . "</td>";
                                     }elseif($tabla[$i][$j] == "P"){
-                                        echo "<td name='Portaaviones' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name='Portaaviones' class='codeName attackSound' onclick='changeDataCell(this, \"IA\")'>" . $tabla[$i][$j] . "</td>";
                                     }else{
-                                        echo "<td name=' ' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name=' ' class='codeName attackSound' onclick='changeDataCell(this, \"IA\")'>" . $tabla[$i][$j] . "</td>";
                                     }
                                     
                                 }
@@ -654,22 +643,18 @@ Notas:
 
                         
                         // Imprimir en la consola del navegador
-                        echo "<script>console.log('Player: ". json_encode($StringBarcos) . "');</script>";
+                        echo "<script>console.log('IA Board: ". json_encode($StringBarcos) . "');</script>";
         
                         echo    "<script>
-                                    var barcos = " . json_encode($barcos) . ";
+                                    var barcos = " . json_encode($practiceEnemyBoats) . ";
+                                    var practiceEnemyBoard = " . json_encode($tabla) . ";
+
                                 </script>";
-        
-                    
-        
+
                 echo '</div>';
-            
-    
             echo '</div>';
-
-
-
             }
+
         } else {
             echo "No se ha seleccionado ningún modo de juego.";
         }

@@ -304,7 +304,7 @@ main {
 }
 
 /* Game Board */
-#gameTable {
+.gameTable {
     width: 32vw;
     height: 32vw;
     text-align: center;
@@ -313,24 +313,24 @@ main {
     margin-bottom: 1vw;
 }
 
-#gameTable td{
+.gameTable td{
     padding: 7px;
     text-align: center;
 }
 
-#gameTable tr{
+.gameTable tr{
     border: 2px dashed #ffffff;
 }
 
-#gameTable td:not(:last-of-type){
+.gameTable td:not(:last-of-type){
     border-right: 2px dashed #ffffff;
 }
 
-#gameTable td.codeName:hover{
+.gameTable td.codeName:hover{
     cursor: crosshair;
 }
 
-#gameTable td:hover{
+.gameTable td:hover{
     cursor: default;
 }
 

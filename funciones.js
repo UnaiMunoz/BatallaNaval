@@ -1,3 +1,6 @@
+/* ******************************* */
+/* JavaScript habilitado           */
+/* ******************************* */
 
 // Script para habilitar el botón Classic Game si JavaScript está habilitado
 document.addEventListener('DOMContentLoaded', function() {
@@ -19,53 +22,96 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
-// Booleando para comprobar si la partida ha terminado
-let partidaActiva = true;
-
 /* ******************************* */
 /* Mostrar celdas encriptadas      */
 /* ******************************* */
 
-// // Función que genera un número random
-// function getRandomNumber(min, max) {
-//     return Math.floor(Math.random() * (max - min + 1) + min);
-// }
+// Función que genera un número random
+function getRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
 
-// // Crea los nombres aleatorios de los td
-// function getRandomCodeNumber(element) {
-//     // Genera una letra random
-//     let character = String.fromCharCode(getRandomNumber(65, 90));
-//     // Genera un número random
-//     let number = String(getRandomNumber(0, 9));
-//     // Une la letra y el número
-//     let nameCode = character + number;
+// Crea los nombres aleatorios de los td
+function getRandomCodeNumber(element) {
+    // Genera una letra random
+    let character = String.fromCharCode(getRandomNumber(65, 90));
+    // Genera un número random
+    let number = String(getRandomNumber(0, 9));
+    // Une la letra y el número
+    let nameCode = character + number;
 
-//     // Mostrar el resultado en el elemento correspondiente
-//     element.innerText = nameCode;
-// }
+    // Mostrar el resultado en el elemento correspondiente
+    element.innerText = nameCode;
+}
 
 // Asegura que el DOM esté cargado antes de ejecutar el script
-document.addEventListener("DOMContentLoaded", function() {
-    // Seleccionar todos los elementos td con la clase "codeName"
-    const nameElements = document.querySelectorAll("td.codeName");
+// document.addEventListener("DOMContentLoaded", function() {
+//     // Seleccionar todos los elementos td con la clase "codeName"
+//     const nameElements = document.querySelectorAll("td.codeName");
 
-    // Establecer un intervalo para actualizar solo los elementos que no tienen "codeName"
-    setInterval(() => {
-        if (partidaActiva) { // Solo actualizar si la partida está activa
-            nameElements.forEach(element => {
-                if (element.classList.contains("codeName")) {
-                    getRandomCodeNumber(element);
-                }
-            });
-        }
-    }, 100);
-});
+//     // Establecer un intervalo para actualizar solo los elementos que no tienen "codeName"
+//     setInterval(() => {
+//         if (partidaActiva) { // Solo actualizar si la partida está activa
+//             nameElements.forEach(element => {
+//                 if (element.classList.contains("codeName")) {
+//                     getRandomCodeNumber(element);
+//                 }
+//             });
+//         }
+//     }, 100);
+// });
 
 /* ****************** */
-/* Destruir barcos    */
+/* Timer              */
 /* ****************** */
 
+// Funciones Timer
+
+let segundos = 0;
+let minutos = 0;
+let horas = 0;
+let cronometro;
+
+function iniciarCronometro() {
+    cronometro = setInterval(actualizarCronometro, 1000); // Se ejecuta cada 1 segundo
+}
+
+function actualizarCronometro() {
+    segundos++;
+
+    if (segundos >= 60) {
+        segundos = 0;
+        minutos++;
+    }
+
+    if (minutos >= 60) {
+        minutos = 0;
+        horas++;
+    }
+
+    // Mostrar el tiempo en el formato HH:MM:SS
+    document.querySelector('.timer').textContent = (horas < 10 ? "0" + horas : horas) + ":" +
+        (minutos < 10 ? "0" + minutos : minutos) + ":" +
+        (segundos < 10 ? "0" + segundos : segundos);
+}
+
+// Iniciar el cronómetro cuando se carga la página
+window.onload = iniciarCronometro;
+
+
+// Funciones actualización puntos
+
+// Variables para manejar los puntos
+let puntos = 0;
+let turnosAguaSeguidos = 0; 
+let barcosHundidos = 0; 
+let turnosTotales = 0; 
+let hundidoSinFallar = true; 
+let puntosAntesDeHundir = 0; 
+
+/* ****************** */
+/* Funciones          */
+/* ****************** */
 
 // Función para mostrar los botones
 function mostrarBotones() {
@@ -94,19 +140,6 @@ function ocultarNombre() {
         input.style.display = 'none'; // Ocultar el input
         button.style.display = 'none'; // Ocultar el botón
     }
-}
-
-
-// Función para comprobar si todos los barcos han sido destruidos
-function todosBarcosDestruidos() {
-    for (let barco of barcos) {
-        if (barco.vida > 0) {
-            // Si algún barco tiene vida restante, la partida no ha terminado
-            return false;
-        }
-    }
-    // Si todos los barcos tienen vida 0, la partida está ganada
-    return true;
 }
 
 // Función para mostrar los mensajes en el <div> con clase "info"
@@ -161,50 +194,6 @@ function vaciarMensajePuntos() {
     }
 }
 
-// Funciones Timer
-
-let segundos = 0;
-let minutos = 0;
-let horas = 0;
-let cronometro;
-
-function iniciarCronometro() {
-    cronometro = setInterval(actualizarCronometro, 1000); // Se ejecuta cada 1 segundo
-}
-
-function actualizarCronometro() {
-    segundos++;
-
-    if (segundos >= 60) {
-        segundos = 0;
-        minutos++;
-    }
-
-    if (minutos >= 60) {
-        minutos = 0;
-        horas++;
-    }
-
-    // Mostrar el tiempo en el formato HH:MM:SS
-    document.querySelector('.timer').textContent = (horas < 10 ? "0" + horas : horas) + ":" +
-        (minutos < 10 ? "0" + minutos : minutos) + ":" +
-        (segundos < 10 ? "0" + segundos : segundos);
-}
-
-// Iniciar el cronómetro cuando se carga la página
-window.onload = iniciarCronometro;
-
-
-// Funciones actualización puntos
-
-// Variables para manejar los puntos
-let puntos = 0;
-let turnosAguaSeguidos = 0; 
-let barcosHundidos = 0; 
-let turnosTotales = 0; 
-let hundidoSinFallar = true; 
-let puntosAntesDeHundir = 0; 
-
 function applyEasterEgg() {
     // Variables para el Easter Egg (Tienes que pulsar la casilla C4)
     let clickCounterC4 = 0; // Contador de clics para "C4"
@@ -249,14 +238,139 @@ function applyEasterEgg() {
     };
 }
 
-
-
 // Crear una instancia de la función de Easter Egg
 const activateEasterEgg = applyEasterEgg();
 
+
+// Función que actualiza los puntos en el HTML
+function actualizarPuntos() {
+    document.querySelector('.points').textContent = `Punts: ${puntos}`;
+}
+
+// Función para calcular la bonificación por tiempo
+function calcularBonificacionPorTiempo() {
+    clearInterval(cronometro); // Detener el cronómetro
+
+    let totalSegundos = horas * 3600 + minutos * 60 + segundos;
+    let bonificacion;
+
+    if (totalSegundos <= 300) { // Si tardas menos de 5 minutos
+        bonificacion = 1000;
+        mostrarMensajePuntos("+" + bonificacion + " punts per fer-te amb el control en menys de 5 minuts");
+
+    } else if (totalSegundos <= 600) { // Entre 5 y 10 minutos
+        bonificacion = 500;
+        mostrarMensajePuntos("+" + bonificacion + " punts per fer-te amb el control entre 5 i 10 minuts");
+
+    } else {
+        bonificacion = 100; // Más de 10 minutos
+        mostrarMensajePuntos("+" + bonificacion + " punts per fer-te amb el control en més de 10 minuts");
+
+    }
+
+    puntos += bonificacion;
+    // mostrarMensajePuntos(`¡Bonificación de ${bonificacion} puntos por el tiempo!`);
+    actualizarPuntos();
+}
+
+// Booleandos
+let partidaActiva = true;
 let debeVaciarMensajes = false;
 
-function changeDataCell(td) {
+/* ******************************** */
+/* PRACTICE GAME --> Turno de la IA */
+/* ******************************** */
+
+// Variables para Practice Tool
+// practicePlayerBoats 
+// practicePlayerBoard
+// practiceEnemyBoats 
+// practiceEnemyBoard
+
+let playerTurn = true;
+const attackedPositions = [];
+
+// Turno de la IA
+function turnoIA() {
+    if (partidaActiva && !playerTurn) {
+        let row, col;
+        let hit = false; // Variable para determinar si se ha dado en un barco
+
+        do {
+            // Genera coordenadas aleatorias entre 1 y 10 (para que ignore la primera fila y columna)
+            row = Math.floor(Math.random() * 10) + 1; // Genera 1 a 10
+            col = Math.floor(Math.random() * 10) + 1; // Genera 1 a 10
+        } while (attackedPositions.some(pos => pos.row === row && pos.col === col)); // Verifica si la posición ya ha sido atacada
+
+        // Lógica para atacar al jugador
+        const td = document.querySelector(`tr:nth-child(${row + 1}) td:nth-child(${col + 1})`); // Asumiendo que los <td> están en un <tr>
+
+        if (td) {
+            let name = td.getAttribute('name'); // Obtener el nombre de la celda
+
+            // Almacenar posición atacada
+            attackedPositions.push({ row: row, col: col }); // Guardar la posición en attackedPositions
+
+            if (name === " ") {
+                // Casilla vacía (agua)
+                td.innerHTML = "~"; 
+                td.style.backgroundColor = "blue"; // Cambia el color a azul para indicar un fallo
+                mostrarMensaje("La IA ha fallado, turno de Player");
+                setTimeout(() => mostrarMensaje(`La casilla pulsada ha sido ${String.fromCharCode(row + 64)}${col}`), 2000); // Se ajusta para mostrar la referencia correcta
+
+            } else {
+                // Impacto en un barco
+                for (let barco of barcos) {
+                    if (barco.tipo === name) {
+                        barco.vida -= 1; 
+                        td.innerHTML = "X"; 
+                        td.style.backgroundColor = "red"; // Cambia el color a rojo para indicar un impacto
+                        mostrarMensaje(`¡La IA ha tocado una xarxa de ${barco.tamaño}!`);
+
+                        // Verificar si el barco ha sido hundido
+                        if (barco.vida === 0) {
+                            mostrarMensaje(`¡La IA ha hundido una xarxa amb ${barco.tamaño} servidors!`);
+                        }
+                        setTimeout(() => mostrarMensaje(`La casilla pulsada ha sido ${String.fromCharCode(row + 64)}${col}`), 2000); // Se ajusta para mostrar la referencia correcta
+
+                        hit = true; // Se ha dado en un barco
+                        break; // Salir del ciclo al encontrar el barco
+                    }
+                }
+            }
+        }
+
+        // Si ha impactado en un barco, no cambia el turno al jugador
+        if (!hit) {
+            // Cambia el turno al jugador solo si no ha impactado
+            playerTurn = true;
+        } else {
+            // Si ha impactado, se puede continuar el turno de la IA
+            setTimeout(turnoIA, 1000); // Llama a la función de IA nuevamente después de un breve retraso
+        }
+    }
+}
+
+
+
+/* ********************************** */
+/* CLASSIC GAME -> Destruir barcos    */
+/* ********************************** */
+
+// Función para comprobar si todos los barcos han sido destruidos
+function todosBarcosDestruidos() {
+    for (let barco of barcos) {
+        if (barco.vida > 0) {
+            // Si algún barco tiene vida restante, la partida no ha terminado
+            return false;
+        }
+    }
+    // Si todos los barcos tienen vida 0, la partida está ganada
+    return true;
+}
+
+
+function changeDataCell(td, gameMode = 'IA') {
     if (!partidaActiva) return; // Si la partida no está activa, no hacer nada
 
     if (debeVaciarMensajes) {
@@ -268,11 +382,11 @@ function changeDataCell(td) {
     let name = td.getAttribute('name'); 
 
     // Verificar si es la casilla "C4"
-    let row = td.parentElement.rowIndex; // Obtener índice de fila
-    let col = td.cellIndex; // Obtener índice de columna
+    let row = td.parentElement.rowIndex; 
+    let col = td.cellIndex; 
 
-    if (row === 3 && col === 4) { // C4 corresponde a la fila 3 y columna 4
-        activateEasterEgg(); // Llamar a la función para manejar el título
+    if (row === 3 && col === 4) { 
+        activateEasterEgg(); 
     }
 
     // Comprobar si el clic corresponde a una casilla con un barco
@@ -298,7 +412,15 @@ function changeDataCell(td) {
             }
 
             // Rompe la cadena de hundir sin fallar
-            hundidoSinFallar = false; 
+            hundidoSinFallar = false;
+            
+            // Cambia el turno a la IA
+            if (gameMode === 'IA') {
+                playerTurn = false;
+                mostrarMensaje("Turno de la IA");
+                setTimeout(turnoIA, 1000); // Llama a la función de IA después de un breve retraso
+            }
+        
         } else {
             // Impacto en un barco7
             hundidoSinFallar = true; 
@@ -371,44 +493,21 @@ function changeDataCell(td) {
                 }
             }
         }
+
+        // Cambiar turno si no se ha hundido un barco + gameMode = Practice
+        if (gameMode === 'IA' && turnoJugador) {
+            turnoJugador = false; // Cambia el turno a la IA
+            setTimeout(turnoIA, 1000); // Llama a la función de IA después de un breve retraso
+        }
     }
 }
 
 
-// Función que actualiza los puntos en el HTML
-function actualizarPuntos() {
-    document.querySelector('.points').textContent = `Punts: ${puntos}`;
-}
-
-// Función para calcular la bonificación por tiempo
-function calcularBonificacionPorTiempo() {
-    clearInterval(cronometro); // Detener el cronómetro
-
-    let totalSegundos = horas * 3600 + minutos * 60 + segundos;
-    let bonificacion;
-
-    if (totalSegundos <= 300) { // Si tardas menos de 5 minutos
-        bonificacion = 1000;
-        mostrarMensajePuntos("+" + bonificacion + " punts per fer-te amb el control en menys de 5 minuts");
-
-    } else if (totalSegundos <= 600) { // Entre 5 y 10 minutos
-        bonificacion = 500;
-        mostrarMensajePuntos("+" + bonificacion + " punts per fer-te amb el control entre 5 i 10 minuts");
-
-    } else {
-        bonificacion = 100; // Más de 10 minutos
-        mostrarMensajePuntos("+" + bonificacion + " punts per fer-te amb el control en més de 10 minuts");
-
-    }
-
-    puntos += bonificacion;
-    // mostrarMensajePuntos(`¡Bonificación de ${bonificacion} puntos por el tiempo!`);
-    actualizarPuntos();
-}
-
+/* ********************************** */
+/* Ganar Partida -> Guardar nombre    */
+/* ********************************** */
 
 // Guardar Nombre, Puntos y Fecha en ranking.txt
-
 function saveScore() {
     var playerName = document.getElementById("name").value;
     var points = document.querySelector(".points").textContent.split(": ")[1];  // Obtener puntos
@@ -469,6 +568,10 @@ function saveScore() {
         alert("Por favor, ingresa tu nombre.");
     }
 }
+
+/* ********* */
+/* Sonidos   */
+/* ********* */
 
 //Para que se escuche la musica de fondo
 document.addEventListener('DOMContentLoaded', () => {
@@ -555,6 +658,11 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
+
+
+/* **************** */
+/* Notificaciones   */
+/* **************** */
 
 // Notificaciones CSS
 function showNotification(message, type) {
