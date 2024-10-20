@@ -7,7 +7,16 @@ document.addEventListener('DOMContentLoaded', function() {
     classicGameBtn.onclick = function() {
         window.location.href = 'game.php'; // Redirige al hacer clic
     };
+
+    // Elimina la clase disabled para el botón Entrenament
+    var practiceGameBtn = document.getElementById('practiceGameBtn');
+    practiceGameBtn.classList.remove('disabled'); // Elimina la clase disabled
+    practiceGameBtn.removeAttribute('disabled'); // Quita el atributo disabled
+    practiceGameBtn.onclick = function() {
+        window.location.href = 'game.php'; // Redirige a la página de entrenamiento
+    };
 });
+
 
 
 
@@ -18,23 +27,23 @@ let partidaActiva = true;
 /* Mostrar celdas encriptadas      */
 /* ******************************* */
 
-// Función que genera un número random
-function getRandomNumber(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-}
+// // Función que genera un número random
+// function getRandomNumber(min, max) {
+//     return Math.floor(Math.random() * (max - min + 1) + min);
+// }
 
-// Crea los nombres aleatorios de los td
-function getRandomCodeNumber(element) {
-    // Genera una letra random
-    let character = String.fromCharCode(getRandomNumber(65, 90));
-    // Genera un número random
-    let number = String(getRandomNumber(0, 9));
-    // Une la letra y el número
-    let nameCode = character + number;
+// // Crea los nombres aleatorios de los td
+// function getRandomCodeNumber(element) {
+//     // Genera una letra random
+//     let character = String.fromCharCode(getRandomNumber(65, 90));
+//     // Genera un número random
+//     let number = String(getRandomNumber(0, 9));
+//     // Une la letra y el número
+//     let nameCode = character + number;
 
-    // Mostrar el resultado en el elemento correspondiente
-    element.innerText = nameCode;
-}
+//     // Mostrar el resultado en el elemento correspondiente
+//     element.innerText = nameCode;
+// }
 
 // Asegura que el DOM esté cargado antes de ejecutar el script
 document.addEventListener("DOMContentLoaded", function() {

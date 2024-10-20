@@ -23,8 +23,6 @@ Notas:
 - Los barcos son: Fragata (2), Submarino (3), Destructor (4) y Portaaviones (5).
 -->
 
-    <div id="audioContainer"></div>
-
     <header>
         <div class="contentEasterEgg">
             <h1 class="text" id="gameTitle">Binary Battleship</h1>
@@ -91,10 +89,16 @@ Notas:
 
                 // Array de barcos [nombre, tamaño]
                 $barcos = [
+                    new Barco("Barca", 1),
+                    new Barco("Barca", 1),
+                    new Barco("Barca", 1),
+                    new Barco("Barca", 1),
+                    new Barco("Fragata", 2),
+                    new Barco("Fragata", 2),
                     new Barco("Fragata", 2),
                     new Barco("Submarino", 3),
+                    new Barco("Submarino", 3),
                     new Barco("Destructor", 4),
-                    new Barco("Portaaviones", 5)
                 ];
 
                 // String para saber las coordenadas de cada barcos
@@ -203,7 +207,9 @@ Notas:
                         else{
                             if($tabla[$i][$j] == "F"){
                                 echo "<td name='Fragata' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
-                            } elseif($tabla[$i][$j] == "S"){
+                            } elseif($tabla[$i][$j] == "B"){
+                                echo "<td name='Barca' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                            }elseif($tabla[$i][$j] == "S"){
                                 echo "<td name='Submarino' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
                             }elseif($tabla[$i][$j] == "D"){
                                 echo "<td name='Destructor' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
