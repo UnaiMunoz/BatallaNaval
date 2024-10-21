@@ -23,7 +23,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Courier New', Courier, monospace !important;
-    color: #ffffff !important;
+    /* color: #ffffff !important; */
     text-decoration: none !important;
     text-transform: none !important;
     font-weight: unset !important;
@@ -76,6 +76,11 @@ h1{
     margin: 3% 0;
     text-align: center;
     font-size: 55px;
+    color: #ffffff;
+}
+
+p {
+    color: #ffffff;
 }
 
 /* Botones */
@@ -86,6 +91,7 @@ button {
     background-color: unset;
     border: none;
     cursor: pointer;
+    color: #ffffff;
 }
 
 button:hover {
@@ -297,6 +303,7 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    color: #ffffff;
 }
 
 .info {
@@ -375,6 +382,7 @@ main {
     font-size: 1.5vw;
     margin-top: 1vw;
     margin-bottom: 2vw;
+    color: #ffffff;
 }
 
 /* Contenedor para input y botón */
@@ -467,6 +475,7 @@ input[type="text"]:focus {
     border-spacing: 0 15px;
     width: 100%;
     font-size: 1.2em;
+    color: #ffffff;
 }
 
 #rankingTable tr{
@@ -520,7 +529,8 @@ tr:hover .selecRanking::before {
 
 #paginador a {
     text-decoration: none;
-    padding: 5px 10px; 
+    padding: 5px 10px;
+    color: #ffffff;
 }
 
 #paginador a:hover {

@@ -208,17 +208,17 @@ Notas:
                                     }
                                     else{
                                         if($tabla[$i][$j] == "F"){
-                                            echo "<td name='Fragata' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                                            echo "<td name='Fragata' class='codeName attackSound' onclick='changeDataCell(this, \"classic\")'>" . $tabla[$i][$j] . "</td>";
                                         } elseif($tabla[$i][$j] == "B"){
-                                            echo "<td name='Barca' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                                            echo "<td name='Barca' class='codeName attackSound' onclick='changeDataCell(this, \"classic\")'>" . $tabla[$i][$j] . "</td>";
                                         }elseif($tabla[$i][$j] == "S"){
-                                            echo "<td name='Submarino' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                                            echo "<td name='Submarino' class='codeName attackSound' onclick='changeDataCell(this, \"classic\")'>" . $tabla[$i][$j] . "</td>";
                                         }elseif($tabla[$i][$j] == "D"){
-                                            echo "<td name='Destructor' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                                            echo "<td name='Destructor' class='codeName attackSound' onclick='changeDataCell(this, \"classic\")'>" . $tabla[$i][$j] . "</td>";
                                         }elseif($tabla[$i][$j] == "P"){
-                                            echo "<td name='Portaaviones' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                                            echo "<td name='Portaaviones' class='codeName attackSound' onclick='changeDataCell(this, \"classic\")'>" . $tabla[$i][$j] . "</td>";
                                         }else{
-                                            echo "<td name=' ' class='codeName attackSound' onclick='changeDataCell(this)'>" . $tabla[$i][$j] . "</td>";
+                                            echo "<td name=' ' class='codeName attackSound' onclick='changeDataCell(this, \"classic\")'>" . $tabla[$i][$j] . "</td>";
                                         }
                                         
                                     }
@@ -280,6 +280,14 @@ Notas:
 
                 
             } elseif ($mode == 'practice') {
+
+                echo "<script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                        mostrarMensaje('Turno de Player'); // Muestra el mensaje al cargar la página en modo practice
+                        setTimeout(turnoIA, 1000); // Llama a la IA automáticamente después de un breve retraso
+                        });
+                    </script>";
+
                 // Cargar contenido específico para el modo de práctica
                 echo '<div id="game_Container">';
                 echo '<div id="practicePlayerBoard" class="section board">';

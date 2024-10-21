@@ -27,8 +27,8 @@
 
     <main id="indexMain">
         <div id="indexButton">
-            <button id="classicGameBtn" class="indexGame keySound disabled" disabled>Partida Clàssica</button>
-            <button id="practiceGameBtn" class="indexGame keySound disabled" disabled>Entrenament</button>
+            <button id="classicGameBtn" class="indexGame keySound disabled" disabled>Tutorial</button>
+                <button id="practiceGameBtn" class="indexGame keySound disabled" disabled>Entrenament</button>
             <a href="ranking.php">
                 <button class="indexHallOfFame keySound">Hall of Fame</button>
             </a>

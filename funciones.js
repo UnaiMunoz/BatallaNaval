@@ -143,17 +143,19 @@ function ocultarNombre() {
 }
 
 // Función para mostrar los mensajes en el <div> con clase "info"
-function mostrarMensaje(mensaje) {
+function mostrarMensaje(mensaje, color = 'white') {
     const notificationP = document.querySelector('.info .notification'); // Seleccionar el <p> con la clase 'notification'
     
     if (notificationP) {
-        // Si la etiqueta <p> con clase 'notification' existe, actualizar su contenido
+        // Si la etiqueta <p> con clase 'notification' existe, actualizar su contenido y color
         notificationP.textContent = mensaje;
+        notificationP.style.color = color; // Cambiar el color del texto
     } else {
         // Si no existe, crearla (aunque debería existir por el HTML inicial)
         const mensajeP = document.createElement('p');
         mensajeP.classList.add('notification');
         mensajeP.textContent = mensaje;
+        mensajeP.style.color = color; // Asignar el color inicial del texto
         document.querySelector('.info').appendChild(mensajeP); // Añadir al contenedor de info
     }
 }
@@ -295,6 +297,7 @@ function turnoIA() {
     if (partidaActiva && !playerTurn) {
         let row, col;
         let hit = false; // Variable para determinar si se ha dado en un barco
+        let barcoHundido = false; // Variable para verificar si un barco ha sido hundido
 
         do {
             // Genera coordenadas aleatorias entre 1 y 10 (para que ignore la primera fila y columna)
@@ -311,45 +314,64 @@ function turnoIA() {
             // Almacenar posición atacada
             attackedPositions.push({ row: row, col: col }); // Guardar la posición en attackedPositions
 
-            if (name === " ") {
-                // Casilla vacía (agua)
-                td.innerHTML = "~"; 
-                td.style.backgroundColor = "blue"; // Cambia el color a azul para indicar un fallo
-                mostrarMensaje("La IA ha fallado, turno de Player");
-                setTimeout(() => mostrarMensaje(`La casilla pulsada ha sido ${String.fromCharCode(row + 64)}${col}`), 2000); // Se ajusta para mostrar la referencia correcta
+            // Mostrar primero el mensaje de "esperando tirada"
+            mostrarMensaje("Turno de IA, esperando tirada...", "yellow");
 
-            } else {
-                // Impacto en un barco
-                for (let barco of barcos) {
-                    if (barco.tipo === name) {
-                        barco.vida -= 1; 
-                        td.innerHTML = "X"; 
-                        td.style.backgroundColor = "red"; // Cambia el color a rojo para indicar un impacto
-                        mostrarMensaje(`¡La IA ha tocado una xarxa de ${barco.tamaño}!`);
+            // Esperar 2 segundos antes de mostrar el resultado del ataque de la IA
+            setTimeout(() => {
+                let hit = false; // Variable para saber si la IA ha impactado
 
-                        // Verificar si el barco ha sido hundido
-                        if (barco.vida === 0) {
-                            mostrarMensaje(`¡La IA ha hundido una xarxa amb ${barco.tamaño} servidors!`);
+                if (name === " ") {
+                    // Casilla vacía (agua)
+                    td.innerHTML = "~"; 
+                    td.style.backgroundColor = "blue"; // Cambia el color a azul para indicar un fallo
+                    mostrarMensaje("La IA ha fallado", "yellow");
+
+                    // Después de 2 segundos, mostrar "Turno de Player"
+                    setTimeout(() => {
+                        mostrarMensaje("Turno de Player", "white");
+                        playerTurn = true; // Cambia el turno al jugador
+                    }, 2000); // Espera de 2 segundos antes de mostrar el turno del jugador
+
+                } else {
+                    // Impacto en un barco
+                    for (let barco of barcos) {
+                        if (barco.tipo === name) {
+                            barco.vida -= 1; 
+                            td.innerHTML = "X"; 
+                            td.style.backgroundColor = "red"; // Cambia el color a rojo para indicar un impacto
+                            mostrarMensaje(`¡La IA ha tocado una xarxa de ${barco.tamaño}!`, "yellow");
+
+                            // Verificar si el barco ha sido hundido
+                            if (barco.vida === 0) {
+                                barcoHundido = true;
+                                mostrarMensaje(`¡La IA ha hundido una xarxa amb ${barco.tamaño} servidors!`, "red");
+                            }
+
+                            hit = true; // Se ha dado en un barco
+                            break; // Salir del ciclo al encontrar el barco
                         }
-                        setTimeout(() => mostrarMensaje(`La casilla pulsada ha sido ${String.fromCharCode(row + 64)}${col}`), 2000); // Se ajusta para mostrar la referencia correcta
+                    }
 
-                        hit = true; // Se ha dado en un barco
-                        break; // Salir del ciclo al encontrar el barco
+                    // Si ha impactado, y hundió un barco, esperar antes de continuar
+                    if (hit) {
+                        if (barcoHundido) {
+                            // Espera 2 segundos para mostrar el mensaje de "ha hundido una xarxa"
+                            setTimeout(() => {
+                                setTimeout(turnoIA, 1000); // La IA vuelve a atacar después de 1 segundo
+                            }, 2000); // Espera adicional para hundimiento
+                        } else {
+                            // Si solo ha golpeado, pero no hundió, continuar normalmente
+                            setTimeout(turnoIA, 1000); // La IA vuelve a atacar después de 1 segundo
+                        }
                     }
                 }
-            }
-        }
 
-        // Si ha impactado en un barco, no cambia el turno al jugador
-        if (!hit) {
-            // Cambia el turno al jugador solo si no ha impactado
-            playerTurn = true;
-        } else {
-            // Si ha impactado, se puede continuar el turno de la IA
-            setTimeout(turnoIA, 1000); // Llama a la función de IA nuevamente después de un breve retraso
-        }
+            }, 2000); // Espera de 2 segundos antes de mostrar el resultado del ataque de la IA
+        }      
     }
 }
+
 
 
 
@@ -417,12 +439,11 @@ function changeDataCell(td, gameMode = 'IA') {
             // Cambia el turno a la IA
             if (gameMode === 'IA') {
                 playerTurn = false;
-                mostrarMensaje("Turno de la IA");
-                setTimeout(turnoIA, 1000); // Llama a la función de IA después de un breve retraso
+                setTimeout(turnoIA, 2000); // Llama a la función de IA después de un breve retraso
             }
         
         } else {
-            // Impacto en un barco7
+            // Impacto en un barco
             hundidoSinFallar = true; 
             for (let barco of barcos) {
                 if (barco.tipo === name) {
@@ -492,12 +513,6 @@ function changeDataCell(td, gameMode = 'IA') {
                     }
                 }
             }
-        }
-
-        // Cambiar turno si no se ha hundido un barco + gameMode = Practice
-        if (gameMode === 'IA' && turnoJugador) {
-            turnoJugador = false; // Cambia el turno a la IA
-            setTimeout(turnoIA, 1000); // Llama a la función de IA después de un breve retraso
         }
     }
 }
