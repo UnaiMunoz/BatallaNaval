@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <title>Binary Battleship</title>
     <script src="funciones.js" defer></script>
-    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
 </head>
 <body id="index">
     <header>
@@ -19,7 +19,7 @@
     <noscript>
         <div class="js-warning">
             Advertència: JavaScript està deshabilitat al teu navegador. 
-            <br>Per jugar a aquest joc, necessites habilitar JavaScript.<br>
+            <br>Per jugar a aquest joc necessites habilitar JavaScript.<br>
             <a href="https://www.enable-javascript.com/es/" target="_blank">Fes clic aquí per saber com habilitar JavaScript</a>
         </div>
     </noscript>

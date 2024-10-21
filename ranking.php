@@ -6,7 +6,7 @@
     <title>Binary Battleship</title>
     <link rel="stylesheet" href="style.css">
     <script src="funciones.js"></script>
-    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
 </head>
 
 <!-- 
