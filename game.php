@@ -291,7 +291,7 @@ Notas:
                         // Escribir nombre                
                         echo '<div class="input-group">';
                             echo '<div id="divNameGame">';
-                            echo "<input type='text' id='name' placeholder='Escriu el teu nom' required class='hidden' maxlength='20' value='$playerName'>";
+                            echo "<input type='text' id='name' placeholder='Escriu el teu nom' required class='hidden' maxlength='30' value='$playerName'>";
                             echo '</div>';
                             echo '<button id="buttonName" class="keySound" onclick="saveScore()">Envia</button>';
                         echo '</div>';
@@ -530,7 +530,7 @@ Notas:
                     // Escribir nombre
                     echo '<div class="input-group">';
                         echo '<div id="divNameGame">';
-                            echo "<input type='text' id='name' placeholder='Escriu el teu nom' required class='hidden' maxlength='20' value='$playerName;'>";
+                            echo "<input type='text' id='name' placeholder='Escriu el teu nom' required class='hidden' maxlength='30' value='$playerName;'>";
                         echo '</div>';
                         echo '<button id="buttonName" class="keySound" onclick="saveScore()">Envia</button>';
                     echo '</div>';
