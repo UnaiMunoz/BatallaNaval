@@ -38,14 +38,14 @@ Notas:
 
             // Verificar si el nombre está vacío
             if (empty($playerName)) {
-                header("Location: index.php");
+                header("Location: index.php?error=emptyname");
                 exit;
             }
 
             // Verificar si el nombre tiene entre 3 y 30 caracteres
             if (strlen($playerName) < 3 || strlen($playerName) > 30) {
                 // Si el nombre no es válido, redirigir al formulario con un mensaje de error
-                header("Location: index.php");
+                header("Location: index.php?error=invalidname");
                 exit;
             }
 
@@ -294,7 +294,7 @@ Notas:
 
             <!-- Botones -->
             <div class="buttons">
-                <a href="index.php"><button class="keySound">Inici</button></a>
+                <a href="win.php"><button class="keySound">Inici</button></a>
                 <a href="ranking.php"><button class="keySound">Hall of Fame</button></a>
             </div>
 
