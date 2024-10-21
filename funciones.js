@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     classicGameBtn.classList.remove('disabled'); // Elimina la clase disabled
     classicGameBtn.removeAttribute('disabled'); // Quita el atributo disabled
     classicGameBtn.onclick = function() {
-        window.location.href = 'game.php'; // Redirige al hacer clic
+        window.location.href = 'tutorial.php'; // Redirige al hacer clic
     };
 });
 
@@ -196,7 +196,222 @@ let turnosTotales = 0;
 let hundidoSinFallar = true; 
 let puntosAntesDeHundir = 0; 
 
-function applyEasterEgg() {
+/* *********************** */
+/* Logica juego Tutorial   */
+/* *********************** */
+
+function applyEasterEggTutorial () {
+    // Variables para el Easter Egg (Tienes que pulsar la casilla C4)
+    let clickCounterC4 = 0; // Contador de clics para "C4"
+    const originalTitle = "Binary Battleship"; // Título original
+
+    return function() {
+        clickCounterC4++; // Incrementar el contador
+
+        if (clickCounterC4 === 5) {
+
+            // Deshabilita el clic
+            disableClick();
+
+            const gameTitleElement = document.getElementById("gameTitle");
+            
+            // Cambiar el título a vacío para ocultar el texto original
+            gameTitleElement.innerText = "";
+
+            // Aplicar la clase
+            gameTitleElement.classList.add("glitchTitle");
+
+            // Cambiar el título a lo que deseas mostrar durante la animación
+            setTimeout(() => {
+                gameTitleElement.innerText = "Incompliment de la seguretat: accés total concedit!!";
+
+            }, 0); // Mostrar el texto del Easter Egg inmediatamente
+
+            setTimeout(() => {
+                gameTitleElement.innerText = originalTitle; // Restaurar el título original
+                // Eliminar la clase
+                gameTitleElement.classList.remove("glitchTitle");  
+                // Habilita el clic
+                allowClick();
+            }, 5000); // Eliminar después de 5 segundos
+
+            clickCounterC4 = 0; // Reiniciar el contador
+
+            // Para el timer
+            clearInterval(cronometro);
+            mostrarMensaje("Has guanyat la partida!");
+            partidaActiva = false; // Desactivar la partida
+            calcularBonificacionPorTiempo(); // Llama a la bonificación final
+            mostrarNombre();
+            mostrarBotones();
+        }
+    };
+}
+
+
+
+// Crear una instancia de la función de Easter Egg
+const activateEasterEggTutorial = applyEasterEggTutorial();
+
+let debeVaciarMensajes = false;
+
+function changeDataCellTutorial(td) {
+    if (!partidaActiva) return; // Si la partida no está activa, no hacer nada
+
+    if (debeVaciarMensajes) {
+        vaciarMensajePuntos();
+        debeVaciarMensajes = false; // Resetear la bandera
+    }
+
+    // Obtener el atributo 'name' de la celda (nombre del barco o vacío)
+    let name = td.getAttribute('name'); 
+
+    // Verificar si es la casilla "C4"
+    let row = td.parentElement.rowIndex; // Obtener índice de fila
+    let col = td.cellIndex; // Obtener índice de columna
+
+    if (row === 3 && col === 4) { // C4 corresponde a la fila 3 y columna 4
+        activateEasterEggTutorial(); // Llamar a la función para manejar el título
+    }
+
+    // Comprobar si el clic corresponde a una casilla con un barco
+    if (td.classList.contains("codeName")) {
+        td.classList.remove("codeName");
+        td.classList.add("dado");
+        
+        // Incrementa el número total de turnos
+        turnosTotales++; 
+
+        if (name === " ") {
+            // Casilla vacía (agua)
+            td.innerHTML = "~"; 
+            mostrarMensaje("¡Has fallat!");
+            turnosAguaSeguidos++; // Incrementa la cantidad de turnos sin tocar un barco
+
+            // Si hay 5 turnos de agua seguidos, restar 50 puntos
+            if (turnosAguaSeguidos >= 5) {
+                puntos -= 50;
+                actualizarPuntos();
+                mostrarMensajePuntos("¡Has perdut 50 punts!");
+                turnosAguaSeguidos = 0; // Reinicia el contador de turnos de agua seguidos
+            }
+
+            // Rompe la cadena de hundir sin fallar
+            hundidoSinFallar = false; 
+        } else {
+            // Impacto en un barco7
+            hundidoSinFallar = true; 
+            for (let barco of barcos) {
+                if (barco.tipo === name) {
+                    let row = td.parentElement.rowIndex; // Obtener índice de fila
+                    let col = td.cellIndex; // Obtener índice de columna
+
+                    for (let coord of barco.coordenadas) {
+                        if (coord[0] === row && coord[1] === col) {
+                            // Reducir la vida del barco
+                            barco.vida -= 1; 
+                            td.innerHTML = "X"; // Indicar que el barco ha sido tocado
+                            // mostrarMensaje(`¡Has tocat ${barco.tipo}!`);
+                            mostrarMensaje(`¡Has tocat una xarxa!`);
+                            puntos += 50; // Sumar 50 puntos por tocar un barco
+                            mostrarMensajePuntos("+50 punts per atacar un servidor\n");
+                            actualizarPuntos();
+
+                            turnosAguaSeguidos = 0; // Reinicia el contador de turnos de agua
+
+                            // Verificar si el barco ha sido hundido
+                            if (barco.vida === 0) {
+                                barcosHundidos++; // Incrementar barcos hundidos
+                                // mostrarMensaje(`Has enfonsat ${barco.tipo}!`);
+                                mostrarMensaje(`¡Tens el control de la xarxa amb ${barco.tamaño} servidors`);
+                                debeVaciarMensajes = true;
+
+                                // **Multiplicador si hundes sin fallar**
+                                if (hundidoSinFallar) {
+                                    let multiplicador = barco.tamaño;
+
+                                    // Guardamos los puntos antes de aplicar el multiplicador
+                                    let puntosAntesMultiplicador = puntos; 
+
+                                    // Aplicar el multiplicador correctamente
+                                    puntos += puntosAntesMultiplicador * (multiplicador - 1); 
+                                    mostrarMensajePuntos("+" + (puntos - puntosAntesMultiplicador) + " per destruir una xarxa");
+                                    actualizarPuntos();
+                                    // mostrarMensajePuntos(`¡Punts multiplicats per ${multiplicador} en enfonsar de cop ${barco.tipo}!`);
+                                    mostrarMensajePuntos(`¡Punts multiplicats per ${multiplicador} en enfonsar de cop una xarxa de ${barco.tamaño} servidors!`);
+
+                                }
+
+                                // **Multiplicador especial para Fragata**
+                                if (barco.tamaño == "4") {
+                                    if (turnosTotales <= 4) {
+                                        /*puntos += 3000; // Bonus por hundir la Fragata en 2 turnos
+                                        puntos *= 2; // Multiplicador adicional*/
+                                        puntos += 6000;
+                                        actualizarPuntos();
+                                        mostrarMensajePuntos("¡Bonus de punts per enfonsar un Servidor en 4 torns!");
+                                        mostrarMensajePuntos("+6000 per destruir la Servidor més gran a la primera");                                        
+                                    }
+                                }
+
+
+                                hundidoSinFallar = true;
+
+                                if (todosBarcosDestruidos()) {
+                                    /*mostrarMensaje("Has guanyat la partida!");
+                                    partidaActiva = false; // Desactivar la partida
+                                    mostrarBotones();
+                                    mostrarNombre();
+                                    calcularBonificacionPorTiempo(); // Llama a la bonificación final*/
+                                    
+                                    // Deshabilita el clic
+                                    disableClick();
+
+                                    const gameTitleElement = document.getElementById("gameTitle");
+                                    
+                                    // Cambiar el título a vacío para ocultar el texto original
+                                    gameTitleElement.innerText = "";
+
+                                    // Aplicar la clase
+                                    gameTitleElement.classList.add("glitchTitle");
+
+                                    // Cambiar el título a lo que deseas mostrar durante la animación
+                                    setTimeout(() => {
+                                        gameTitleElement.innerText = "Tots els servidors hackejats!!";
+
+                                    }, 0); // Mostrar el texto del Easter Egg inmediatamente
+
+                                    setTimeout(() => {
+                                        gameTitleElement.classList.remove("glitchTitle");  
+                                        // Habilita el clic
+                                        allowClick();
+                                    }, 5000); // Eliminar después de 5 segundos
+
+                                    clickCounterC4 = 0; // Reiniciar el contador
+
+                                    // Para el timer
+                                    clearInterval(cronometro);
+                                    mostrarMensaje("Has guanyat la partida!");
+                                    partidaActiva = false; // Desactivar la partida
+                                    calcularBonificacionPorTiempo(); // Llama a la bonificación final
+                                    mostrarNombre();
+                                    mostrarBotones();
+                                }
+                            }
+                            return; // Salir del ciclo
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* ******************* */
+/* Logica juego Game   */
+/* ******************* */
+
+function applyEasterEggGame() {
     // Variables para el Easter Egg (Tienes que pulsar la casilla C4)
     let clickCounterC4 = 0; // Contador de clics para "C4"
     const originalTitle = "Binary Battleship"; // Título original
@@ -228,26 +443,21 @@ function applyEasterEgg() {
             clickCounterC4 = 0; // Reiniciar el contador
 
             // Para el timer
-            clearInterval(cronometro);
-            mostrarMensaje("Has guanyat la partida!");
-            partidaActiva = false; // Desactivar la partida
+            /*mostrarMensaje("Has guanyat la partida!");
             calcularBonificacionPorTiempo(); // Llama a la bonificación final
             mostrarNombre();
-            mostrarBotones();
-
-
+            mostrarBotones();*/
+            clearInterval(cronometro); // Para el timer
+            partidaActiva = false; // Desactivar la partida
+            window.location.href = 'win.php'; // Redirige a win.php
         }
     };
 }
 
-
-
 // Crear una instancia de la función de Easter Egg
-const activateEasterEgg = applyEasterEgg();
+const activateEasterEggGame = applyEasterEggGame();
 
-let debeVaciarMensajes = false;
-
-function changeDataCell(td) {
+function changeDataCellGame(td) {
     if (!partidaActiva) return; // Si la partida no está activa, no hacer nada
 
     if (debeVaciarMensajes) {
@@ -263,7 +473,7 @@ function changeDataCell(td) {
     let col = td.cellIndex; // Obtener índice de columna
 
     if (row === 3 && col === 4) { // C4 corresponde a la fila 3 y columna 4
-        activateEasterEgg(); // Llamar a la función para manejar el título
+        activateEasterEggGame(); // Llamar a la función para manejar el título
     }
 
     // Comprobar si el clic corresponde a una casilla con un barco
@@ -335,25 +545,32 @@ function changeDataCell(td) {
                                 }
 
                                 // **Multiplicador especial para Fragata**
-                                if (barco.tamaño == "2") {
-                                    if (turnosTotales <= 2) {
-                                        puntos += 3000; // Bonus por hundir la Fragata en 2 turnos
-                                        puntos *= 2; // Multiplicador adicional
+                                if (barco.tamaño == "4") {
+                                    if (turnosTotales <= 4) {
+                                        /*puntos += 3000; // Bonus por hundir la Fragata en 2 turnos
+                                        puntos *= 2; // Multiplicador adicional*/
+                                        puntos += 6000;
                                         actualizarPuntos();
-                                        mostrarMensajePuntos("¡Bonus de punts per enfonsar una xarxa en 2 torns!");
-                                        mostrarMensajePuntos("+6000 per destruir la xarxa més petita a la primera");                                        
+                                        mostrarMensajePuntos("¡Bonus de punts per enfonsar un Servidor en 4 torns!");
+                                        mostrarMensajePuntos("+6000 per destruir la Servidor més gran a la primera");                                        
                                     }
                                 }
 
 
                                 hundidoSinFallar = true;
 
-                                if (todosBarcosDestruidos()) {
+                                /*if (todosBarcosDestruidos()) {
                                     mostrarMensaje("Has guanyat la partida!");
                                     partidaActiva = false; // Desactivar la partida
                                     mostrarBotones();
                                     mostrarNombre();
                                     calcularBonificacionPorTiempo(); // Llama a la bonificación final
+                                }*/
+                               
+                                if (todosBarcosDestruidos()) {
+                                    clearInterval(cronometro); // Para el timer
+                                    partidaActiva = false; // Desactivar la partida
+                                    window.location.href = 'win.php'; // Redirige a win.php
                                 }
                             }
                             return; // Salir del ciclo
@@ -494,7 +711,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     audio.src = audioSrc;
 
-    // Aplicar el estado guardado del audio
+    /*// Aplicar el estado guardado del audio
     if (localStorage.getItem('audioMuted') === 'true') {
         audio.muted = true;
         document.getElementById('audioControlButton').textContent = 'Unmute';
@@ -517,7 +734,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('audioMuted', 'true');
             }
         });
-    }
+    }*/
 });
 
 //Sonido botones
@@ -569,3 +786,14 @@ showNotification('¡Success!', 'CSSsuccess');
 showNotification('Info.', 'CSSinfo');
 showNotification('Error', 'CSSerror');
 showNotification('Warning', 'CSSwarning');
+
+
+/*Permitir y no permitir click*/
+
+function disableClick() {
+    document.getElementById('notTouch').classList.add('no-clickeable');
+}
+
+function allowClick() {
+    document.getElementById('notTouch').classList.remove('no-clickeable');
+}

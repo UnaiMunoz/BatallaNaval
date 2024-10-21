@@ -92,7 +92,7 @@ Notas:
 
                 // Array de barcos [nombre, tamaño]
                 $barcos = [
-                    /*new Barco("Fragata", 1),
+                    new Barco("Fragata", 1),
                     new Barco("Fragata", 1),
                     new Barco("Fragata", 1),
                     new Barco("Fragata", 1),
@@ -100,7 +100,7 @@ Notas:
                     new Barco("Submarino", 2),
                     new Barco("Submarino", 2),
                     new Barco("Destructor", 3),
-                    new Barco("Destructor", 3),*/
+                    new Barco("Destructor", 3),
                     new Barco("Portaaviones", 4)
                 ];
 
@@ -275,9 +275,8 @@ Notas:
         </div>
 
     </div>
-
+    
     </div>
-
     <div id="CSSnotificationContainer"></div>
 
 </body>
