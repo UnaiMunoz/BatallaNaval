@@ -57,7 +57,6 @@ Notas:
         }
     ?>
     
-    <h2 id="namePlayerGame">Bienvenido al juego, <?php echo $playerName; ?>!</h2>
     <a href="index.php" id="goBackButton"><button id="goBack" class="keySound">Inici</button></a>
 
 
@@ -120,7 +119,7 @@ Notas:
             
                             // Array de barcos [nombre, tamaño]
                             $barcos = [
-                                new Barco("Barca", 1)/*,
+                                new Barco("Barca", 1),
                                 new Barco("Barca", 1),
                                 new Barco("Barca", 1),
                                 new Barco("Barca", 1),
@@ -129,7 +128,7 @@ Notas:
                                 new Barco("Fragata", 2),
                                 new Barco("Submarino", 3),
                                 new Barco("Submarino", 3),
-                                new Barco("Destructor", 4),*/
+                                new Barco("Destructor", 4),
                             ];
             
                             // String para saber las coordenadas de cada barcos
@@ -365,7 +364,7 @@ Notas:
         
                         // Array de barcos [nombre, tamaño]
                         $practicePlayerBoats = [
-                            new Barco("Barca", 1)/*,
+                            new Barco("Barca", 1),
                             new Barco("Barca", 1),
                             new Barco("Barca", 1),
                             new Barco("Barca", 1),
@@ -374,7 +373,7 @@ Notas:
                             new Barco("Fragata", 2),
                             new Barco("Submarino", 3),
                             new Barco("Submarino", 3),
-                            new Barco("Destructor", 4),*/
+                            new Barco("Destructor", 4),
                         ];
         
                         // String para saber las coordenadas de cada barcos
@@ -470,8 +469,8 @@ Notas:
         
                         // Imprimir la matriz 
         
-                        # Mostrar tabla jugador
-                        echo '<p>Tablero del jugador</p>';
+                        # Mostrar tabla jugador       
+                        echo '<p>Tablero de ' . $playerName . '</p>';
                         echo "<table id='practicePlayergameTable' class='gameTable'>";
                         for ($i = 0; $i < $numero + 1; $i++) {
                             echo "<tr>";
@@ -481,17 +480,17 @@ Notas:
                                 }
                                 else{
                                     if($tabla[$i][$j] == "F"){
-                                        echo "<td name='Fragata' class='codeName'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name='Fragata'>" . $tabla[$i][$j] . "</td>";
                                     } elseif($tabla[$i][$j] == "B"){
-                                        echo "<td name='Barca' class='codeName'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name='Barca'>" . $tabla[$i][$j] . "</td>";
                                     }elseif($tabla[$i][$j] == "S"){
-                                        echo "<td name='Submarino' class='codeName'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name='Submarino'>" . $tabla[$i][$j] . "</td>";
                                     }elseif($tabla[$i][$j] == "D"){
-                                        echo "<td name='Destructor' class='codeName'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name='Destructor'>" . $tabla[$i][$j] . "</td>";
                                     }elseif($tabla[$i][$j] == "P"){
-                                        echo "<td name='Portaaviones' class='codeName'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name='Portaaviones'>" . $tabla[$i][$j] . "</td>";
                                     }else{
-                                        echo "<td name=' ' class='codeName'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name=' '>" . $tabla[$i][$j] . "</td>";
                                     }
                                     
                                 }
@@ -653,7 +652,7 @@ Notas:
                         // Imprimir la matriz 
         
                         # Mostrar tabla IA
-                        echo '<p>Tablero IA</p>';
+                        echo '<p>Tablero de IA</p>';
                         echo "<table id='practiceEnemygameTable' class='gameTable'>";
                         for ($i = 0; $i < $numero + 1; $i++) {
                             echo "<tr>";

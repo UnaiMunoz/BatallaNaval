@@ -48,21 +48,21 @@ function getRandomCodeNumber(element) {
 }
 
 // Asegura que el DOM esté cargado antes de ejecutar el script
-// document.addEventListener("DOMContentLoaded", function() {
-//     // Seleccionar todos los elementos td con la clase "codeName"
-//     const nameElements = document.querySelectorAll("td.codeName");
+document.addEventListener("DOMContentLoaded", function() {
+    // Seleccionar todos los elementos td con la clase "codeName"
+    const nameElements = document.querySelectorAll("td.codeName");
 
-//     // Establecer un intervalo para actualizar solo los elementos que no tienen "codeName"
-//     setInterval(() => {
-//         if (partidaActiva) { // Solo actualizar si la partida está activa
-//             nameElements.forEach(element => {
-//                 if (element.classList.contains("codeName")) {
-//                     getRandomCodeNumber(element);
-//                 }
-//             });
-//         }
-//     }, 100);
-// });
+    // Establecer un intervalo para actualizar solo los elementos que no tienen "codeName"
+    setInterval(() => {
+        if (partidaActiva) { // Solo actualizar si la partida está activa
+            nameElements.forEach(element => {
+                if (element.classList.contains("codeName")) {
+                    getRandomCodeNumber(element);
+                }
+            });
+        }
+    }, 100);
+});
 
 /* ****************** */
 /* Timer              */
@@ -337,6 +337,7 @@ function turnoIA() {
                     // Después de 2 segundos, mostrar "Turno de Player"
                     setTimeout(() => {
                         mostrarMensaje("Turno de Player", "white");
+                        cambiarTurno();
                         playerTurn = true; // Cambia el turno al jugador
                     }, 2000); // Espera de 2 segundos antes de mostrar el turno del jugador
 
@@ -378,6 +379,27 @@ function turnoIA() {
         }      
     }
 }
+
+function oscurecerTablero(tablero) {
+    tablero.classList.add('tablero-oculto');
+}
+
+function habilitarTablero(tablero) {
+    tablero.classList.remove('tablero-oculto');
+}
+
+function cambiarTurno() {
+    if (!playerTurn) {
+        // Oscurecer la tabla del jugador y habilitar la tabla de la IA
+        oscurecerTablero(document.getElementById('practicePlayergameTable')); // Reemplaza con el ID real de tu tabla
+        habilitarTablero(document.getElementById('practiceEnemygameTable')); // Reemplaza con el ID real de tu tabla
+    } else {
+        // Oscurecer la tabla de la IA y habilitar la tabla del jugador
+        oscurecerTablero(document.getElementById('practiceEnemygameTable')); // Reemplaza con el ID real de tu tabla
+        habilitarTablero(document.getElementById('practicePlayergameTable')); // Reemplaza con el ID real de tu tabla
+    }
+}
+
 
 
 
@@ -430,6 +452,7 @@ function changeDataCell(td, gameMode = 'IA') {
             // Casilla vacía (agua)
             td.innerHTML = "~"; 
             mostrarMensaje("¡Has fallat!");
+            cambiarTurno();
             turnosAguaSeguidos++; // Incrementa la cantidad de turnos sin tocar un barco
 
             // Si hay 5 turnos de agua seguidos, restar 50 puntos

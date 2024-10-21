@@ -504,6 +504,13 @@ input[type="text"]:focus {
     content: ']';
 }
 
+/* Oscurecer tabla en los turnos */
+
+.tablero-oculto {
+    pointer-events: none; /* Desactiva los clics en la tabla */
+    opacity: 0.5; /* Reduce la opacidad para oscurecer */
+}
+
 
 /* ******************************* */
 /* MARK: CSS for ranking.php */

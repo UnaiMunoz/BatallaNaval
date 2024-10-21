@@ -33,7 +33,7 @@
                     <input id="indexName" name="playerName" placeholder="Escriu el teu nom" required maxlength="30">
                 </div>
                 <?php if (isset($_GET['error']) && $_GET['error'] == 'invalidname'): ?>
-                    <p style="color: red !important; text-align:center; margin:15px">El nom ha de tenir entre 3 i 30 caràcters. Si us plau, intenta-ho de nou.</p>
+                    <p style="color: red !important; text-align:center; margin:15px">El nom ha de tenir entre 3 i 30 caràcters.</p>
                 <?php endif; ?>
                 <button type="button" id="classicGameBtn" class="indexGame keySound">Partida Clàssica</button>
                 <button type="button" id="practiceGameBtn" class="indexGame keySound">Entrenament</button>
