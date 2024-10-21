@@ -109,7 +109,7 @@ main {
     margin: 0 5%;
 }
 #indexMain{
-    margin-top: 35vh;
+    margin-top: 25vh;
     display: flex;
     align-items: flex-end;
     position: relative;
@@ -151,16 +151,29 @@ main {
 }
 
 #indexName{
-    position: absolute;
-    width: 28%;
+    border-style: none;
+    background-color: unset;
+    width: 107%;
     height: 50px;
-    top: 0;
-    left:0;
-    color: #000 !important;
     text-align: center;
-    font-size: 1em;
-    border-radius: 10px;
-    border-color: #000;
+    font-size: 1.6vw;
+}
+
+#divName{
+    display: ruby-text;
+    font-size: 1.6vw;
+}
+
+#divName::before{
+    content: '[';
+}
+
+#divName::after{
+    content: ']';
+}
+
+#divName input:focus {
+    outline: none;
 }
 
 #indexName:hover{
