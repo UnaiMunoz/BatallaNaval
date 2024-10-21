@@ -76,6 +76,11 @@ h1{
     margin: 3% 0;
     text-align: center;
     font-size: 55px;
+    color: #ffffff;
+}
+
+p {
+    color: #ffffff;
 }
 
 /* Botones */
@@ -86,18 +91,19 @@ button {
     background-color: unset;
     border: none;
     cursor: pointer;
+    color: #ffffff;
 }
 
 button:hover {
     background: linear-gradient(to right, #3700ff00 0%, #3700ff 50%, #3700ff00 100%);
 }
 
-/* Estilo del botón de control del sonido */
 #namePlayerGame {
     width: 14vw;
     position: absolute;
     top: 20px;
     right: 0;
+    color: #ffff;
 }
 
 /* ******************************* */
@@ -190,7 +196,6 @@ main {
     text-align: center;
     margin-bottom: 20px;
 }
-
 
 /* ******************************* */
 /* MARK: CSS for game.php */
@@ -347,6 +352,7 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    color: #ffffff;
 }
 
 .info {
@@ -354,7 +360,7 @@ main {
 }
 
 /* Game Board */
-#gameTable {
+.gameTable {
     width: 32vw;
     height: 32vw;
     text-align: center;
@@ -362,24 +368,24 @@ main {
     table-layout: fixed;
 }
 
-#gameTable td{
+.gameTable td{
     padding: 7px;
     text-align: center;
 }
 
-#gameTable tr{
+.gameTable tr{
     border: 2px dashed #ffffff;
 }
 
-#gameTable td:not(:last-of-type){
+.gameTable td:not(:last-of-type){
     border-right: 2px dashed #ffffff;
 }
 
-#gameTable td.codeName:hover{
+.gameTable td.codeName:hover{
     cursor: crosshair;
 }
 
-#gameTable td:hover{
+.gameTable td:hover{
     cursor: default;
 }
 
@@ -420,8 +426,7 @@ main {
 
 .notification {
     font-size: 1.5vw;
-    /*margin-top: 1vw;
-    margin-bottom: 2vw;borrar*/
+    color: #ffffff;
 }
 
 /* Contenedor para input y botón */
@@ -524,6 +529,7 @@ input[type="text"]:focus {
     border-spacing: 0 15px;
     width: 100%;
     font-size: 1.2em;
+    color: #ffffff;
 }
 
 #rankingTable tr{
@@ -577,7 +583,8 @@ tr:hover .selecRanking::before {
 
 #paginador a {
     text-decoration: none;
-    padding: 5px 10px; 
+    padding: 5px 10px;
+    color: #ffffff;
 }
 
 #paginador a:hover {
