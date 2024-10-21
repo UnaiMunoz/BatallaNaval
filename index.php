@@ -27,12 +27,22 @@
 
     <main id="indexMain">
         <div id="indexButton">
-            <button id="classicGameBtn" class="indexGame keySound disabled" disabled>Tutorial</button>
-                <button id="practiceGameBtn" class="indexGame keySound disabled" disabled>Entrenament</button>
+            <form id="gameForm" action="game.php" method="POST">
+                <div id="divName">
+                    <input id="indexName" name="playerName" placeholder="Escriu el teu nom" required maxlength="30">
+                </div>
+                <?php if (isset($_GET['error']) && $_GET['error'] == 'invalidname'): ?>
+                    <p style="color: red !important; text-align:center; margin:15px">El nom ha de tenir entre 3 i 30 caràcters. Si us plau, intenta-ho de nou.</p>
+                <?php endif; ?>
+                <button type="button" id="classicGameBtn" class="indexGame keySound">Partida Clàssica</button>
+                <button type="button" id="practiceGameBtn" class="indexGame keySound">Entrenament</button>
+            </form>
+            
             <a href="ranking.php">
                 <button class="indexHallOfFame keySound">Hall of Fame</button>
             </a>
         </div>
+
         <div id="indexText">
             <p>Benvingut, XXXXX</p>
             <p>Tens una missió. El teu objectiu és infiltrar-te en servidors altament protegits 

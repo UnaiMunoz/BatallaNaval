@@ -98,6 +98,14 @@ button:hover {
     background: linear-gradient(to right, #3700ff00 0%, #3700ff 50%, #3700ff00 100%);
 }
 
+#namePlayerGame {
+    width: 14vw;
+    position: absolute;
+    top: 20px;
+    right: 0;
+    color: #ffff;
+}
+
 /* ******************************* */
 /* MARK: CSS for index.php */
 /* ******************************* */
@@ -146,6 +154,50 @@ main {
 
 #audioControlButton:hover::after{
     content: ']';
+}
+
+
+#indexName{
+    color: #ffff;
+    border-style: none;
+    background-color: unset;
+    width: 107%;
+    height: 50px;
+    text-align: center;
+    font-size: 1.6vw;
+}
+
+#divName{
+    display: ruby-text;
+    font-size: 1.6vw;
+}
+
+#divName::before{
+    content: '[';
+}
+
+#divName::after{
+    content: ']';
+}
+
+
+#divName input:focus {
+    outline: none;
+}
+
+#indexName:hover{
+    cursor: pointer;
+}
+
+.no-clickeable{
+    pointer-events: none;
+}
+
+#error-message{
+    color: red !important; 
+    display: none;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 /* ******************************* */

@@ -8,16 +8,19 @@ document.addEventListener('DOMContentLoaded', function() {
     classicGameBtn.classList.remove('disabled'); // Elimina la clase disabled
     classicGameBtn.removeAttribute('disabled'); // Quita el atributo disabled
     classicGameBtn.onclick = function() {
-        window.location.href = 'game.php?mode=classic'; // Redirige con el parámetro mode=classic
+        document.getElementById('gameForm').action = 'game.php?mode=classic'; // Establece la acción con el modo classic
+        document.getElementById('gameForm').submit(); // Envía el formulario
     };
 
     var practiceGameBtn = document.getElementById('practiceGameBtn');
     practiceGameBtn.classList.remove('disabled'); // Elimina la clase disabled
     practiceGameBtn.removeAttribute('disabled'); // Quita el atributo disabled
     practiceGameBtn.onclick = function() {
-        window.location.href = 'game.php?mode=practice'; // Redirige con el parámetro mode=practice
+        document.getElementById('gameForm').action = 'game.php?mode=practice'; // Establece la acción con el modo practice
+        document.getElementById('gameForm').submit(); // Envía el formulario
     };
 });
+
 
 
 
