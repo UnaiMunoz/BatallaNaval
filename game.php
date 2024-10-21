@@ -294,7 +294,7 @@ Notas:
 
             <!-- Botones -->
             <div class="buttons">
-                <a href="win.php"><button class="keySound">Inici</button></a>
+                <a href="index.php"><button class="keySound">Inici</button></a>
                 <a href="ranking.php"><button class="keySound">Hall of Fame</button></a>
             </div>
 
