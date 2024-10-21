@@ -452,6 +452,7 @@ input[type="text"] {
 #divNameGame{
     display: none;
     font-size: 1.6vw;
+    color: #ffffff;
 }
 
 #divNameGame::before{
@@ -465,7 +466,6 @@ input[type="text"] {
 #divNameGame input:focus {
     outline: none;
 }
-
 /* Placeholder estilo */
 input[type="text"]::placeholder {
     color: #000000;

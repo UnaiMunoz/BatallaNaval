@@ -120,7 +120,7 @@ Notas:
             
                             // Array de barcos [nombre, tamaño]
                             $barcos = [
-                                new Barco("Barca", 1),
+                                new Barco("Barca", 1)/*,
                                 new Barco("Barca", 1),
                                 new Barco("Barca", 1),
                                 new Barco("Barca", 1),
@@ -129,7 +129,7 @@ Notas:
                                 new Barco("Fragata", 2),
                                 new Barco("Submarino", 3),
                                 new Barco("Submarino", 3),
-                                new Barco("Destructor", 4),
+                                new Barco("Destructor", 4),*/
                             ];
             
                             // String para saber las coordenadas de cada barcos
@@ -288,9 +288,11 @@ Notas:
                         // Notificaciones del juego
                         echo '<p class="notification"></p>';
                     
-                        // Escribir nombre
+                        // Escribir nombre                
                         echo '<div class="input-group">';
-                            echo '<input type="text" id="name" placeholder="Escriu el teu nom" required class="hidden" maxlength="20">';
+                            echo '<div id="divNameGame">';
+                            echo "<input type='text' id='name' placeholder='Escriu el teu nom' required class='hidden' maxlength='20' value='$playerName'>";
+                            echo '</div>';
                             echo '<button id="buttonName" class="keySound" onclick="saveScore()">Envia</button>';
                         echo '</div>';
                     
@@ -363,7 +365,7 @@ Notas:
         
                         // Array de barcos [nombre, tamaño]
                         $practicePlayerBoats = [
-                            new Barco("Barca", 1),
+                            new Barco("Barca", 1)/*,
                             new Barco("Barca", 1),
                             new Barco("Barca", 1),
                             new Barco("Barca", 1),
@@ -372,7 +374,7 @@ Notas:
                             new Barco("Fragata", 2),
                             new Barco("Submarino", 3),
                             new Barco("Submarino", 3),
-                            new Barco("Destructor", 4),
+                            new Barco("Destructor", 4),*/
                         ];
         
                         // String para saber las coordenadas de cada barcos
@@ -527,7 +529,9 @@ Notas:
                 
                     // Escribir nombre
                     echo '<div class="input-group">';
-                        echo '<input type="text" id="name" placeholder="Escriu el teu nom" required class="hidden" maxlength="20">';
+                        echo '<div id="divNameGame">';
+                            echo "<input type='text' id='name' placeholder='Escriu el teu nom' required class='hidden' maxlength='20' value='$playerName;'>";
+                        echo '</div>';
                         echo '<button id="buttonName" class="keySound" onclick="saveScore()">Envia</button>';
                     echo '</div>';
                 

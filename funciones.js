@@ -126,10 +126,12 @@ function mostrarBotones() {
 
 function mostrarNombre() {
     const input = document.querySelector('#name');
+    const divNameGame = document.querySelector('#divNameGame');
     const button = document.querySelector('#buttonName');
 
     if (input && button) {
         input.style.display = 'block'; // Mostrar el input
+        divNameGame.style.display = 'contents';; // Mostrar corchetes
         button.style.display = 'block'; // Mostrar el botón
     }
 }
@@ -137,10 +139,12 @@ function mostrarNombre() {
 
 function ocultarNombre() {
     const input = document.querySelector('#name'); // Usa el ID específico
+    const divNameGame = document.querySelector('#divNameGame');
     const button = document.querySelector('#buttonName'); // Usa el ID específico
 
     if (input && button) {
         input.style.display = 'none'; // Ocultar el input
+        divNameGame.style.display = 'none';; // Mostrar corchetes
         button.style.display = 'none'; // Ocultar el botón
     }
 }
@@ -231,19 +235,20 @@ function applyEasterEgg() {
             clickCounterC4 = 0; // Reiniciar el contador
 
             // Para el timer
-            /*mostrarMensaje("Has guanyat la partida!");
+            clearInterval(cronometro);
+            mostrarMensaje("Has guanyat la partida!");
+            partidaActiva = false; // Desactivar la partida
             calcularBonificacionPorTiempo(); // Llama a la bonificación final
             mostrarNombre();
-            mostrarBotones();*/
-            clearInterval(cronometro); // Para el timer
-            partidaActiva = false; // Desactivar la partida
-            window.location.href = 'win.php'; // Redirige a win.php
+            mostrarBotones();
+
+
         }
     };
 }
 
 // Crear una instancia de la función de Easter Egg
-const activateEasterEggGame = applyEasterEggGame();
+const activateEasterEgg = applyEasterEgg();
 
 
 // Función que actualiza los puntos en el HTML
@@ -490,31 +495,23 @@ function changeDataCell(td, gameMode = 'IA') {
 
                                 // **Multiplicador especial para Fragata**
                                 if (barco.tamaño == "4") {
-                                    if (turnosTotales <= 4) {
-                                        /*puntos += 3000; // Bonus por hundir la Fragata en 2 turnos
-                                        puntos *= 2; // Multiplicador adicional*/
-                                        puntos += 6000;
+                                    if (turnosTotales <= 2) {
+                                        puntos += 6000; // Bonus por hundir la Fragata en 2 turnos
                                         actualizarPuntos();
-                                        mostrarMensajePuntos("¡Bonus de punts per enfonsar un Servidor en 4 torns!");
-                                        mostrarMensajePuntos("+6000 per destruir la Servidor més gran a la primera");                                        
+                                        mostrarMensajePuntos("¡Bonus de punts per enfonsar una xarxa en 2 torns!");
+                                        mostrarMensajePuntos("+6000 per destruir la xarxa més petita a la primera");                                        
                                     }
                                 }
 
 
                                 hundidoSinFallar = true;
 
-                                /*if (todosBarcosDestruidos()) {
+                                if (todosBarcosDestruidos()) {
                                     mostrarMensaje("Has guanyat la partida!");
                                     partidaActiva = false; // Desactivar la partida
                                     mostrarBotones();
                                     mostrarNombre();
                                     calcularBonificacionPorTiempo(); // Llama a la bonificación final
-                                }*/
-                               
-                                if (todosBarcosDestruidos()) {
-                                    clearInterval(cronometro); // Para el timer
-                                    partidaActiva = false; // Desactivar la partida
-                                    window.location.href = 'win.php'; // Redirige a win.php
                                 }
                             }
                             return; // Salir del ciclo
@@ -569,18 +566,25 @@ function saveScore() {
             date: formattedDate // Usar la fecha formateada
         };  
 
-        // Enviar los datos al archivo PHP mediante POST
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "lose.php", true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                mostrarMensaje("Felicitats " + playerData.name + "! Revisa el ranking per veure la teva posició.");
-                ocultarNombre();
-            }
-        };
+        // Enviar los datos al archivo PHP mediante fetch
+        fetch('ranking.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(playerData)
+        })
+        .then(response => response.text())
+        .then(data => {
+            // console.log('Puntuación guardada:', data);
+            // alert("Jugador guardado!");
+            mostrarMensaje("Felicitats " + playerData.name + "! Revisa el ranking per veure la teva posició.");
+            ocultarNombre();
 
-        xhr.send(JSON.stringify(playerData));
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
     } else {
         alert("Por favor, ingresa tu nombre.");
     }
@@ -623,7 +627,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     audio.src = audioSrc;
 
-    /*// Aplicar el estado guardado del audio
+    // Aplicar el estado guardado del audio
     if (localStorage.getItem('audioMuted') === 'true') {
         audio.muted = true;
         document.getElementById('audioControlButton').textContent = 'Unmute';
@@ -646,7 +650,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('audioMuted', 'true');
             }
         });
-    }*/
+    }
 });
 
 //Sonido botones
@@ -704,8 +708,7 @@ showNotification('Info.', 'CSSinfo');
 showNotification('Error', 'CSSerror');
 showNotification('Warning', 'CSSwarning');
 
-
-/*Permitir y no permitir click*/
+/* Permitir y no permitir click */
 
 function disableClick() {
     document.getElementById('notTouch').classList.add('no-clickeable');
