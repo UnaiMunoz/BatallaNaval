@@ -26,12 +26,23 @@
 
 
     <main id="indexMain">
+    <!-- Formulario que envía el nombre a game.php -->
     <div id="indexButton">
-        <button id="classicGameBtn" class="indexGame keySound disabled" disabled>Partida Clàssica</button>
+        <form action="game.php" method="POST">
+            <input id="indexName" name="playerName" placeholder="Escriu el teu nom" required maxlength="30">
+            <?php if (isset($_GET['error']) && $_GET['error'] == 'invalidname'): ?>
+                <p style="color: red !important; text-align:center; margin:15px">El nom ha de tenir entre 3 i 30 caràcters. Si us plau, intenta-ho de nou.</p>
+            <?php endif; ?>
+            <button type="submit" id="classicGameBtn" class="indexGame keySound">Partida Clàssica</button>
+        </form>
+        
         <a href="ranking.php">
             <button class="indexHallOfFame keySound">Hall of Fame</button>
         </a>
     </div>
+
+
+
     <div id="indexText">
     <p>Benvingut, XXXXX</p>
     <p>Tens una missió. El teu objectiu és infiltrar-te en servidors altament protegits 

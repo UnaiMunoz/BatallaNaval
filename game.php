@@ -32,6 +32,32 @@ Notas:
         </div>
     </header>
 
+    <?php
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            // Sanitizar el nombre del jugador
+            $playerName = htmlspecialchars(trim($_POST['playerName']));
+
+            // Verificar si el nombre está vacío
+            if (empty($playerName)) {
+                header("Location: index.php?error=emptyname");
+                exit;
+            }
+
+            // Verificar si el nombre tiene entre 3 y 30 caracteres
+            if (strlen($playerName) < 3 || strlen($playerName) > 30) {
+                // Si el nombre no es válido, redirigir al formulario con un mensaje de error
+                header("Location: index.php?error=invalidname");
+                exit;
+            }
+
+        } else {
+            // Si no hay datos POST, redirigir a index.php
+            header("Location: index.php");
+            exit;
+        }
+    ?>
+
+    <h2 id="namePlayerGame">Bienvenido al juego, <?php echo $playerName; ?>!</h2>
     <a href="index.php" id="goBackButton"><button id="goBack" class="keySound">Inici</button></a>
 
 
@@ -261,7 +287,7 @@ Notas:
             <!-- Escribir nombre -->
              
             <div class="input-group">
-                <input type="text" id="name" placeholder="Escriu el teu nom" required class="hidden" maxlength="20">
+                <input type="text" id="name" placeholder="Escriu el teu nom" required class="hidden" maxlength="20" value="<?php echo $playerName; ?>">
                 <button id="buttonName" class="keySound" onclick="saveScore()">Envia</button>
             </div>
             <p id="errorMessage">El nom ha de tenir almenys 3 caràcters.</p>
