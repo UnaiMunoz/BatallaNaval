@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     classicGameBtn.classList.remove('disabled'); // Elimina la clase disabled
     classicGameBtn.removeAttribute('disabled'); // Quita el atributo disabled
     classicGameBtn.onclick = function() {
-        window.location.href = 'tutorial.php'; // Redirige al hacer clic
+        window.location.href = 'game.php'; // Redirige al hacer clic
     };
 });
 
@@ -68,10 +68,12 @@ function mostrarBotones() {
 
 function mostrarNombre() {
     const input = document.querySelector('#name');
+    const divNameGame = document.querySelector('#divNameGame');
     const button = document.querySelector('#buttonName');
 
     if (input && button) {
         input.style.display = 'block'; // Mostrar el input
+        divNameGame.style.display = 'contents';; // Mostrar corchetes
         button.style.display = 'block'; // Mostrar el botón
     }
 }

@@ -24,12 +24,13 @@
         </div>
     </noscript>
 
+    
 
     <main id="indexMain">
     <!-- Formulario que envía el nombre a game.php -->
     <div id="indexButton">
         <form action="game.php" method="POST">
-            <div id="divName">
+        <div id="divName">
                 <input id="indexName" name="playerName" placeholder="Escriu el teu nom" required maxlength="30">
             </div>
             <?php if (isset($_GET['error']) && $_GET['error'] == 'invalidname'): ?>

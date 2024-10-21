@@ -287,7 +287,10 @@ Notas:
             <!-- Escribir nombre -->
              
             <div class="input-group">
-                <input type="text" id="name" placeholder="Escriu el teu nom" required class="hidden" maxlength="20" value="<?php echo $playerName; ?>">
+                <div id="divNameGame">
+                    <input type="text" id="name" placeholder="Escriu el teu nom" required class="hidden" maxlength="20" value="<?php echo $playerName; ?>">
+                </div>
+                    
                 <button id="buttonName" class="keySound" onclick="saveScore()">Envia</button>
             </div>
             <p id="errorMessage">El nom ha de tenir almenys 3 caràcters.</p>
