@@ -175,6 +175,17 @@ main {
 }
 
 
+#extraOptions {
+    position: absolute; 
+    top: 225px; 
+    left: 420px; 
+    background-color: unset; 
+    padding: 10px; 
+    z-index: 100;
+    display: none;
+}
+
+
 /* ******************************* */
 /* MARK: CSS for game.php */
 /* ******************************* */

@@ -38,14 +38,14 @@ Notas:
 
             // Verificar si el nombre está vacío
             if (empty($playerName)) {
-                header("Location: index.php?error=emptyname");
+                header("Location: index.php");
                 exit;
             }
 
             // Verificar si el nombre tiene entre 3 y 30 caracteres
             if (strlen($playerName) < 3 || strlen($playerName) > 30) {
                 // Si el nombre no es válido, redirigir al formulario con un mensaje de error
-                header("Location: index.php?error=invalidname");
+                header("Location: index.php");
                 exit;
             }
 
@@ -55,6 +55,13 @@ Notas:
             exit;
         }
     ?>
+
+    <?php
+        session_start();
+        // Establir una variable de sessió que confirmi l'accés permès
+        $_SESSION['acceso_permitido'] = true;
+    ?>
+
 
     <h2 id="namePlayerGame">Bienvenido al juego, <?php echo $playerName; ?>!</h2>
     <a href="index.php" id="goBackButton"><button id="goBack" class="keySound">Inici</button></a>

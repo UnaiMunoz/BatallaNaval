@@ -440,7 +440,7 @@ function saveScore() {
 
         // Enviar los datos al archivo PHP mediante POST
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "lose.php", true);
+        xhr.open("POST", "ranking.php", true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
@@ -565,3 +565,20 @@ showNotification('¡Success!', 'CSSsuccess');
 showNotification('Info.', 'CSSinfo');
 showNotification('Error', 'CSSerror');
 showNotification('Warning', 'CSSwarning');
+
+// Mostrar / Ocultar opciones adicionales
+
+function showCheckbox() {
+    var extraOptions = document.getElementById('extraOptions');
+    var btn = document.getElementById('extraOptionsBtn');
+    var optionsForm = document.getElementById('optionsForm');
+    
+    // Usamos getComputedStyle para obtener el estilo actual
+    var display = window.getComputedStyle(extraOptions).display;
+
+    if (display === 'none') {
+        extraOptions.style.display = 'block'; // Muestra las opciones
+    } else {
+        extraOptions.style.display = 'none'; // Oculta las opciones
+    }
+}

@@ -30,15 +30,22 @@
     <div id="indexButton">
         <form action="game.php" method="POST">
             <input id="indexName" name="playerName" placeholder="Escriu el teu nom" required maxlength="30">
-            <?php if (isset($_GET['error']) && $_GET['error'] == 'invalidname'): ?>
-                <p style="color: red !important; text-align:center; margin:15px">El nom ha de tenir entre 3 i 30 caràcters. Si us plau, intenta-ho de nou.</p>
-            <?php endif; ?>
+            <p style="color: red !important; text-align:center; margin:15px">Introdueix un nom per començar a jugar<br>(3-30 caràcters).</p>
             <button type="submit" id="classicGameBtn" class="indexGame keySound">Partida Clàssica</button>
         </form>
         
         <a href="ranking.php">
             <button class="indexHallOfFame keySound">Hall of Fame</button>
         </a>
+        <!-- Nuevo botón para mostrar las opciones adicionales -->
+        <button id="extraOptionsBtn" class="indexGame keySound" onclick="showCheckbox()">Opcions Avançades</button>
+
+        <!-- Formulario para las opciones avanzadas -->
+        <div id="extraOptions">
+            <label><input type="checkbox" name="limitedAmmo"> Munició limitada</label><br>
+            <label><input type="checkbox" name="armoredShips"> Vaixells acorassats</label><br>
+            <label><input type="checkbox" name="specialAttacks"> Atacs especials</label>
+        </div>
     </div>
 
 
