@@ -1,5 +1,5 @@
 /* ******************************* */
-/* JavaScript habilitado           */
+/* MARK: JavaScript habilitado           */
 /* ******************************* */
 
 // Script para habilitar el botón Classic Game si JavaScript está habilitado
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 /* ******************************* */
-/* Mostrar celdas encriptadas      */
+/* MARK: Mostrar celdas encriptadas      */
 /* ******************************* */
 
 // Función que genera un número random
@@ -65,7 +65,7 @@ function getRandomCodeNumber(element) {
 // });
 
 /* ****************** */
-/* Timer              */
+/* MARK: Timer              */
 /* ****************** */
 
 // Funciones Timer
@@ -113,7 +113,7 @@ let hundidoSinFallar = true;
 let puntosAntesDeHundir = 0; 
 
 /* ****************** */
-/* Funciones          */
+/* MARK: Funciones          */
 /* ****************** */
 
 // Función para mostrar los botones
@@ -282,12 +282,26 @@ function calcularBonificacionPorTiempo() {
     actualizarPuntos();
 }
 
+function cambiarFondo() {
+    var elemento = document.getElementById('game');
+    elemento.style.backgroundImage = `url(images/calaveraTormenta.jpg)`;
+    elemento.classList.remove('animacion-fondo'); // Remove the class to restart the animation
+    void elemento.offsetWidth; // Trigger reflow to restart the animation
+    elemento.classList.add('animacion-fondo');
+}
+
+function cambiartexto() {
+    var elemento = document.getElementById('gameTitle');
+    elemento.classList.remove('animacion-text');
+    elemento.classList.add('animacion-text');
+}
+
 // Booleandos
 let partidaActiva = true;
 let debeVaciarMensajes = false;
 
 /* ******************************** */
-/* PRACTICE GAME --> Turno de la IA */
+/* MARK: PRACTICE GAME --> Turno de la IA */
 /* ******************************** */
 
 // Variables para Practice Tool
@@ -383,7 +397,7 @@ function turnoIA() {
 
 
 /* ********************************** */
-/* CLASSIC GAME -> Destruir barcos    */
+/* MARK: CLASSIC GAME -> Destruir barcos    */
 /* ********************************** */
 
 // Función para comprobar si todos los barcos han sido destruidos
@@ -507,7 +521,11 @@ function changeDataCell(td, gameMode = 'IA') {
                                 hundidoSinFallar = true;
 
                                 if (todosBarcosDestruidos()) {
-                                    mostrarMensaje("Has guanyat la partida!");
+                                    cambiarFondo();
+                                    cambiartexto();
+                                    const gameTitleElement = document.getElementById("gameTitle");
+                                    gameTitleElement.innerText = "Felicitats has hackejat tots els servidors!!";
+                                    /*mostrarMensaje("Has guanyat la partida!");*/
                                     partidaActiva = false; // Desactivar la partida
                                     mostrarBotones();
                                     mostrarNombre();
@@ -525,7 +543,7 @@ function changeDataCell(td, gameMode = 'IA') {
 
 
 /* ********************************** */
-/* Ganar Partida -> Guardar nombre    */
+/* MARK: Ganar Partida -> Guardar nombre    */
 /* ********************************** */
 
 // Guardar Nombre, Puntos y Fecha en ranking.txt
@@ -591,7 +609,7 @@ function saveScore() {
 }
 
 /* ********* */
-/* Sonidos   */
+/* MARK: Sonidos   */
 /* ********* */
 
 //Para que se escuche la musica de fondo
@@ -682,7 +700,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 /* **************** */
-/* Notificaciones   */
+/* MARK: Notificaciones   */
 /* **************** */
 
 // Notificaciones CSS

@@ -1,20 +1,4 @@
 /* ******************************* */
-/* MARK: Color variables */
-/* ******************************* */
-
-/*:root {
-    --black: #272932;
-    --red: #710000;
-    --yellow: #FDF500;
-    --keppel: #1AC5B0;
-    --blue: #37EBF3;
-    --purple: #9370DB;
-    --frostbite: #E455AE;
-    --pink: #CB1DCD;
-    --silver: #D1C5C0;
-} borrar*/
-
-/* ******************************* */
 /* MARK: General CSS */
 /* ******************************* */
 
@@ -27,6 +11,15 @@
     text-decoration: none;
     text-transform: none;
     font-weight: unset;
+}
+
+html{
+    background-color: #000;
+}
+
+body{
+    content-visibility: auto;
+    min-height: 100vh;
 }
 
 .js-warning {
@@ -54,7 +47,8 @@
     background: url(images/fondoHacker.jpg);
     background-color: #00000054;
     background-blend-mode: overlay;
-    background-size: cover;
+    background-repeat: repeat-y; /* O repeat para ambos ejes */
+    background-size: auto; /* Mantiene el tamaño original de la imagen */
 }
 
 #game {
@@ -63,6 +57,74 @@
     background-blend-mode: overlay;
     background-size: cover;
     overflow-x: hidden;
+    position: relative;
+}
+
+@keyframes moverFondo {
+    0% {
+        background-position: 0% 0%;
+        filter: brightness(1);
+    }
+    10% {
+        background-position: 400px 0%;
+        filter: brightness(3);
+    }
+    20% {
+        background-position: 0% 400px;
+        filter: brightness(0.5);
+    }
+    30% {
+        background-position: -400px 0%;
+        filter: brightness(3);
+    }
+    40% {
+        background-position: 0% -400px;
+        filter: brightness(0.5);
+    }
+    50% {
+        background-position: 400px 0%;
+        filter: brightness(3);
+    }
+    60% {
+        background-position: 0% 400px;
+        filter: brightness(0.5);
+    }
+    70% {
+        background-position: -400px 0%;
+        filter: brightness(3);
+    }
+    80% {
+        background-position: 0% -400px;
+        filter: brightness(0.5);
+    }
+    90% {
+        background-position: 0% 0%;
+        filter: brightness(1);
+    }
+    100% {
+        background-position: 0% 0%;
+        filter: brightness(1);
+    }
+}
+
+.animacion-fondo {
+    animation: moverFondo 5s alternate;
+}
+
+@keyframes parpadeo {
+    0% {
+        color: white; /* Color inicial */
+    }
+    50% {
+        color: green; /* Color intermedio */
+    }
+    100% {
+        color: white; /* Color final */
+    }
+}
+
+.animacion-text {
+    animation: parpadeo 1s infinite; /* Duración de la animación y que se repita indefinidamente */
 }
 
 #bodyRanking {
@@ -73,10 +135,12 @@
 
 h1{
     font-weight: normal;
-    margin: 3% 0;
+    margin: auto;
+    margin-top: 2%;
+    margin-bottom: 2%;
     text-align: center;
-    font-size: 55px;
     color: #ffffff;
+    width: 45%;
 }
 
 p {
@@ -99,7 +163,8 @@ button:hover {
 }
 
 #namePlayerGame {
-    width: 14vw;
+    font-size: 1.2rem;
+    width: 27%;
     position: absolute;
     top: 20px;
     right: 0;
@@ -155,7 +220,7 @@ main {
 #indexName{
     border-style: none;
     background-color: unset;
-    width: 80%;
+    width: 68%;
     height: 50px;
     text-align: center;
     font-size: 1.6vw;
