@@ -338,6 +338,9 @@ function turnoIA() {
             // Mostrar primero el mensaje de "esperando tirada"
             mostrarMensaje("Turno de IA, esperando tirada...", "yellow");
 
+            //Suena la musica de espera
+            iaSound();
+
             // Esperar 2 segundos antes de mostrar el resultado del ataque de la IA
             setTimeout(() => {
                 let hit = false; // Variable para saber si la IA ha impactado
@@ -347,6 +350,8 @@ function turnoIA() {
                     td.innerHTML = "~"; 
                     td.style.backgroundColor = "blue"; // Cambia el color a azul para indicar un fallo
                     mostrarMensaje("La IA ha fallado", "yellow");
+
+                    waterSoundIA();
 
                     // Después de 2 segundos, mostrar "Turno de Player"
                     setTimeout(() => {
@@ -373,6 +378,8 @@ function turnoIA() {
                             break; // Salir del ciclo al encontrar el barco
                         }
                     }
+
+                    attackSoundIA();
 
                     // Si ha impactado, y hundió un barco, esperar antes de continuar
                     if (hit) {
@@ -523,6 +530,7 @@ function changeDataCell(td, gameMode = 'IA') {
                                 if (todosBarcosDestruidos()) {
                                     getbackground();
                                     getText();
+                                    changeMusic();
                                     const gameTitleElement = document.getElementById("gameTitle");
                                     gameTitleElement.innerText = "Felicitats has hackejat tots els servidors!!";
                                     /*mostrarMensaje("Has guanyat la partida!");*/
@@ -622,7 +630,7 @@ document.addEventListener('DOMContentLoaded', () => {
             audioSrc = 'sounds/backgroundSoundIndex.mp3';
             break;
         case 'bodyRanking':
-            audioSrc = 'sounds/backgroundSoundIndex.mp3';
+            audioSrc = 'audioContainersounds/backgroundSoundIndex.mp3';
             break;
         case 'game':
             audioSrc = 'sounds/backgroundSoundGame.mp3';
@@ -645,7 +653,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     audio.src = audioSrc;
 
-    // Aplicar el estado guardado del audio
+    /*// Aplicar el estado guardado del audio
     if (localStorage.getItem('audioMuted') === 'true') {
         audio.muted = true;
         document.getElementById('audioControlButton').textContent = 'Unmute';
@@ -654,7 +662,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('audioControlButton').textContent = 'Mute';
     }
 
-    /*// Control del botón de sonido
+    // Control del botón de sonido
     const audioControlButton = document.getElementById('audioControlButton');
     if (audioControlButton) {
         audioControlButton.addEventListener('click', () => {
@@ -670,6 +678,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }*/
 });
+
+function changeMusic(){
+    const audio = document.getElementById('backgroundSound');
+    if (audio) {
+        audio.src = 'sounds/winSound.mp3';
+        audio.play();
+    } 
+}
 
 //Sonido botones
 document.addEventListener("DOMContentLoaded", function() {
@@ -697,6 +713,32 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    const buttons = document.querySelectorAll('.waterSound');
+    
+    buttons.forEach(button => {
+        button.addEventListener('click', function() {
+            const sound = new Audio('sounds/waterSound.mp3');
+            sound.play().catch(error => {
+                console.error('Error al reproducir el sonido:', error);
+            });
+        });
+    });
+});
+
+function iaSound() {
+    var sonido = document.getElementById('iaSound');
+    sonido.play();
+}
+function attackSoundIA() {
+    var sonido = document.getElementById('attackSoundIA');
+    sonido.play();
+}
+function waterSoundIA() {
+    var sonido = document.getElementById('waterSoundIA');
+    sonido.play();
+}
 
 
 /* **************** */

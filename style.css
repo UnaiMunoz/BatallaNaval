@@ -48,7 +48,7 @@ body{
     background-color: #00000054;
     background-blend-mode: overlay;
     background-repeat: repeat-y; /* O repeat para ambos ejes */
-    background-size: auto; /* Mantiene el tamaño original de la imagen */
+    background-size: cover; /* Mantiene el tamaño original de la imagen */
 }
 
 #game {

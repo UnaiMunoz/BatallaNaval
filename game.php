@@ -24,6 +24,15 @@ Notas:
 -->
 
     <div id="audioContainer"></div>
+    <audio id="iaSound">
+        <source src="sounds/iaSound.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="attackSoundIA">
+        <source src="sounds/attackSound.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="waterSoundIA">
+        <source src="sounds/waterSound.mp3" type="audio/mpeg">
+    </audio>
 
     <div id="notTouch">
     <header>
@@ -129,7 +138,7 @@ Notas:
                                 new Barco("Fragata", 2),
                                 new Barco("Submarino", 3),
                                 new Barco("Submarino", 3),
-                                new Barco("Destructor", 4),*/
+                                new Barco("Destructor", 4)*/
                             ];
             
                             // String para saber las coordenadas de cada barcos
@@ -247,7 +256,7 @@ Notas:
                                         }elseif($tabla[$i][$j] == "P"){
                                             echo "<td name='Portaaviones' class='codeName attackSound' onclick='changeDataCell(this, \"classic\")'>" . $tabla[$i][$j] . "</td>";
                                         }else{
-                                            echo "<td name=' ' class='codeName attackSound' onclick='changeDataCell(this, \"classic\")'>" . $tabla[$i][$j] . "</td>";
+                                            echo "<td name=' ' class='codeName waterSound' onclick='changeDataCell(this, \"classic\")'>" . $tabla[$i][$j] . "</td>";
                                         }
                                         
                                     }
@@ -365,7 +374,7 @@ Notas:
         
                         // Array de barcos [nombre, tamaño]
                         $practicePlayerBoats = [
-                            new Barco("Barca", 1)/*,
+                            new Barco("Barca", 1),
                             new Barco("Barca", 1),
                             new Barco("Barca", 1),
                             new Barco("Barca", 1),
@@ -374,7 +383,7 @@ Notas:
                             new Barco("Fragata", 2),
                             new Barco("Submarino", 3),
                             new Barco("Submarino", 3),
-                            new Barco("Destructor", 4),*/
+                            new Barco("Destructor", 4)
                         ];
         
                         // String para saber las coordenadas de cada barcos
@@ -673,7 +682,7 @@ Notas:
                                     }elseif($tabla[$i][$j] == "P"){
                                         echo "<td name='Portaaviones' class='codeName attackSound' onclick='changeDataCell(this, \"IA\")'>" . $tabla[$i][$j] . "</td>";
                                     }else{
-                                        echo "<td name=' ' class='codeName attackSound' onclick='changeDataCell(this, \"IA\")'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name=' ' class='codeName waterSound' onclick='changeDataCell(this, \"IA\")'>" . $tabla[$i][$j] . "</td>";
                                     }
                                     
                                 }
