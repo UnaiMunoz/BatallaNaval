@@ -70,6 +70,13 @@ Notas:
             exit;
         }
     ?>
+
+
+    <?php
+        session_start();
+        // Establir una variable de sessió que confirmi l'accés permès
+        $_SESSION['acceso_permitido'] = true;
+    ?>
     
     <h2 id="namePlayerGame">Bienvenido al juego, <?php echo $playerName; ?>!</h2>
     <a href="index.php" id="goBackButton"><button id="goBack" class="keySound">Inici</button></a>

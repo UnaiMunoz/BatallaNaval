@@ -21,10 +21,6 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 });
 
-
-
-
-
 /* ******************************* */
 /* MARK: Mostrar celdas encriptadas*/
 /* ******************************* */
@@ -101,7 +97,6 @@ function actualizarCronometro() {
 // Iniciar el cronómetro cuando se carga la página
 window.onload = iniciarCronometro;
 
-
 // Funciones actualización puntos
 
 // Variables para manejar los puntos
@@ -135,7 +130,6 @@ function mostrarNombre() {
         button.style.display = 'block'; // Mostrar el botón
     }
 }
-
 
 function ocultarNombre() {
     const input = document.querySelector('#name'); // Usa el ID específico
@@ -400,9 +394,6 @@ function turnoIA() {
     }
 }
 
-
-
-
 /* ********************************** */
 /* MARK: CLASSIC GAME -> Destruir barcos*/
 /* ********************************** */
@@ -418,7 +409,6 @@ function todosBarcosDestruidos() {
     // Si todos los barcos tienen vida 0, la partida está ganada
     return true;
 }
-
 
 function changeDataCell(td, gameMode = 'IA') {
     if (!partidaActiva) return; // Si la partida no está activa, no hacer nada
@@ -548,7 +538,6 @@ function changeDataCell(td, gameMode = 'IA') {
         }
     }
 }
-
 
 /* ********************************** */
 /* MARK: Ganar Partida -> Guardar nombre*/
@@ -742,7 +731,6 @@ function waterSoundIA() {
     sonido.play();
 }
 
-
 /* **************** */
 /* MARK: Notificaciones*/
 /* **************** */
@@ -821,4 +809,21 @@ function disableClick() {
 
 function allowClick() {
     document.getElementById('notTouch').classList.remove('no-clickeable');
+}
+
+// Mostrar / Ocultar opciones adicionales
+
+function showCheckbox() {
+    var extraOptions = document.getElementById('extraOptions');
+    var btn = document.getElementById('extraOptionsBtn');
+    var optionsForm = document.getElementById('optionsForm');
+    
+    // Usamos getComputedStyle para obtener el estilo actual
+    var display = window.getComputedStyle(extraOptions).display;
+
+    if (display === 'none') {
+        extraOptions.style.display = 'block'; // Muestra las opciones
+    } else {
+        extraOptions.style.display = 'none'; // Oculta las opciones
+    }
 }

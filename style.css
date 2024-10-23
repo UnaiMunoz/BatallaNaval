@@ -738,3 +738,7 @@ tr:hover .selecRanking::before {
     75% { right: 5%;}
     100% { right :-50%; }
 }
+
+.CSSwarning {
+    background-color: #ff9800; /* Naranja */
+}
