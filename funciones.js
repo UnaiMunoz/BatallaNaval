@@ -342,124 +342,125 @@ let debeVaciarMensajes = false;
 let playerTurn = true;
 const attackedPositions = [];
 
+let playerHits = 0;  // Aciertos del jugador
+let iaHits = 0;      // Aciertos de la IA
+
+function determinarGanadorPorAciertos() {
+    clearInterval(cronometro);
+    partidaActiva = false;
+    
+    if (playerHits > iaHits) {
+        mostrarMensaje("¡Has ganado la partida por tener más aciertos!", "green");
+    } else if (iaHits > playerHits) {
+        mostrarMensaje("La IA ha ganado la partida por tener más aciertos.", "red");
+    } else {
+        mostrarMensaje("La IA ha ganado por empate.", "blue");
+    }
+    
+    mostrarBotones();
+    mostrarNombre();
+    calcularBonificacionPorTiempo();
+}
+
 // Turno de la IA
 function turnoIA() {
     if (partidaActiva && !playerTurn) {
-        // Verificar si la IA y el jugador tienen munición
-        if (practiceAmmoEnabled == true && practiceEnemyAmmo == 0 && practicePlayerAmmo == 0) {
-            setTimeout(() => {
-                mostrarMensaje("Player y la IA no tienen más munición. Partida finalizada.", "yellow");
-                partidaActiva = false; // Desactivar la partida
-                clearInterval(cronometro);
-            }, 2000);
-            return; // No continuar con el turno de la IA
-        } 
-        else if (practiceAmmoEnabled == true && practiceEnemyAmmo == 0) {
+        if (practiceAmmoEnabled && practiceEnemyAmmo === 0 && practicePlayerAmmo === 0) {
+            setTimeout(determinarGanadorPorAciertos, 2000);
+            return;
+        } else if (practiceAmmoEnabled && practiceEnemyAmmo === 0) {
             setTimeout(() => {
                 mostrarMensaje("La IA no tiene más munición. Turno de Player.", "yellow");
                 cambiarTurno();
                 playerTurn = true;
             }, 2000);
-            return; // No continuar con el turno de la IA
+            return;
         }
 
-        // IA genera coordenadas aleatorias para atacar
         let row, col;
         let hit = false;
         let barcoHundido = false;
 
         do {
-            row = Math.floor(Math.random() * 10) + 1; // Genera 1 a 10
-            col = Math.floor(Math.random() * 10) + 1; // Genera 1 a 10
-        } while (attackedPositions.some(pos => pos.row === row && pos.col === col)); // Verifica si la posición ya fue atacada
+            row = Math.floor(Math.random() * 10) + 1;
+            col = Math.floor(Math.random() * 10) + 1;
+        } while (attackedPositions.some(pos => pos.row === row && pos.col === col));
 
         const td = document.querySelector(`tr:nth-child(${row + 1}) td:nth-child(${col + 1})`);
         
         if (td) {
             let name = td.getAttribute('name');
-            attackedPositions.push({ row: row, col: col }); // Guardar posición atacada
-        
-            // Mostrar mensaje de "Turno de IA, esperando tirada..." después de 1 segundo
+            attackedPositions.push({ row: row, col: col });
+
             setTimeout(() => {
-                mostrarMensaje("Turno de IA, esperando tirada...", "yellow");
+                mostrarMensaje("Torn de IA, pensant moviment...", "yellow");
             }, 1000);
-        
-            // Procesar ataque de la IA después de 4 segundos (1 segundo de espera inicial + 3 segundos de procesamiento)
+
             setTimeout(() => {
-                if (practiceAmmoEnabled == true) {
-                    practiceEnemyAmmo--;
-                    document.getElementById('practiceEnemyAmmo').textContent = practiceEnemyAmmo + "/40";
-        
-                    // Comprobar si ambos jugadores se quedan sin munición
-                    if (practiceEnemyAmmo == 0 && practicePlayerAmmo == 0) {
-                        setTimeout(() => {
-                            mostrarMensaje("Player y la IA no tienen más munición. Partida finalizada.", "yellow");
-                            partidaActiva = false;
-                        }, 2000);
+                if (practiceAmmoEnabled) {
+                    if (practiceEnemyAmmo === 0 && practicePlayerAmmo === 0) {
+                        setTimeout(determinarGanadorPorAciertos, 4000);
                         return;
                     }
+
+                    practiceEnemyAmmo--;
+                    document.getElementById('practiceEnemyAmmo').textContent = practiceEnemyAmmo + "/40";
                 }
-        
-                // Procesar ataque de la IA
+
                 if (name === " ") {
                     td.innerHTML = "~"; 
-                    td.style.backgroundColor = "blue"; // Falla
-        
-                    // Mostrar el mensaje de fallo inmediatamente
-                    mostrarMensaje("La IA ha fallado", "yellow");
-        
-                    // Esperar 2 segundos antes de proceder con el siguiente turno
-                    setTimeout(() => {
-                        mostrarMensaje("Turno de Player", "white");
-                        cambiarTurno();
-                        playerTurn = true;
-                    }, 2000); // Espera de 2 segundos antes de cambiar el turno
-        
+                    td.style.backgroundColor = "blue";
+                    mostrarMensaje("La IA ha fallat", "yellow");
+
+                    if (practiceAmmoEnabled && practicePlayerAmmo > 0) {
+                        setTimeout(() => {
+                            mostrarMensaje("Turno de Player.", "yellow");
+                            cambiarTurno();
+                            playerTurn = true;
+                        }, 2000);
+                    } else if (practiceAmmoEnabled && practicePlayerAmmo === 0) {
+                        setTimeout(() => {
+                            mostrarMensaje("Player no tiene más munición. Sigue el turno de la IA.", "yellow");
+                        }, 2000);
+                        playerTurn = false;
+                        setTimeout(turnoIA, 4000);
+                    }
+
                 } else {
-                    // Impacto en un barco
                     for (let barco of barcos) {
                         if (barco.tipo === name) {
                             barco.vida -= 1;
                             td.innerHTML = "X"; 
-                            td.style.backgroundColor = "red"; // Impacto
-        
+                            td.style.backgroundColor = "red";
                             mostrarMensaje(`¡La IA ha tocado una xarxa de ${barco.tamaño}!`, "yellow");
-        
+                            iaHits++;  // Incrementar aciertos de la IA
+
                             if (barco.vida === 0) {
                                 barcoHundido = true;
                                 setTimeout(() => mostrarMensaje(`¡La IA ha hundido una xarxa amb ${barco.tamaño} servidors!`, "red"), 2000);
                             }
-        
+
                             hit = true;
                             break;
                         }
                     }
-        
-                    // Asegurar que la IA solo tire una vez por turno
+
                     if (hit && barcoHundido) {
-                        // Si ha hundido un barco, terminar el turno de la IA y pasar el turno al jugador
                         setTimeout(() => {
-                            mostrarMensaje("Turno de Player", "white");
+                            mostrarMensaje("Torn de " + practicePlayerName, "white");
                             cambiarTurno();
                             playerTurn = true;
-                        }, 2000); // Espera de 2 segundos antes de cambiar el turno
+                        }, 2000);
                     } else if (hit) {
-                        // Si solo ha golpeado, la IA continúa con el siguiente ataque
-                        setTimeout(turnoIA, 1000); // IA ataca de nuevo después de 1 segundo
-                    } else {
-                        // Turno del jugador si no hundió un barco
-                        setTimeout(() => {
-                            mostrarMensaje("Turno de Player", "white");
-                            cambiarTurno();
-                            playerTurn = true;
-                        }, 2000); // Espera de 2 segundos antes de cambiar el turno
+                        setTimeout(turnoIA, 2000);
                     }
                 }
-        
-            }, 4000); // Espera para mostrar el resultado del ataque de la IA
+            }, 5000);
         }
     }
 }
+
+
 
 
 
@@ -513,10 +514,7 @@ function changeDataCell(td, gameMode = 'IA') {
         debeVaciarMensajes = false; // Resetear la bandera
     }
 
-    // Obtener el atributo 'name' de la celda (nombre del barco o vacío)
     let name = td.getAttribute('name'); 
-
-    // Verificar si es la casilla "C4"
     let row = td.parentElement.rowIndex; 
     let col = td.cellIndex; 
 
@@ -524,137 +522,112 @@ function changeDataCell(td, gameMode = 'IA') {
         activateEasterEgg(); 
     }
 
-    // Comprobar si el clic corresponde a una casilla con un barco
     if (td.classList.contains("codeName")) {
         td.classList.remove("codeName");
         td.classList.add("dado");
         
-        // Incrementa el número total de turnos
         turnosTotales++;
 
-        // Reducir munición del jugador
         if (practiceAmmoEnabled == true) {
             practicePlayerAmmo--;
             var ammoPlayerElement = document.getElementById('practicePlayerAmmo');
             ammoPlayerElement.textContent = practicePlayerAmmo + "/40";
 
-            // Comprobar si el jugador se quedó sin munición
-            // Comprobar si el jugador se quedó sin munición
-            if (practicePlayerAmmo == 0) {
-                if (practiceEnemyAmmo > 0) {
-                    mostrarMensaje("No tienes más munición. Turno de la IA.", "yellow");
-                    cambiarTurno();
-                    playerTurn = false;
-                    setTimeout(turnoIA, 2000); // Llamada a la IA
-                    return; // No continuar si el jugador no tiene munición
-                } else {
-                    mostrarMensaje("Ambos jugadores se han quedado sin munición. La partida ha terminado.", "yellow");
-                    clearInterval(cronometro);
-                    partidaActiva = false;
-                    return;
-                }
+            if (practicePlayerAmmo == 0 && practiceEnemyAmmo > 0) {
+                mostrarMensaje("No tienes más munición. Turno de la IA.", "yellow");
+                cambiarTurno();
+                playerTurn = false;
+                setTimeout(turnoIA, 2000); 
+                return;
             }
         }
 
         if (name === " ") {
-            // Casilla vacía (agua)
             td.innerHTML = "~"; 
             mostrarMensaje("¡Has fallat!");
 
-            // Verificar la munición solo si practiceAmmoEnabled es true
             if (practiceAmmoEnabled === true && practiceEnemyAmmo > 0) {
                 cambiarTurno(); 
                 playerTurn = false;
-                setTimeout(turnoIA, 2000); // Llamada a la IA después de 2 segundos
+                setTimeout(turnoIA, 2000);
             } else if (practiceAmmoEnabled === true && practiceEnemyAmmo === 0) {
                 mostrarMensaje("La IA no tiene más munición. Sigue tu turno.", "yellow");
-                playerTurn = true; // Mantener el turno en el jugador
-            } else {
-                // Si practiceAmmoEnabled es false, el juego procede sin tener en cuenta la munición
+                playerTurn = true;
+            } else if (practiceAmmoEnabled === false) {
                 cambiarTurno();
                 playerTurn = false;
-                turnoIA(); // Llamada a la IA después de 2 segundos
+                turnoIA();
             }
 
-
-            turnosAguaSeguidos++; // Incrementa la cantidad de turnos sin tocar un barco
-
-            // Si hay 5 turnos de agua seguidos, restar 50 puntos
+            turnosAguaSeguidos++;
             if (turnosAguaSeguidos >= 5) {
                 puntos -= 50;
                 actualizarPuntos();
                 mostrarMensajePuntos("¡Has perdut 50 punts!");
-                turnosAguaSeguidos = 0; // Reinicia el contador de turnos de agua seguidos
+                turnosAguaSeguidos = 0;
             }
 
-            hundidoSinFallar = false; // Rompe la cadena de hundir sin fallar
-            
+            hundidoSinFallar = false; 
+
         } else {
-            // Impacto en un barco
             hundidoSinFallar = true; 
             for (let barco of barcos) {
                 if (barco.tipo === name) {
-                    let row = td.parentElement.rowIndex; // Obtener índice de fila
-                    let col = td.cellIndex; // Obtener índice de columna
+                    let row = td.parentElement.rowIndex;
+                    let col = td.cellIndex;
 
                     for (let coord of barco.coordenadas) {
                         if (coord[0] === row && coord[1] === col) {
-                            // Reducir la vida del barco
                             barco.vida -= 1; 
-                            td.innerHTML = "X"; // Indicar que el barco ha sido tocado
+                            td.innerHTML = "X"; 
                             mostrarMensaje(`¡Has tocat una xarxa de ${barco.tamaño}!`);
-                            puntos += 50; // Sumar 50 puntos por tocar un barco
+                            puntos += 50; 
+                            playerHits++;  // Incrementar aciertos del jugador
                             mostrarMensajePuntos("+50 punts per atacar un servidor\n");
                             actualizarPuntos();
 
-                            turnosAguaSeguidos = 0; // Reinicia el contador de turnos de agua
+                            turnosAguaSeguidos = 0;
 
-                            // Verificar si el barco ha sido hundido
                             if (barco.vida === 0) {
-                                barcosHundidos++; // Incrementar barcos hundidos
+                                barcosHundidos++; 
                                 mostrarMensaje(`¡Tens el control de la xarxa amb ${barco.tamaño} servidors`);
                                 debeVaciarMensajes = true;
 
-                                // **Multiplicador si hundes sin fallar**
                                 if (hundidoSinFallar) {
                                     let multiplicador = barco.tamaño;
-
-                                    // Guardamos los puntos antes de aplicar el multiplicador
                                     let puntosAntesMultiplicador = puntos; 
-
-                                    // Aplicar el multiplicador correctamente
                                     puntos += puntosAntesMultiplicador * (multiplicador - 1); 
                                     mostrarMensajePuntos("+" + (puntos - puntosAntesMultiplicador) + " per destruir una xarxa");
                                     actualizarPuntos();
                                     mostrarMensajePuntos(`¡Punts multiplicats per ${multiplicador} en enfonsar de cop una xarxa de ${barco.tamaño} servidors!`);
-
                                 }
 
-                                // **Multiplicador especial para Fragata**
-                                if (barco.tamaño == "4") {
-                                    if (turnosTotales <= 2) {
-                                        puntos += 6000; // Bonus por hundir la Fragata en 2 turnos
-                                        actualizarPuntos();
-                                        mostrarMensajePuntos("¡Bonus de punts per enfonsar una xarxa en 2 torns!");
-                                        mostrarMensajePuntos("+6000 per destruir la xarxa més petita a la primera");                                        
-                                    }
+                                if (barco.tamaño == "4" && turnosTotales <= 2) {
+                                    puntos += 6000; 
+                                    actualizarPuntos();
+                                    mostrarMensajePuntos("+6000 per destruir la xarxa més petita a la primera");
                                 }
 
                                 hundidoSinFallar = true;
 
                                 if (todosBarcosDestruidos()) {
                                     mostrarMensaje("Has guanyat la partida!");
-                                    partidaActiva = false; // Desactivar la partida
+                                    partidaActiva = false;
                                     mostrarBotones();
                                     mostrarNombre();
-                                    calcularBonificacionPorTiempo(); // Llama a la bonificación final
+                                    calcularBonificacionPorTiempo();
                                 }
                             }
-                            return; // Salir del ciclo
+                            return;
                         }
                     }
                 }
             }
+        }
+
+        if (practiceAmmoEnabled === true && practiceEnemyAmmo == 0 && practicePlayerAmmo == 0) {
+            determinarGanadorPorAciertos();  // Llamada para determinar el ganador
+            return;
         }
     }
 }

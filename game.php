@@ -56,7 +56,7 @@ Notas:
         // $armoredShips = isset($_POST['armoredShips']) ? 'true' : 'false';
         // $specialAttacks = isset($_POST['specialAttacks']) ? 'true' : 'false';
 
-        echo "Limited Ammo: " . $limitedAmmo . "<br>";
+        // echo "Limited Ammo: " . $limitedAmmo . "<br>";
 
 
 
@@ -254,6 +254,7 @@ Notas:
                             echo "<script>console.log('Secret Locations: ". json_encode($StringBarcos) . "');</script>";
             
                             if ($limitedAmmo == 'true') {
+                                echo "<p class='ammoTitle'>Munició</p>";
                                 echo "<p id='practicePlayerAmmo'>40/40</p>";
                                 $playerAmmo = 40;
 
@@ -319,7 +320,7 @@ Notas:
                 $playerName = $_POST['playerName'];
                 echo "<script>
                         document.addEventListener('DOMContentLoaded', function() {
-                        mostrarMensaje('Turno de Player'); // Muestra el mensaje al cargar la página en modo practice
+                        mostrarMensaje('Torn de " . htmlspecialchars($playerName, ENT_QUOTES, 'UTF-8') . "'); // Muestra el mensaje al cargar la página
                         setTimeout(turnoIA, 1000); // Llama a la IA automáticamente después de un breve retraso
                         });
                     </script>";
@@ -506,12 +507,14 @@ Notas:
                         echo "</table>";
 
                         if ($limitedAmmo == 'true') {
-                            echo "<p id='practicePlayerAmmo'>40/40</p>";
-                            $playerAmmo = 5;
+                            echo "<p class='ammoTitle'>Munició</p>";
+                            echo "<p id='practicePlayerAmmo'>40/40</p>";                            
+                            $playerAmmo = 10;
 
                             echo "<script>
                                 var practicePlayerAmmo = " . json_encode($playerAmmo) . ";
                                 var practiceAmmoEnabled = " . json_encode(true) . ";
+                                var practicePlayerName = " . json_encode($playerName) . ";
                             </script>";
                         } else {
                             echo "<script>
@@ -702,8 +705,9 @@ Notas:
                         echo "</table>";
 
                         if ($limitedAmmo == 'true') {
+                            echo "<p class='ammoTitle'>Munició</p>";
                             echo "<p id='practiceEnemyAmmo'>40/40</p>";
-                            $enemyAmmo = 1;
+                            $enemyAmmo = 2;
                             echo "<script>
                             var practiceEnemyAmmo = " . json_encode($enemyAmmo) . ";
                             </script>";

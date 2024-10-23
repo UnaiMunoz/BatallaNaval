@@ -531,6 +531,9 @@ input[type="text"]:focus {
     color: #888888;
 }
 
+.ammoTitle{
+    margin-top: 1vw;
+}
 
 /* ******************************* */
 /* MARK: CSS for ranking.php */
