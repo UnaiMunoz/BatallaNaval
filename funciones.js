@@ -1,5 +1,5 @@
 /* ******************************* */
-/* MARK: JavaScript habilitado           */
+/* MARK: JavaScript habilitado*/
 /* ******************************* */
 
 // Script para habilitar el botón Classic Game si JavaScript está habilitado
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 /* ******************************* */
-/* MARK: Mostrar celdas encriptadas      */
+/* MARK: Mostrar celdas encriptadas*/
 /* ******************************* */
 
 // Función que genera un número random
@@ -48,24 +48,24 @@ function getRandomCodeNumber(element) {
 }
 
 // Asegura que el DOM esté cargado antes de ejecutar el script
-// document.addEventListener("DOMContentLoaded", function() {
-//     // Seleccionar todos los elementos td con la clase "codeName"
-//     const nameElements = document.querySelectorAll("td.codeName");
+document.addEventListener("DOMContentLoaded", function() {
+     // Seleccionar todos los elementos td con la clase "codeName"
+     const nameElements = document.querySelectorAll("td.codeName");
 
-//     // Establecer un intervalo para actualizar solo los elementos que no tienen "codeName"
-//     setInterval(() => {
-//         if (partidaActiva) { // Solo actualizar si la partida está activa
-//             nameElements.forEach(element => {
-//                 if (element.classList.contains("codeName")) {
-//                     getRandomCodeNumber(element);
-//                 }
-//             });
-//         }
-//     }, 100);
-// });
+     // Establecer un intervalo para actualizar solo los elementos que no tienen "codeName"
+     setInterval(() => {
+         if (partidaActiva) { // Solo actualizar si la partida está activa
+             nameElements.forEach(element => {
+                 if (element.classList.contains("codeName")) {
+                     getRandomCodeNumber(element);
+                 }
+             });
+         }
+     }, 100);
+});
 
 /* ****************** */
-/* MARK: Timer              */
+/* MARK: Timer        */
 /* ****************** */
 
 // Funciones Timer
@@ -113,7 +113,7 @@ let hundidoSinFallar = true;
 let puntosAntesDeHundir = 0; 
 
 /* ****************** */
-/* MARK: Funciones          */
+/* MARK: Funciones    */
 /* ****************** */
 
 // Función para mostrar los botones
@@ -404,7 +404,7 @@ function turnoIA() {
 
 
 /* ********************************** */
-/* MARK: CLASSIC GAME -> Destruir barcos    */
+/* MARK: CLASSIC GAME -> Destruir barcos*/
 /* ********************************** */
 
 // Función para comprobar si todos los barcos han sido destruidos
@@ -551,7 +551,7 @@ function changeDataCell(td, gameMode = 'IA') {
 
 
 /* ********************************** */
-/* MARK: Ganar Partida -> Guardar nombre    */
+/* MARK: Ganar Partida -> Guardar nombre*/
 /* ********************************** */
 
 // Guardar Nombre, Puntos y Fecha en ranking.txt
@@ -592,32 +592,24 @@ function saveScore() {
             date: formattedDate // Usar la fecha formateada
         };  
 
-        // Enviar los datos al archivo PHP mediante fetch
-        fetch('ranking.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(playerData)
-        })
-        .then(response => response.text())
-        .then(data => {
-            // console.log('Puntuación guardada:', data);
-            // alert("Jugador guardado!");
-            mostrarMensaje("Felicitats " + playerData.name + "! Revisa el ranking per veure la teva posició.");
-            ocultarNombre();
-
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+        // Enviar los datos al archivo PHP mediante POST
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "ranking.php", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                mostrarMensaje("Felicitats " + playerData.name + "! Revisa el ranking per veure la teva posició.");
+                ocultarNombre();
+            }
+        };
+        xhr.send(JSON.stringify(playerData));
     } else {
         alert("Por favor, ingresa tu nombre.");
     }
 }
 
 /* ********* */
-/* MARK: Sonidos   */
+/* MARK: Sonidos*/
 /* ********* */
 
 //Para que se escuche la musica de fondo
@@ -653,7 +645,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     audio.src = audioSrc;
 
-    /*// Aplicar el estado guardado del audio
+    /* Aplicar el estado guardado del audio
     if (localStorage.getItem('audioMuted') === 'true') {
         audio.muted = true;
         document.getElementById('audioControlButton').textContent = 'Unmute';
@@ -679,6 +671,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }*/
 });
 
+//Cambia la musica por la de win
 function changeMusic(){
     const audio = document.getElementById('backgroundSound');
     if (audio) {
@@ -701,6 +694,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+// Sonido de cuando le da a un barco 
 document.addEventListener("DOMContentLoaded", function() {
     const buttons = document.querySelectorAll('.attackSound');
     
@@ -714,6 +708,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+// Sonido cunado le da al agua
 document.addEventListener("DOMContentLoaded", function() {
     const buttons = document.querySelectorAll('.waterSound');
     
@@ -727,14 +722,21 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+//Funciones de click
+
+// Sonido de la espera dle ataque de la IA
 function iaSound() {
     var sonido = document.getElementById('iaSound');
     sonido.play();
 }
+
+// Sonido de cuando le da a un barco la IA
 function attackSoundIA() {
     var sonido = document.getElementById('attackSoundIA');
     sonido.play();
 }
+
+// Sonido cunado le da al agua la IA
 function waterSoundIA() {
     var sonido = document.getElementById('waterSoundIA');
     sonido.play();
@@ -742,31 +744,74 @@ function waterSoundIA() {
 
 
 /* **************** */
-/* MARK: Notificaciones   */
+/* MARK: Notificaciones*/
 /* **************** */
 
 // Notificaciones CSS
-function showNotification(message, type) {
-    var notification = document.createElement('div');
-    notification.className = 'CSSnotification ' + type; // Usa la nueva clase
-    notification.textContent = message;
 
-    document.getElementById('CSSnotificationContainer').appendChild(notification);
+// Notifica el turno del jugador
+function showNotificationPlayer(message) {
+    const container = document.getElementById('notificationContainer');
+    const notification = document.createElement('div');
+    notification.classList.add('notificationGame');
 
-    // Desvanecer la notificación después de 3 segundos
-    setTimeout(function() {
-        notification.style.opacity = '0';
-        setTimeout(function() {
-            notification.remove();
-        }, 500); // Esperar a que se desvanezca antes de eliminar
+    notification.classList.add('notificationPlayer');
+    notification.innerText = message;
+
+    container.appendChild(notification);
+
+    setTimeout(() => {
+        container.removeChild(notification);
     }, 3000);
 }
 
-// Ejemplo de uso
-showNotification('¡Success!', 'CSSsuccess');
-showNotification('Info.', 'CSSinfo');
-showNotification('Error', 'CSSerror');
-showNotification('Warning', 'CSSwarning');
+// Notifica Si le ha dado al barco o no
+function showNotificationPlayerGame(message) {
+    const container = document.getElementById('notificationContainerGame');
+    const notification = document.createElement('div');
+    notification.classList.add('notificationGame');
+
+    notification.classList.add('notificationPlayerGame');
+    notification.innerText = message;
+
+    container.appendChild(notification);
+
+    setTimeout(() => {
+        container.removeChild(notification);
+    }, 3000);
+}
+
+// Notifica el turno de la IA
+function showNotificationIA(message) {
+    const container = document.getElementById('notificationContainer');
+    const notification = document.createElement('div');
+    notification.classList.add('notificationGame');
+    
+    notification.classList.add('notificationIA');
+    notification.innerText = message;
+
+    container.appendChild(notification);
+
+    setTimeout(() => {
+        container.removeChild(notification);
+    }, 3000);
+}
+
+// Notifica si la IA le ha dado al barco o no
+function showNotificationIAGame(message) {
+    const container = document.getElementById('notificationContainerGame');
+    const notification = document.createElement('div');
+    notification.classList.add('notificationGame');
+    
+    notification.classList.add('notificationGameIAGame');
+    notification.innerText = message;
+
+    container.appendChild(notification);
+
+    setTimeout(() => {
+        container.removeChild(notification);
+    }, 3000);
+}
 
 /* Permitir y no permitir click */
 

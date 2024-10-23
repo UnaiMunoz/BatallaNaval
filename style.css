@@ -63,47 +63,24 @@ body{
 @keyframes moverFondo {
     0% {
         background-position: 0% 0%;
-        filter: brightness(1);
     }
-    10% {
+    16% {
         background-position: 400px 0%;
-        filter: brightness(3);
     }
-    20% {
+    33% {
         background-position: 0% 400px;
-        filter: brightness(0.5);
     }
-    30% {
+    49% {
         background-position: -400px 0%;
-        filter: brightness(3);
     }
-    40% {
+    65% {
         background-position: 0% -400px;
-        filter: brightness(0.5);
     }
-    50% {
-        background-position: 400px 0%;
-        filter: brightness(3);
-    }
-    60% {
-        background-position: 0% 400px;
-        filter: brightness(0.5);
-    }
-    70% {
-        background-position: -400px 0%;
-        filter: brightness(3);
-    }
-    80% {
-        background-position: 0% -400px;
-        filter: brightness(0.5);
-    }
-    90% {
+    82% {
         background-position: 0% 0%;
-        filter: brightness(1);
     }
     100% {
         background-position: 0% 0%;
-        filter: brightness(1);
     }
 }
 
@@ -707,34 +684,57 @@ tr:hover .selecRanking::before {
 }
 
 /* Notification CSS */
-#CSSnotificationContainer {
-    position: fixed; /* Posiciona las notificaciones en la parte superior */
-    top: 120px; /* Espacio desde la parte superior */
-    left: 20px; /* Espacio desde la derecha */
-    z-index: 1000; /* Asegúrate de que se superponga a otros elementos */
+#notificationContainer , 
+#notificationContainergame {
+    position: relative;
 }
 
-.CSSnotification {
-    margin: 10px; /* Espacio entre las notificaciones */
-    padding: 15px; /* Espacio interno */
-    border-radius: 5px; /* Bordes redondeados */
-    color: white; /* Color del texto */
-    opacity: 0.9; /* Transparencia */
-    transition: opacity 0.5s ease; /* Animación de desvanecimiento */
+.notificationGame {
+    position: absolute;
+    padding: 10px;
+    margin: 10px;
+    background-color: #000000;
+    border-radius: 0px 20px 20px 20px;
 }
 
-.CSSsuccess {
-    background-color: #4CAF50; /* Verde */
+.notificationPlayer {
+    border: 2px solid #3700ff;
+    left: -50%;
+    margin-top: 15%;
+    animation: movimentPlayer 3s forwards;
 }
 
-.CSSinfo {
-    background-color: #2196F3; /* Azul */
+.notificationIA {
+    border: 2px solid #ff0000;
+    right: -50%;
+    margin-top: 15%;
+    animation: movimentIA 3s forwards;
 }
 
-.CSSerror {
-    background-color: #f44336; /* Rojo */
+.notificationPlayerGame {
+    border: 2px solid #3700ff;
+    left: -50%;
+    margin-top: 17%;
+    animation: movimentPlayer 3s forwards;
 }
 
-.CSSwarning {
-    background-color: #ff9800; /* Naranja */
+.notificationIAGame {
+    border: 2px solid #ff0000;
+    right: -50%;
+    margin-top: 17%;
+    animation: movimentIA 3s forwards;
+}
+
+@keyframes movimentPlayer {
+    0% { left : -50%; }
+    25% { left: 5%;}
+    75% { left: 5%;}
+    0% { left : -50%; }
+}
+
+@keyframes movimentIA {
+    0% { right : -50%; }
+    25% { right: 5%;}
+    75% { right: 5%;}
+    100% { right :-50%; }
 }

@@ -24,8 +24,6 @@
         </div>
     </noscript>
 
-    
-
     <main id="indexMain">
         <div id="indexButton">
             <form id="gameForm" action="game.php" method="POST" autocomplete="off">
@@ -56,7 +54,6 @@
             </p>
         </div>
     </main>
-
 
 </body>
 </html>

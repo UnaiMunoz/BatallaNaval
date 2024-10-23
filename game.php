@@ -23,7 +23,12 @@ Notas:
 - Los barcos son: Fragata (2), Submarino (3), Destructor (4) y Portaaviones (5).
 -->
 
+    <div id="notificationContainer"></div>
+
+    <div id="notificationContainerGame"></div>
+
     <div id="audioContainer"></div>
+
     <audio id="iaSound">
         <source src="sounds/iaSound.mp3" type="audio/mpeg">
     </audio>
@@ -129,7 +134,7 @@ Notas:
             
                             // Array de barcos [nombre, tamaño]
                             $barcos = [
-                                new Barco("Barca", 1)/*,
+                                new Barco("Barca", 1),
                                 new Barco("Barca", 1),
                                 new Barco("Barca", 1),
                                 new Barco("Barca", 1),
@@ -138,7 +143,7 @@ Notas:
                                 new Barco("Fragata", 2),
                                 new Barco("Submarino", 3),
                                 new Barco("Submarino", 3),
-                                new Barco("Destructor", 4)*/
+                                new Barco("Destructor", 4)
                             ];
             
                             // String para saber las coordenadas de cada barcos
@@ -711,8 +716,6 @@ Notas:
     ?>
 
     </div>
-
-    <div id="CSSnotificationContainer"></div>
 
 </body>
 </html>
