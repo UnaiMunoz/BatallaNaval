@@ -282,7 +282,7 @@ function calcularBonificacionPorTiempo() {
     actualizarPuntos();
 }
 
-function cambiarFondo() {
+function getbackground() {
     var elemento = document.getElementById('game');
     elemento.style.backgroundImage = `url(images/calaveraTormenta.jpg)`;
     elemento.classList.remove('animacion-fondo'); // Remove the class to restart the animation
@@ -290,7 +290,7 @@ function cambiarFondo() {
     elemento.classList.add('animacion-fondo');
 }
 
-function cambiartexto() {
+function getText() {
     var elemento = document.getElementById('gameTitle');
     elemento.classList.remove('animacion-text');
     elemento.classList.add('animacion-text');
@@ -521,8 +521,8 @@ function changeDataCell(td, gameMode = 'IA') {
                                 hundidoSinFallar = true;
 
                                 if (todosBarcosDestruidos()) {
-                                    cambiarFondo();
-                                    cambiartexto();
+                                    getbackground();
+                                    getText();
                                     const gameTitleElement = document.getElementById("gameTitle");
                                     gameTitleElement.innerText = "Felicitats has hackejat tots els servidors!!";
                                     /*mostrarMensaje("Has guanyat la partida!");*/
@@ -622,7 +622,7 @@ document.addEventListener('DOMContentLoaded', () => {
             audioSrc = 'sounds/backgroundSoundIndex.mp3';
             break;
         case 'bodyRanking':
-            audioSrc = 'sounds/backgroundSoundRanking.mp3';
+            audioSrc = 'sounds/backgroundSoundIndex.mp3';
             break;
         case 'game':
             audioSrc = 'sounds/backgroundSoundGame.mp3';
@@ -654,7 +654,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('audioControlButton').textContent = 'Mute';
     }
 
-    // Control del botón de sonido
+    /*// Control del botón de sonido
     const audioControlButton = document.getElementById('audioControlButton');
     if (audioControlButton) {
         audioControlButton.addEventListener('click', () => {
@@ -668,7 +668,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('audioMuted', 'true');
             }
         });
-    }
+    }*/
 });
 
 //Sonido botones

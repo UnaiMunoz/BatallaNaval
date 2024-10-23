@@ -28,7 +28,7 @@
 
     <main id="indexMain">
         <div id="indexButton">
-            <form id="gameForm" action="game.php" method="POST">
+            <form id="gameForm" action="game.php" method="POST" autocomplete="off">
                 <div id="divName">
                     <input id="indexName" name="playerName" placeholder="Escriu el teu nom" required maxlength="30">
                 </div>
