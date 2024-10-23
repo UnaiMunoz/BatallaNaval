@@ -213,15 +213,10 @@ main {
 }
 
 /* Easter Egg */
-/*.contentEasterEgg h1 {
-    overflow: hidden;
-    white-space: nowrap;
-} borrar*/
-
 .glitchTitle {
     position: relative;
     font-size: 2em; /* Ajusta según el tamaño del texto que desees */
-    /*color: #00FF00; /* Color verde para el título */
+    color: #00FF00; /* Color verde para el título */
     animation: glitch-animation 1s infinite;
 }
 
@@ -504,11 +499,36 @@ input[type="text"]:focus {
     content: ']';
 }
 
+#extraOptions {
+    position: absolute; 
+    top: 225px; 
+    left: 420px; 
+    background-color: unset; 
+    padding: 10px; 
+    z-index: 100;
+    display: none;
+}
+
 /* Oscurecer tabla en los turnos */
 
 .tablero-oculto {
     pointer-events: none; /* Desactiva los clics en la tabla */
     opacity: 0.5; /* Reduce la opacidad para oscurecer */
+}
+
+/* Configuracion variables */
+
+/* #limitedAmmo{
+    opacity: 0.5;
+    color: #888888;
+} */
+#armoredShips{
+    opacity: 0.5;
+    color: #888888;
+}
+#specialAttacks{
+    opacity: 0.5;
+    color: #888888;
 }
 
 

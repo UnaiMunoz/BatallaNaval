@@ -28,20 +28,32 @@
 
     <main id="indexMain">
         <div id="indexButton">
-            <form id="gameForm" action="game.php" method="POST">
+            <form id="gameForm" method="POST" autocomplete="off">
                 <div id="divName">
-                    <input id="indexName" name="playerName" placeholder="Escriu el teu nom" required maxlength="30">
+                    <input id="indexName" name="playerName" placeholder="Escriu un nom per jugar" maxlength="30">
                 </div>
-                <?php if (isset($_GET['error']) && $_GET['error'] == 'invalidname'): ?>
-                    <p style="color: red !important; text-align:center; margin:15px">El nom ha de tenir entre 3 i 30 caràcters.</p>
-                <?php endif; ?>
-                <button type="button" id="classicGameBtn" class="indexGame keySound">Partida Clàssica</button>
-                <button type="button" id="practiceGameBtn" class="indexGame keySound">Entrenament</button>
+                <p id="nameError" style="color: red !important; text-align:center; margin:15px;">El nom ha de tenir mínim 3 caràcters.</p>
+                <button type="button" id="classicGameBtn" class="indexGame keySound disabled" disabled>Tutorial</button>
+                <button type="button" id="practiceGameBtn" class="indexGame keySound disabled" disabled>Partida Clàssica</button>
+                <input type="hidden" name="mode" id="modeInput" value="">
+
+                <!-- Formulario para las opciones avanzadas -->
+                <div id="extraOptions">
+                    <label><input type="checkbox" id="limitedAmmo" name="limitedAmmo"> Munició limitada</label><br>
+                    <label><input type="checkbox" disabled id="armoredShips" name="armoredShips"> Vaixells acorassats</label><br>
+                    <label><input type="checkbox" disabled id="specialAttacks" name="specialAttacks"> Atacs especials</label>
+                </div>
+
             </form>
-            
-            <a href="ranking.php">
-                <button class="indexHallOfFame keySound">Hall of Fame</button>
-            </a>
+                <a href="ranking.php">
+                    <button class="indexHallOfFame keySound">Hall of Fame</button>
+                </a>
+
+                <!-- Nuevo botón para mostrar las opciones adicionales -->
+                <button id="extraOptionsBtn" class="indexGame keySound" onclick="showCheckbox()">Opcions Avançades</button>
+
+                
+                
         </div>
 
         <div id="indexText">

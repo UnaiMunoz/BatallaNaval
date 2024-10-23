@@ -21,7 +21,8 @@ El paginador se muestra si hay más de 25 registros.
 
 
 <body id="bodyRanking">
-<?php
+
+    <?php
         // Lee los datos enviados desde el JavaScript
         $inputData = file_get_contents("php://input");
         $data = json_decode($inputData, true);
@@ -42,7 +43,6 @@ El paginador se muestra si hay más de 25 registros.
             fclose($file);
         }
 
-        // Enviar una respuesta (opcional)
     ?>
     
     <header>

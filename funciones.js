@@ -5,24 +5,52 @@
 // Script para habilitar el botón Classic Game si JavaScript está habilitado
 document.addEventListener('DOMContentLoaded', function() {
     var classicGameBtn = document.getElementById('classicGameBtn');
-    classicGameBtn.classList.remove('disabled'); // Elimina la clase disabled
-    classicGameBtn.removeAttribute('disabled'); // Quita el atributo disabled
-    classicGameBtn.onclick = function() {
-        document.getElementById('gameForm').action = 'game.php?mode=classic'; // Establece la acción con el modo classic
-        document.getElementById('gameForm').submit(); // Envía el formulario
-    };
-
     var practiceGameBtn = document.getElementById('practiceGameBtn');
-    practiceGameBtn.classList.remove('disabled'); // Elimina la clase disabled
-    practiceGameBtn.removeAttribute('disabled'); // Quita el atributo disabled
-    practiceGameBtn.onclick = function() {
-        document.getElementById('gameForm').action = 'game.php?mode=practice'; // Establece la acción con el modo practice
-        document.getElementById('gameForm').submit(); // Envía el formulario
+    var indexNameInput = document.getElementById('indexName');
+    var nameError = document.getElementById('nameError');
+    var extraOptionsBtn = document.getElementById('extraOptionsBtn');
+    var extraOptions = document.getElementById('extraOptions');
+
+    // Inicialmente, el mensaje estará visible
+    nameError.textContent = 'El nom ha de tenir mínim 3 caràcters.';
+
+    // Habilitar botones solo cuando el nombre tiene entre 3 y 30 caracteres
+    indexNameInput.addEventListener('input', function() {
+        var nameLength = indexNameInput.value.length;
+        if (nameLength >= 3 && nameLength <= 30) {
+            classicGameBtn.classList.remove('disabled');
+            classicGameBtn.removeAttribute('disabled');
+            practiceGameBtn.classList.remove('disabled');
+            practiceGameBtn.removeAttribute('disabled');
+            nameError.style.color = 'transparent'; // Hacer el texto transparente
+        } else {
+            classicGameBtn.classList.add('disabled');
+            classicGameBtn.setAttribute('disabled', true);
+            practiceGameBtn.classList.add('disabled');
+            practiceGameBtn.setAttribute('disabled', true);
+            nameError.style.color = 'red'; // Mostrar mensaje de error
+        }
+    });
+
+    // Configuración de botones de juego
+    classicGameBtn.onclick = function() {
+        document.getElementById('gameForm').action = 'game.php?mode=classic';
+        document.getElementById('gameForm').submit();
     };
+
+    practiceGameBtn.onclick = function() {
+        document.getElementById('gameForm').action = 'game.php?mode=practice';
+        document.getElementById('gameForm').submit();
+    };
+
+    // Mostrar opciones avanzadas sin recargar la página
+    extraOptionsBtn.onclick = function(event) {
+        event.preventDefault();
+        extraOptions.style.display = extraOptions.style.display === 'none' ? 'block' : 'none';
+    };
+
+
 });
-
-
-
 
 
 /* ******************************* */
@@ -115,6 +143,21 @@ let puntosAntesDeHundir = 0;
 /* ****************** */
 /* Funciones          */
 /* ****************** */
+
+function showCheckbox() {
+    var extraOptions = document.getElementById('extraOptions');
+    var btn = document.getElementById('extraOptionsBtn');
+    var optionsForm = document.getElementById('optionsForm');
+    
+    // Usamos getComputedStyle para obtener el estilo actual
+    var display = window.getComputedStyle(extraOptions).display;
+
+    if (display === 'none') {
+        extraOptions.style.display = 'block'; // Muestra las opciones
+    } else {
+        extraOptions.style.display = 'none'; // Oculta las opciones
+    }
+}
 
 // Función para mostrar los botones
 function mostrarBotones() {
@@ -302,6 +345,23 @@ const attackedPositions = [];
 // Turno de la IA
 function turnoIA() {
     if (partidaActiva && !playerTurn) {
+
+
+        if (practiceAmmoEnabled == true && practiceEnemyAmmo == 0 && practicePlayerAmmo == 0) {
+            mostrarMensaje("Player y la IA no tienen más munición. Partida finalizada.", "yellow");
+            partidaActiva = false; // Desactivar la partida
+            mostrarBotones();
+            mostrarNombre();
+            return; // No continuar con el turno de la IA
+        } 
+        // Verificar si la IA tiene munición
+        else if (practiceAmmoEnabled == true && practiceEnemyAmmo == 0 && practicePlayerAmmo > 0) {
+            mostrarMensaje("La IA no tiene más munición. Turno de Player.", "yellow");
+            cambiarTurno();
+            playerTurn = true;
+            return; // No continuar con el turno de la IA
+        } 
+
         let row, col;
         let hit = false; // Variable para determinar si se ha dado en un barco
         let barcoHundido = false; // Variable para verificar si un barco ha sido hundido
@@ -328,18 +388,40 @@ function turnoIA() {
             setTimeout(() => {
                 let hit = false; // Variable para saber si la IA ha impactado
 
-                if (name === " ") {
-                    // Casilla vacía (agua)
-                    td.innerHTML = "~"; 
-                    td.style.backgroundColor = "blue"; // Cambia el color a azul para indicar un fallo
-                    mostrarMensaje("La IA ha fallado", "yellow");
+                // Reducir munición IA
+                if (practiceAmmoEnabled == true) {
+                    practiceEnemyAmmo--;
+                    var ammoEnemyElement = document.getElementById('practiceEnemyAmmo');
+                    ammoEnemyElement.textContent = practiceEnemyAmmo + "/40";
 
+                    // Comprobar si la munición llegó a 0
+                    if (practiceEnemyAmmo == 0 && practicePlayerAmmo == 0) {
+                        mostrarMensaje("Player y la IA no tienen más munición. Partida finalizada.", "yellow");
+                        mostrarBotones();
+                        mostrarNombre();
+                        partidaActiva = false; // Desactivar la partida
+                        return; // No continuar si la IA se quedó sin munición
+                    }
+                }
+
+                if (practiceAmmoEnabled == true && practicePlayerAmmo == 0) {
+                    mostrarMensaje("Player no tiene más munición. Turno de la IA.", "yellow");
+                    playerTurn = false; // Cambia el turno a la IA
+                    setTimeout(turnoIA, 2000); 
+                } else {
                     // Después de 2 segundos, mostrar "Turno de Player"
                     setTimeout(() => {
                         mostrarMensaje("Turno de Player", "white");
                         cambiarTurno();
                         playerTurn = true; // Cambia el turno al jugador
                     }, 2000); // Espera de 2 segundos antes de mostrar el turno del jugador
+                }
+
+                if (name === " ") {
+                    // Casilla vacía (agua)
+                    td.innerHTML = "~"; 
+                    td.style.backgroundColor = "blue"; // Cambia el color a azul para indicar un fallo
+                    mostrarMensaje("La IA ha fallado", "yellow");
 
                 } else {
                     // Impacto en un barco
@@ -379,6 +461,7 @@ function turnoIA() {
         }      
     }
 }
+
 
 function oscurecerTablero(tablero) {
     tablero.classList.add('tablero-oculto');
@@ -446,11 +529,30 @@ function changeDataCell(td, gameMode = 'IA') {
         td.classList.add("dado");
         
         // Incrementa el número total de turnos
-        turnosTotales++; 
+        turnosTotales++;
+
+        // Reducir munición del jugador
+        if (practiceAmmoEnabled == true) {
+            console.log("Munición Player: " + practicePlayerAmmo);
+            practicePlayerAmmo--;
+            var ammoPlayerElement = document.getElementById('practicePlayerAmmo');
+            ammoPlayerElement.textContent = practicePlayerAmmo + "/40";
+
+            // Comprobar si el jugador se quedó sin munición
+            if (practicePlayerAmmo == 0) {
+                mostrarMensaje("No tienes más munición. Turno de la IA.", "yellow");
+                cambiarTurno();
+                playerTurn = false;
+                setTimeout(turnoIA, 2000); // Llamada a la IA
+                return; // No continuar si el jugador no tiene munición
+            }
+        }
+
 
         if (name === " ") {
             // Casilla vacía (agua)
             td.innerHTML = "~"; 
+            console.log("Has dado agua");
             mostrarMensaje("¡Has fallat!");
             cambiarTurno();
             turnosAguaSeguidos++; // Incrementa la cantidad de turnos sin tocar un barco
@@ -471,6 +573,7 @@ function changeDataCell(td, gameMode = 'IA') {
                 playerTurn = false;
                 setTimeout(turnoIA, 2000); // Llama a la función de IA después de un breve retraso
             }
+
         
         } else {
             // Impacto en un barco
@@ -545,6 +648,8 @@ function changeDataCell(td, gameMode = 'IA') {
         }
     }
 }
+
+
 
 
 /* ********************************** */

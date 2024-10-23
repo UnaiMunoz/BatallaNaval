@@ -32,32 +32,11 @@ Notas:
         </div>
     </header>
 
-    <?php
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            // Sanitizar el nombre del jugador
-            $playerName = htmlspecialchars(trim($_POST['playerName']));
 
-            // Verificar si el nombre está vacío
-            if (empty($playerName)) {
-                header("Location: index.php?error=emptyname");
-                exit;
-            }
-
-            // Verificar si el nombre tiene entre 3 y 30 caracteres
-            if (strlen($playerName) < 3 || strlen($playerName) > 30) {
-                // Si el nombre no es válido, redirigir al formulario con un mensaje de error
-                header("Location: index.php?error=invalidname");
-                exit;
-            }
-
-        } else {
-            // Si no hay datos POST, redirigir a index.php
-            header("Location: index.php");
-            exit;
-        }
-    ?>
     
     <a href="index.php" id="goBackButton"><button id="goBack" class="keySound">Inici</button></a>
+
+    
 
 
     <!-- Mensaje que aparece si JavaScript no está habilitado -->
@@ -68,11 +47,24 @@ Notas:
             <a href="https://www.enable-javascript.com/es/" target="_blank">Fes clic aquí per saber com habilitar JavaScript</a>
         </div>
     </noscript>
+    
 
     <?php
+
+        // Variables de configuración
+        $limitedAmmo = isset($_POST['limitedAmmo']) ? 'true' : 'false';
+        // $armoredShips = isset($_POST['armoredShips']) ? 'true' : 'false';
+        // $specialAttacks = isset($_POST['specialAttacks']) ? 'true' : 'false';
+
+        echo "Limited Ammo: " . $limitedAmmo . "<br>";
+
+
+
+
         if (isset($_GET['mode'])) {
             $mode = $_GET['mode'];
             if ($mode == 'classic') {
+                $playerName = $_POST['playerName'];
                 // Cargar contenido específico para el modo Classic
                 echo '<div id="game_Container">';
                     echo '<div class="section board">';
@@ -261,15 +253,28 @@ Notas:
                             // Imprimir en la consola del navegador
                             echo "<script>console.log('Secret Locations: ". json_encode($StringBarcos) . "');</script>";
             
+                            if ($limitedAmmo == 'true') {
+                                echo "<p id='practicePlayerAmmo'>40/40</p>";
+                                $playerAmmo = 40;
+
+                                echo "<script>
+                                    var practicePlayerAmmo = " . json_encode($playerAmmo) . ";
+                                    var practiceAmmoEnabled = " . json_encode(true) . ";
+                                </script>";
+                            } else {
+                                echo "<script>
+                                        var practiceAmmoEnabled = " . json_encode(false) . ";
+                                    </script>";
+                            }
+                            
+                            
+
                             echo    "<script>
                                         var barcos = " . json_encode($barcos) . ";
                                     </script>";
             
             
                             // echo "Número de barcos creados: " . count($barcos) . "<br>";
-            
-            
-                        
             
                     echo '</div>';
         
@@ -291,6 +296,7 @@ Notas:
                         echo '<div class="input-group">';
                             echo '<div id="divNameGame">';
                             echo "<input type='text' id='name' placeholder='Escriu el teu nom' required class='hidden' maxlength='30' value='$playerName'>";
+                            
                             echo '</div>';
                             echo '<button id="buttonName" class="keySound" onclick="saveScore()">Envia</button>';
                         echo '</div>';
@@ -310,7 +316,7 @@ Notas:
 
                 
             } elseif ($mode == 'practice') {
-
+                $playerName = $_POST['playerName'];
                 echo "<script>
                         document.addEventListener('DOMContentLoaded', function() {
                         mostrarMensaje('Turno de Player'); // Muestra el mensaje al cargar la página en modo practice
@@ -499,6 +505,20 @@ Notas:
                         }
                         echo "</table>";
 
+                        if ($limitedAmmo == 'true') {
+                            echo "<p id='practicePlayerAmmo'>40/40</p>";
+                            $playerAmmo = 5;
+
+                            echo "<script>
+                                var practicePlayerAmmo = " . json_encode($playerAmmo) . ";
+                                var practiceAmmoEnabled = " . json_encode(true) . ";
+                            </script>";
+                        } else {
+                            echo "<script>
+                                var practiceAmmoEnabled = " . json_encode(false) . ";
+                            </script>";
+                        }
+
                         
                         // Imprimir en la consola del navegador
                         echo "<script>console.log('Player Board: ". json_encode($StringBarcos) . "');</script>";
@@ -681,6 +701,13 @@ Notas:
                         }
                         echo "</table>";
 
+                        if ($limitedAmmo == 'true') {
+                            echo "<p id='practiceEnemyAmmo'>40/40</p>";
+                            $enemyAmmo = 1;
+                            echo "<script>
+                            var practiceEnemyAmmo = " . json_encode($enemyAmmo) . ";
+                            </script>";
+                        }
                         
                         // Imprimir en la consola del navegador
                         echo "<script>console.log('IA Board: ". json_encode($StringBarcos) . "');</script>";
@@ -688,7 +715,6 @@ Notas:
                         echo    "<script>
                                     var barcos = " . json_encode($practiceEnemyBoats) . ";
                                     var practiceEnemyBoard = " . json_encode($tabla) . ";
-
                                 </script>";
 
                 echo '</div>';
