@@ -530,7 +530,10 @@ function pageWin() {
 
 
 function pageLose() {
-    //window.location.replace("lose.php");
+    const playerName = encodeURIComponent(practicePlayerName); // Codifica el nombre para la URL
+    // Redirigir a win.php con los parámetros playerName y puntos
+    window.location.href = `lose.php?playerName=${playerName}&puntos=${puntos}`;
+
 }
 
 

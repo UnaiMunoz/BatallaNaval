@@ -37,36 +37,36 @@
                 </div>
         </header>
         <?php
-    // Obtener los parámetros de la URL
-    $playerName = isset($_GET['playerName']) ? htmlspecialchars($_GET['playerName']) : 'Desconocido';
-    $puntos = isset($_GET['puntos']) ? htmlspecialchars($_GET['puntos']) : 0;
+                // Obtener los parámetros de la URL
+                $playerName = isset($_GET['playerName']) ? htmlspecialchars($_GET['playerName']) : 'Desconocido';
+                $puntos = isset($_GET['puntos']) ? htmlspecialchars($_GET['puntos']) : 0;
 
-    echo '</div>';
-    echo '<div class="section">';
+                echo '</div>';
+                echo '<div class="section">';
 
-    // Mostrar puntos
-    echo "<p class='points'>Punts: $puntos</p>"; // Cambiar a la variable $puntos
+                // Mostrar puntos
+                echo "<p class='points'>Punts: $puntos</p>"; // Cambiar a la variable $puntos
 
-    // Escribir nombre                
-    echo '<div id="winSection">';
-    echo '<div id="nombreWin">';
-    echo "<input type='text' id='inputNameWinLose' placeholder='Escriu el teu nom' required maxlength='30' value='$playerName'>";
-    echo '</div>';
-    echo '<button id="nameButton" class="keySound" onclick="saveScore()">Envia</button>';
-    echo '</div>';
-    echo '<div id="successMessageContainer"></div>'; // Contenedor para el mensaje de éxito
+                // Escribir nombre                
+                echo '<div id="winSection">';
+                echo '<div id="nombreWin">';
+                echo "<input type='text' id='inputNameWinLose' placeholder='Escriu el teu nom' required maxlength='30' value='$playerName'>";
+                echo '</div>';
+                echo '<button id="nameButton" class="keySound" onclick="saveScore()">Envia</button>';
+                echo '</div>';
+                echo '<div id="successMessageContainer"></div>'; // Contenedor para el mensaje de éxito
 
 
-    echo '<p id="errorMessage" style="display:none;">El nom ha de tenir almenys 3 caràcters.</p>'; // Ocultar inicialmente el mensaje de error
+                echo '<p id="errorMessage" style="display:none;">El nom ha de tenir almenys 3 caràcters.</p>'; // Ocultar inicialmente el mensaje de error
 
-    // Botones
-    echo '<div id="buttonWin">';
-    echo '<a href="index.php"><button id="buttonsWin" class="keySound">Inici</button></a>';
-    echo '<a href="ranking.php"><button id="buttonsWin" class="keySound">Hall of Fame</button></a>';
-    echo '</div>';
+                // Botones
+                echo '<div id="buttonWin">';
+                echo '<a href="index.php"><button id="buttonsWin" class="keySound">Inici</button></a>';
+                echo '<a href="ranking.php"><button id="buttonsWin" class="keySound">Hall of Fame</button></a>';
+                echo '</div>';
 
-    echo '</div>';
-?>
+                echo '</div>';
+        ?>
 
 
 </body>
