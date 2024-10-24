@@ -19,8 +19,36 @@ Se muestra una tabla con los datos de los jugadores y un paginador para navegar 
 El paginador se muestra si hay más de 25 registros.
 -->
 
-
 <body id="bodyRanking">
+    
+    <?php
+        // Lee los datos enviados desde el JavaScript
+        $inputData = file_get_contents("php://input");
+        $data = json_decode($inputData, true);
+
+        // Verifica que $data no sea null
+        if ($data !== null) {
+            // Extraer nombre, puntuación y fecha si existen
+            $name = isset($data['name']) ? $data['name'] : '';
+            $score = isset($data['score']) ? $data['score'] : 0;
+            $date = isset($data['date']) ? $data['date'] : '';
+
+            // Verificar si el nombre no está vacío
+            if (!empty($name)) {
+                // Formatear la línea a escribir
+                $linea = "$name;$score;$date\n";
+
+                // Escribir en el archivo ranking.txt
+                $file = fopen("ranking.txt", "a"); // Abrir archivo en modo añadir
+                fwrite($file, $linea);
+                fclose($file);
+            }
+        } else {
+            // Manejar el error si $data es null (JSON no válido o no recibido)
+            error_log("Error: No se recibieron datos JSON válidos.");
+        }
+    ?>
+    
     <header>
         <h1>Hall of Fame</h1>
     </header>

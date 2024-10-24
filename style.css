@@ -1,20 +1,4 @@
 /* ******************************* */
-/* MARK: Color variables */
-/* ******************************* */
-
-:root {
-    --black: #272932;
-    --red: #710000;
-    --yellow: #FDF500;
-    --keppel: #1AC5B0;
-    --blue: #37EBF3;
-    --purple: #9370DB;
-    --frostbite: #E455AE;
-    --pink: #CB1DCD;
-    --silver: #D1C5C0;
-}
-
-/* ******************************* */
 /* MARK: General CSS */
 /* ******************************* */
 
@@ -23,11 +7,19 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Courier New', Courier, monospace !important;
-    color: #ffffff !important;
-    text-decoration: none !important;
-    text-transform: none !important;
-    font-weight: unset !important;
-    overflow-x: hidden !important;
+    color: #ffffff;
+    text-decoration: none;
+    text-transform: none;
+    font-weight: unset;
+}
+
+html{
+    background-color: #000;
+}
+
+body{
+    content-visibility: auto;
+    min-height: 100vh;
 }
 
 .js-warning {
@@ -55,7 +47,8 @@
     background: url(images/fondoHacker.jpg);
     background-color: #00000054;
     background-blend-mode: overlay;
-    background-size: cover;
+    background-repeat: repeat-y; /* O repeat para ambos ejes */
+    background-size: cover; /* Mantiene el tamaño original de la imagen */
 }
 
 #game {
@@ -63,6 +56,52 @@
     background-color: #000000ab;
     background-blend-mode: overlay;
     background-size: cover;
+    overflow-x: hidden;
+    position: relative;
+}
+
+@keyframes moverFondo {
+    0% {
+        background-position: 0% 0%;
+    }
+    16% {
+        background-position: 400px 0%;
+    }
+    33% {
+        background-position: 0% 400px;
+    }
+    49% {
+        background-position: -400px 0%;
+    }
+    65% {
+        background-position: 0% -400px;
+    }
+    82% {
+        background-position: 0% 0%;
+    }
+    100% {
+        background-position: 0% 0%;
+    }
+}
+
+.animacion-fondo {
+    animation: moverFondo 5s alternate;
+}
+
+@keyframes parpadeo {
+    0% {
+        color: white; /* Color inicial */
+    }
+    50% {
+        color: green; /* Color intermedio */
+    }
+    100% {
+        color: white; /* Color final */
+    }
+}
+
+.animacion-text {
+    animation: parpadeo 1s infinite; /* Duración de la animación y que se repita indefinidamente */
 }
 
 #bodyRanking {
@@ -73,9 +112,16 @@
 
 h1{
     font-weight: normal;
-    margin: 3% 0;
+    margin: auto;
+    margin-top: 2%;
+    margin-bottom: 2%;
     text-align: center;
-    font-size: 55px;
+    color: #ffffff;
+    width: 45%;
+}
+
+p {
+    color: #ffffff;
 }
 
 /* Botones */
@@ -86,10 +132,20 @@ button {
     background-color: unset;
     border: none;
     cursor: pointer;
+    color: #ffffff;
 }
 
 button:hover {
     background: linear-gradient(to right, #3700ff00 0%, #3700ff 50%, #3700ff00 100%);
+}
+
+#namePlayerGame {
+    font-size: 1.2rem;
+    width: 27%;
+    position: absolute;
+    top: 20px;
+    right: 0;
+    color: #ffff;
 }
 
 /* ******************************* */
@@ -100,14 +156,17 @@ main {
     margin: 0 5%;
 }
 #indexMain{
-    margin-top: 35vh;
+    margin-top: 25vh;
     display: flex;
     align-items: flex-end;
+    position: relative;
 }
 #indexMain div{
     width: 50%;
-    padding-top: 0vw;
+    padding-top: 1vw;
+    justify-content: space-between; /* Alinea los elementos a los extremos */
 }
+
 #indexText p{
     margin-top: 8px;
     font-size: 16px;
@@ -116,6 +175,7 @@ main {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    margin-top: 50px;
 }
 
 .indexGame::before {
@@ -134,12 +194,46 @@ main {
     content: '[#] ';
 }
 
-#audioControlButton:hover::before{
+#indexName{
+    border-style: none;
+    background-color: unset;
+    width: 68%;
+    height: 50px;
+    text-align: center;
+    font-size: 1.6vw;
+}
+
+#divName{
+    display: ruby-text;
+    font-size: 1.6vw;
+}
+
+#divName::before{
     content: '[';
 }
 
-#audioControlButton:hover::after{
+#divName::after{
     content: ']';
+}
+
+
+#divName input:focus {
+    outline: none;
+}
+
+#indexName:hover{
+    cursor: pointer;
+}
+
+.no-clickeable{
+    pointer-events: none;
+}
+
+#error-message{
+    color: red !important; 
+    display: none;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 /* ******************************* */
@@ -161,14 +255,9 @@ main {
 }
 
 /* Easter Egg */
-.contentEasterEgg h1 {
-    overflow: hidden;
-    white-space: nowrap;
-}
-
 .glitchTitle {
     position: relative;
-    font-size: 3em; /* Ajusta según el tamaño del texto que desees */
+    font-size: 2em; /* Ajusta según el tamaño del texto que desees */
     color: #00FF00; /* Color verde para el título */
     animation: glitch-animation 1s infinite;
 }
@@ -210,7 +299,7 @@ main {
     width: 100%;
     height: 100%;
     background: none;
-    overflow: hidden;
+    /*overflow: hidden; borrar*/
     clip: rect(0, 0, 0, 0); /* Inicialmente escondido */
 }
 
@@ -297,6 +386,7 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    color: #ffffff;
 }
 
 .info {
@@ -304,33 +394,32 @@ main {
 }
 
 /* Game Board */
-#gameTable {
+.gameTable {
     width: 32vw;
     height: 32vw;
     text-align: center;
     border-collapse: collapse;
     table-layout: fixed;
-    margin-bottom: 1vw;
 }
 
-#gameTable td{
+.gameTable td{
     padding: 7px;
     text-align: center;
 }
 
-#gameTable tr{
+.gameTable tr{
     border: 2px dashed #ffffff;
 }
 
-#gameTable td:not(:last-of-type){
+.gameTable td:not(:last-of-type){
     border-right: 2px dashed #ffffff;
 }
 
-#gameTable td.codeName:hover{
+.gameTable td.codeName:hover{
     cursor: crosshair;
 }
 
-#gameTable td:hover{
+.gameTable td:hover{
     cursor: default;
 }
 
@@ -343,7 +432,6 @@ main {
 .section.info {
     width: 50%;
     margin: 0 auto;
-    padding: 2vw;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -360,21 +448,19 @@ main {
 /* Puntos */
 .points {
     font-size: 2vw;
-    margin-top: 1vw;
+    /*margin-top: 1vw;borrar*/
 }
  /* Mensaje de Puntos */
 .points-info {
     font-size: 1vw;
-    margin-top: 1vw;
-    margin-bottom: 2vw;
+    /*margin: 1vw 0;borrar*/
     height: auto;
     padding: 1%;
 }
 
 .notification {
     font-size: 1.5vw;
-    margin-top: 1vw;
-    margin-bottom: 2vw;
+    color: #ffffff;
 }
 
 /* Contenedor para input y botón */
@@ -388,19 +474,32 @@ main {
 
 /* Escribir nombre */
 input[type="text"] {
-    width: 100%;
-    padding: 1vw;
-    font-size: 1.2vw;
-    color:  #000000 !important;
-    border-radius: 5px;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-    background-color: #f7f7f7;
-    text-align: center;
-    transition: box-shadow 0.3s ease, border-color 0.3s ease;
     display: none;
-    text-decoration-color: #000;
+    border-style: none;
+    color: #ffffff;
+    background-color: unset;
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    font-size: 1.6vw;
+}
+#divNameGame{
+    display: none;
+    font-size: 1.6vw;
+    color: #ffffff;
 }
 
+#divNameGame::before{
+    content: '[';
+}
+
+#divNameGame::after{
+    content: ']';
+}
+
+#divNameGame input:focus {
+    outline: none;
+}
 /* Placeholder estilo */
 input[type="text"]::placeholder {
     color: #000000;
@@ -412,20 +511,17 @@ input[type="text"]:focus {
     border-color: #000000 !important;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
 }
+
 #buttonName{
     display: none; /* Oculto inicialmente */
     padding: 1vw;
-    font-size: 1.2vw;
-    background-color: #000;
+    font-size: 1.6vw;
+    background-color: unset;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
     margin-left: 11px;
-}
-#buttonName:hover {
-    background-color: #333 !important;
 }
 #errorMessage{
     color: red !important; 
@@ -437,14 +533,56 @@ input[type="text"]:focus {
     display: none; /* Ocultar botones por defecto */
 }
 
-.buttons button:hover::before{
+.buttons button:hover::before , #buttonName:hover::before{
     content: '[';
 }
 
-.buttons button:hover::after{
+.buttons button:hover::after , #buttonName:hover::after{
     content: ']';
 }
 
+#extraOptions {
+    width: 19% !important;
+    position: absolute;
+    top: 225px;
+    left: 358px;
+    background-color: black;
+    border: solid #3700ff;
+    padding: 10px;
+    z-index: 100;
+    border-radius: 20px 20px 20px 0px;
+    display: none;
+}
+
+/* Oscurecer tabla en los turnos */
+
+.tablero-oculto {
+    pointer-events: none; /* Desactiva los clics en la tabla */
+    opacity: 0.5; /* Reduce la opacidad para oscurecer */
+}
+
+/* Configuracion variables */
+
+/* #limitedAmmo{
+    opacity: 0.5;
+    color: #888888;
+} */
+#armoredShips{
+    opacity: 0.5;
+    color: #888888;
+}
+#specialAttacks{
+    opacity: 0.5;
+    color: #888888;
+}
+
+.ammoTitle{
+    margin-top: 1vw;
+}
+
+.showName{
+    margin-bottom: 1vw;
+}
 
 /* ******************************* */
 /* MARK: CSS for ranking.php */
@@ -467,6 +605,7 @@ input[type="text"]:focus {
     border-spacing: 0 15px;
     width: 100%;
     font-size: 1.2em;
+    color: #ffffff;
 }
 
 #rankingTable tr{
@@ -520,7 +659,8 @@ tr:hover .selecRanking::before {
 
 #paginador a {
     text-decoration: none;
-    padding: 5px 10px; 
+    padding: 5px 10px;
+    color: #ffffff;
 }
 
 #paginador a:hover {
@@ -580,35 +720,297 @@ tr:hover .selecRanking::before {
     content: ']';
 }
 
-/* Notification CSS */
-#CSSnotificationContainer {
-    position: fixed; /* Posiciona las notificaciones en la parte superior */
-    top: 120px; /* Espacio desde la parte superior */
-    left: 20px; /* Espacio desde la derecha */
-    z-index: 1000; /* Asegúrate de que se superponga a otros elementos */
+/* ******************************* */
+/* MARK: Notificaciones */
+/* ******************************* */
+#notificationContainer , 
+#notificationContainergame {
+    position: relative;
+    z-index: 200;
 }
 
-.CSSnotification {
-    margin: 10px; /* Espacio entre las notificaciones */
-    padding: 15px; /* Espacio interno */
-    border-radius: 5px; /* Bordes redondeados */
-    color: white; /* Color del texto */
-    opacity: 0.9; /* Transparencia */
-    transition: opacity 0.5s ease; /* Animación de desvanecimiento */
+.notificationGame {
+    position: absolute;
+    padding: 10px;
+    margin: 10px;
+    background-color: #000000 !important;
+    border-radius: 0px 20px 20px 20px;
 }
 
-.CSSsuccess {
-    background-color: #4CAF50; /* Verde */
+.notificationPlayer {
+    background-color: #000000 !important;
+    border: 2px solid #3700ff;
+    left: -50%;
+    margin-top: 15%;
+    animation: movimentPlayer 3s forwards;
 }
 
-.CSSinfo {
-    background-color: #2196F3; /* Azul */
+.notificationIA {
+    background-color: #000000 !important;
+    border: 2px solid yellow;
+    right: -50%;
+    margin-top: 15%;
+    animation: movimentIA 3s forwards;
 }
 
-.CSSerror {
-    background-color: #f44336; /* Rojo */
+.notificationPlayerGame {
+    background-color: #000000 !important;
+    border: 2px solid #3700ff;
+    left: -50%;
+    margin-top: 20%;
+    animation: movimentPlayer 3s forwards;
+}
+
+.notificationIAGame {
+    background-color: #000000 !important;
+    border: 2px solid yellow;
+    right: -50%;
+    margin-top: 20%;
+    animation: movimentIA 3s forwards;
+}
+
+@keyframes movimentPlayer {
+    0% { left : -50%; }
+    25% { left: 5%;}
+    75% { left: 5%;}
+    0% { left : -50%; }
+}
+
+@keyframes movimentIA {
+    0% { right : -50%; }
+    25% { right: 5%;}
+    75% { right: 5%;}
+    100% { right :-50%; }
 }
 
 .CSSwarning {
     background-color: #ff9800; /* Naranja */
+}
+
+/* ******************************* */
+/* MARK: CSS for win.php */
+/* ******************************* */
+
+#bodyWin{
+    background: url(images/calaveraTormenta.jpg);
+    background-size: cover;
+    background-color: #0c0c0c93;
+    background-blend-mode: overlay;
+    overflow-x: hidden;
+    animation: moverFondo 2.5s;
+}
+
+#gameTitle{
+    font-size: 2.5vw;
+}
+
+#inputNameWinLose{
+    margin-top: 100px;
+    margin-bottom: 50px;
+    display: block;
+    color: white
+}
+
+#inputNameWinLose::placeholder{
+    color:white
+}
+
+#nameButton{
+    padding: 1vw;
+    font-size: 1.6vw;
+    background-color: unset;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 11px;
+}
+
+#nameButton:hover::before{
+    content: '[';
+}
+
+#nameButton:hover::after{
+    content: ']';
+}
+
+#buttonsWin:hover::before{
+    content: '[';
+}
+
+#buttonsWin:hover::after{
+    content: ']';
+}
+
+#winSection{
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#divnombreWin{
+    width: 30%;
+    display: none;
+    font-size: 1.6vw;
+    color: #ffffff;
+}
+
+#divnombreWin::before{
+    content: '[';
+}
+
+#divnombreWin::after{
+    content: ']';
+}
+
+#divnombreWin input:focus {
+    outline: none;
+}
+
+.section {
+    width: 50%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#buttonWin{
+    margin-top: 70px;
+}
+
+
+/* ******************************* */
+/* MARK: CSS for lose.php */
+/* ******************************* */
+
+#bodyLose {
+    background-image: url('images/calaveraCerrada.jpg');
+    background-color: #6b5f5fab;
+    background-blend-mode: overlay;
+    background-size: cover;
+    animation: cambiarFondo 2s infinite;
+    height: 100%;
+}
+
+
+#gameTitle{
+    font-size: 2.5vw;
+}
+
+#inputNameLose{
+    margin-top: 100px;
+    margin-bottom: 50px;
+    display: block;
+    color: white
+}
+
+#inputNameLose::placeholder{
+    color:white
+}
+
+#buttonsLose:hover::before{
+    content: '[';
+}
+
+#buttonsLose:hover::after{
+    content: ']';
+}
+
+#loseSection{
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#divnombreLose{
+    width: 30%;
+    display: none;
+    font-size: 1.6vw;
+    color: #ffffff;
+}
+
+#divnombreLose::before{
+    content: '[';
+}
+
+#divnombreLose::after{
+    content: ']';
+}
+
+#divnombreLose input:focus {
+    outline: none;
+}
+
+
+#buttonLose{
+    margin-top: 70px;
+}
+
+
+@keyframes moverFondo {
+    0% {
+        background-position: 0% 0%;
+    }
+    16% {
+        background-position: 400px 0%;
+    }
+    33% {
+        background-position: 0% 400px;
+    }
+    49% {
+        background-position: -400px 0%;
+    }
+    65% {
+        background-position: 0% -400px;
+    }
+    82% {
+        background-position: 0% 0%;
+    }
+    100% {
+        background-position: 0% 0%;
+    }
+}
+
+@keyframes parpadeoWin {
+    0% {
+        color: white; /* Color inicial */
+    }
+    50% {
+        color: green; /* Color intermedio */
+    }
+    100% {
+        color: white; /* Color final */
+    }
+}
+
+@keyframes parpadeoLose {
+    0% {
+        color: white; /* Color inicial */
+    }
+    50% {
+        color: red; /* Color intermedio */
+    }
+    100% {
+        color: white; /* Color final */
+    }
+}
+
+
+@keyframes cambiarFondo {
+    0% {
+      background-image: url('images/calaberaAbierta.jpg');
+    }
+    50% {
+      background-image: url('images/calaveraCerrada.jpg');
+    }
+    100% {
+      background-image: url('images/calaberaAbierta.jpg');
+    }
+  }
+
+.animacion-text-win {
+    animation: parpadeoWin 1s infinite; /* Duración de la animación y que se repita indefinidamente */
+}
+
+.animacion-text-lose {
+    animation: parpadeoLose 1s infinite; /* Duración de la animación y que se repita indefinidamente */
 }

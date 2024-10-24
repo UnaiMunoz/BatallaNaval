@@ -1,21 +1,61 @@
+/* ******************************* */
+/* MARK: JavaScript habilitado*/
+/* ******************************* */
 
 // Script para habilitar el botón Classic Game si JavaScript está habilitado
 document.addEventListener('DOMContentLoaded', function() {
     var classicGameBtn = document.getElementById('classicGameBtn');
-    classicGameBtn.classList.remove('disabled'); // Elimina la clase disabled
-    classicGameBtn.removeAttribute('disabled'); // Quita el atributo disabled
+    var practiceGameBtn = document.getElementById('practiceGameBtn');
+    var indexNameInput = document.getElementById('indexName');
+    var nameError = document.getElementById('nameError');
+    var extraOptionsBtn = document.getElementById('extraOptionsBtn');
+    var extraOptions = document.getElementById('extraOptions');
+
+    // Inicialmente, el mensaje estará visible
+    nameError.textContent = 'El nom ha de tenir mínim 3 caràcters.';
+
+    // Habilitar botones solo cuando el nombre tiene entre 3 y 30 caracteres
+    indexNameInput.addEventListener('input', function() {
+        var nameLength = indexNameInput.value.length;
+        if (nameLength >= 3 && nameLength <= 30) {
+            classicGameBtn.classList.remove('disabled');
+            classicGameBtn.removeAttribute('disabled');
+            practiceGameBtn.classList.remove('disabled');
+            practiceGameBtn.removeAttribute('disabled');
+            nameError.style.color = 'transparent'; // Hacer el texto transparente
+        } else {
+            classicGameBtn.classList.add('disabled');
+            classicGameBtn.setAttribute('disabled', true);
+            practiceGameBtn.classList.add('disabled');
+            practiceGameBtn.setAttribute('disabled', true);
+            nameError.style.color = 'red'; // Mostrar mensaje de error
+        }
+    });
+
+    var mode = "<?php echo $mode; ?>";
+
+    // Configuración de botones de juego
     classicGameBtn.onclick = function() {
-        window.location.href = 'game.php'; // Redirige al hacer clic
+        document.getElementById('gameForm').action = 'game.php?mode=classic';
+        document.getElementById('gameForm').submit();
     };
+
+    practiceGameBtn.onclick = function() {
+        document.getElementById('gameForm').action = 'game.php?mode=practice';
+        document.getElementById('gameForm').submit();
+    };
+
+    // Mostrar opciones avanzadas sin recargar la página
+    extraOptionsBtn.onclick = function(event) {
+        event.preventDefault();
+        extraOptions.style.display = extraOptions.style.display === 'none' ? 'block' : 'none';
+    };
+
+
 });
 
-
-
-// Booleando para comprobar si la partida ha terminado
-let partidaActiva = true;
-
 /* ******************************* */
-/* Mostrar celdas encriptadas      */
+/* MARK: Mostrar celdas encriptadas*/
 /* ******************************* */
 
 // Función que genera un número random
@@ -38,25 +78,86 @@ function getRandomCodeNumber(element) {
 
 // Asegura que el DOM esté cargado antes de ejecutar el script
 document.addEventListener("DOMContentLoaded", function() {
-    // Seleccionar todos los elementos td con la clase "codeName"
-    const nameElements = document.querySelectorAll("td.codeName");
+     // Seleccionar todos los elementos td con la clase "codeName"
+     const nameElements = document.querySelectorAll("td.codeName");
 
-    // Establecer un intervalo para actualizar solo los elementos que no tienen "codeName"
-    setInterval(() => {
-        if (partidaActiva) { // Solo actualizar si la partida está activa
-            nameElements.forEach(element => {
-                if (element.classList.contains("codeName")) {
-                    getRandomCodeNumber(element);
-                }
-            });
-        }
-    }, 100);
+     // Establecer un intervalo para actualizar solo los elementos que no tienen "codeName"
+     setInterval(() => {
+         if (partidaActiva) { // Solo actualizar si la partida está activa
+             nameElements.forEach(element => {
+                 if (element.classList.contains("codeName")) {
+                     getRandomCodeNumber(element);
+                 }
+             });
+         }
+     }, 100);
 });
 
 /* ****************** */
-/* Destruir barcos    */
+/* MARK: Timer        */
 /* ****************** */
 
+// Funciones Timer
+
+let segundos = 0;
+let minutos = 0;
+let horas = 0;
+let cronometro;
+
+function iniciarCronometro() {
+    cronometro = setInterval(actualizarCronometro, 1000); // Se ejecuta cada 1 segundo
+}
+
+function actualizarCronometro() {
+    segundos++;
+
+    if (segundos >= 60) {
+        segundos = 0;
+        minutos++;
+    }
+
+    if (minutos >= 60) {
+        minutos = 0;
+        horas++;
+    }
+
+    // Mostrar el tiempo en el formato HH:MM:SS
+    document.querySelector('.timer').textContent = (horas < 10 ? "0" + horas : horas) + ":" +
+        (minutos < 10 ? "0" + minutos : minutos) + ":" +
+        (segundos < 10 ? "0" + segundos : segundos);
+}
+
+// Iniciar el cronómetro cuando se carga la página
+window.onload = iniciarCronometro;
+
+// Funciones actualización puntos
+
+// Variables para manejar los puntos
+let puntos = 0;
+let turnosAguaSeguidos = 0; 
+let barcosHundidos = 0; 
+let turnosTotales = 0; 
+let hundidoSinFallar = true; 
+let puntosAntesDeHundir = 0; 
+
+/* ****************** */
+/* MARK: Funciones    */
+/* ****************** */
+
+function showCheckbox() {
+    var extraOptions = document.getElementById('extraOptions');
+    var btn = document.getElementById('extraOptionsBtn');
+    var optionsForm = document.getElementById('optionsForm');
+    
+    // Usamos getComputedStyle para obtener el estilo actual
+    var display = window.getComputedStyle(extraOptions).display;
+
+    if (display === 'none') {
+        extraOptions.style.display = 'block'; // Muestra las opciones
+    } else {
+        extraOptions.style.display = 'none'; // Oculta las opciones
+    }
+}
 
 // Función para mostrar los botones
 function mostrarBotones() {
@@ -68,50 +169,42 @@ function mostrarBotones() {
 
 function mostrarNombre() {
     const input = document.querySelector('#name');
+    const divNameGame = document.querySelector('#divNameGame');
     const button = document.querySelector('#buttonName');
 
     if (input && button) {
         input.style.display = 'block'; // Mostrar el input
+        divNameGame.style.display = 'contents';; // Mostrar corchetes
         button.style.display = 'block'; // Mostrar el botón
     }
 }
 
-
 function ocultarNombre() {
     const input = document.querySelector('#name'); // Usa el ID específico
+    const divNameGame = document.querySelector('#divNameGame');
     const button = document.querySelector('#buttonName'); // Usa el ID específico
 
     if (input && button) {
         input.style.display = 'none'; // Ocultar el input
+        divNameGame.style.display = 'none';; // Mostrar corchetes
         button.style.display = 'none'; // Ocultar el botón
     }
 }
 
-
-// Función para comprobar si todos los barcos han sido destruidos
-function todosBarcosDestruidos() {
-    for (let barco of barcos) {
-        if (barco.vida > 0) {
-            // Si algún barco tiene vida restante, la partida no ha terminado
-            return false;
-        }
-    }
-    // Si todos los barcos tienen vida 0, la partida está ganada
-    return true;
-}
-
 // Función para mostrar los mensajes en el <div> con clase "info"
-function mostrarMensaje(mensaje) {
+function mostrarMensaje(mensaje, color = 'white') {
     const notificationP = document.querySelector('.info .notification'); // Seleccionar el <p> con la clase 'notification'
     
     if (notificationP) {
-        // Si la etiqueta <p> con clase 'notification' existe, actualizar su contenido
+        // Si la etiqueta <p> con clase 'notification' existe, actualizar su contenido y color
         notificationP.textContent = mensaje;
+        notificationP.style.color = color; // Cambiar el color del texto
     } else {
         // Si no existe, crearla (aunque debería existir por el HTML inicial)
         const mensajeP = document.createElement('p');
         mensajeP.classList.add('notification');
         mensajeP.textContent = mensaje;
+        mensajeP.style.color = color; // Asignar el color inicial del texto
         document.querySelector('.info').appendChild(mensajeP); // Añadir al contenedor de info
     }
 }
@@ -152,50 +245,6 @@ function vaciarMensajePuntos() {
     }
 }
 
-// Funciones Timer
-
-let segundos = 0;
-let minutos = 0;
-let horas = 0;
-let cronometro;
-
-function iniciarCronometro() {
-    cronometro = setInterval(actualizarCronometro, 1000); // Se ejecuta cada 1 segundo
-}
-
-function actualizarCronometro() {
-    segundos++;
-
-    if (segundos >= 60) {
-        segundos = 0;
-        minutos++;
-    }
-
-    if (minutos >= 60) {
-        minutos = 0;
-        horas++;
-    }
-
-    // Mostrar el tiempo en el formato HH:MM:SS
-    document.querySelector('.timer').textContent = (horas < 10 ? "0" + horas : horas) + ":" +
-        (minutos < 10 ? "0" + minutos : minutos) + ":" +
-        (segundos < 10 ? "0" + segundos : segundos);
-}
-
-// Iniciar el cronómetro cuando se carga la página
-window.onload = iniciarCronometro;
-
-
-// Funciones actualización puntos
-
-// Variables para manejar los puntos
-let puntos = 0;
-let turnosAguaSeguidos = 0; 
-let barcosHundidos = 0; 
-let turnosTotales = 0; 
-let hundidoSinFallar = true; 
-let puntosAntesDeHundir = 0; 
-
 function applyEasterEgg() {
     // Variables para el Easter Egg (Tienes que pulsar la casilla C4)
     let clickCounterC4 = 0; // Contador de clics para "C4"
@@ -227,143 +276,24 @@ function applyEasterEgg() {
 
             clickCounterC4 = 0; // Reiniciar el contador
 
-            // Para el timer
-            clearInterval(cronometro);
-            mostrarMensaje("Has guanyat la partida!");
-            partidaActiva = false; // Desactivar la partida
-            calcularBonificacionPorTiempo(); // Llama a la bonificación final
-            mostrarNombre();
-            mostrarBotones();
-
-
+            if (mode == 'practice') {
+                clearInterval(cronometro);
+                pageWin();
+            } else{
+                // Para el timer
+                clearInterval(cronometro);
+                //mostrarMensaje("Has guanyat la partida!");
+                partidaActiva = false; // Desactivar la partida
+                calcularBonificacionPorTiempo(); // Llama a la bonificación final
+                mostrarNombre();
+                mostrarBotones();
+            }
         }
     };
 }
 
-
-
 // Crear una instancia de la función de Easter Egg
 const activateEasterEgg = applyEasterEgg();
-
-let debeVaciarMensajes = false;
-
-function changeDataCell(td) {
-    if (!partidaActiva) return; // Si la partida no está activa, no hacer nada
-
-    if (debeVaciarMensajes) {
-        vaciarMensajePuntos();
-        debeVaciarMensajes = false; // Resetear la bandera
-    }
-
-    // Obtener el atributo 'name' de la celda (nombre del barco o vacío)
-    let name = td.getAttribute('name'); 
-
-    // Verificar si es la casilla "C4"
-    let row = td.parentElement.rowIndex; // Obtener índice de fila
-    let col = td.cellIndex; // Obtener índice de columna
-
-    if (row === 3 && col === 4) { // C4 corresponde a la fila 3 y columna 4
-        activateEasterEgg(); // Llamar a la función para manejar el título
-    }
-
-    // Comprobar si el clic corresponde a una casilla con un barco
-    if (td.classList.contains("codeName")) {
-        td.classList.remove("codeName");
-        td.classList.add("dado");
-        
-        // Incrementa el número total de turnos
-        turnosTotales++; 
-
-        if (name === " ") {
-            // Casilla vacía (agua)
-            td.innerHTML = "~"; 
-            mostrarMensaje("¡Has fallat!");
-            turnosAguaSeguidos++; // Incrementa la cantidad de turnos sin tocar un barco
-
-            // Si hay 5 turnos de agua seguidos, restar 50 puntos
-            if (turnosAguaSeguidos >= 5) {
-                puntos -= 50;
-                actualizarPuntos();
-                mostrarMensajePuntos("¡Has perdut 50 punts!");
-                turnosAguaSeguidos = 0; // Reinicia el contador de turnos de agua seguidos
-            }
-
-            // Rompe la cadena de hundir sin fallar
-            hundidoSinFallar = false; 
-        } else {
-            // Impacto en un barco7
-            hundidoSinFallar = true; 
-            for (let barco of barcos) {
-                if (barco.tipo === name) {
-                    let row = td.parentElement.rowIndex; // Obtener índice de fila
-                    let col = td.cellIndex; // Obtener índice de columna
-
-                    for (let coord of barco.coordenadas) {
-                        if (coord[0] === row && coord[1] === col) {
-                            // Reducir la vida del barco
-                            barco.vida -= 1; 
-                            td.innerHTML = "X"; // Indicar que el barco ha sido tocado
-                            // mostrarMensaje(`¡Has tocat ${barco.tipo}!`);
-                            mostrarMensaje(`¡Has tocat una xarxa de ${barco.tamaño}!`);
-                            puntos += 50; // Sumar 50 puntos por tocar un barco
-                            mostrarMensajePuntos("+50 punts per atacar un servidor\n");
-                            actualizarPuntos();
-
-                            turnosAguaSeguidos = 0; // Reinicia el contador de turnos de agua
-
-                            // Verificar si el barco ha sido hundido
-                            if (barco.vida === 0) {
-                                barcosHundidos++; // Incrementar barcos hundidos
-                                // mostrarMensaje(`Has enfonsat ${barco.tipo}!`);
-                                mostrarMensaje(`¡Tens el control de la xarxa amb ${barco.tamaño} servidors`);
-                                debeVaciarMensajes = true;
-
-                                // **Multiplicador si hundes sin fallar**
-                                if (hundidoSinFallar) {
-                                    let multiplicador = barco.tamaño;
-
-                                    // Guardamos los puntos antes de aplicar el multiplicador
-                                    let puntosAntesMultiplicador = puntos; 
-
-                                    // Aplicar el multiplicador correctamente
-                                    puntos += puntosAntesMultiplicador * (multiplicador - 1); 
-                                    mostrarMensajePuntos("+" + (puntos - puntosAntesMultiplicador) + " per destruir una xarxa");
-                                    actualizarPuntos();
-                                    // mostrarMensajePuntos(`¡Punts multiplicats per ${multiplicador} en enfonsar de cop ${barco.tipo}!`);
-                                    mostrarMensajePuntos(`¡Punts multiplicats per ${multiplicador} en enfonsar de cop una xarxa de ${barco.tamaño} servidors!`);
-
-                                }
-
-                                // **Multiplicador especial para Fragata**
-                                if (barco.tamaño == "2") {
-                                    if (turnosTotales <= 2) {
-                                        puntos += 3000; // Bonus por hundir la Fragata en 2 turnos
-                                        puntos *= 2; // Multiplicador adicional
-                                        actualizarPuntos();
-                                        mostrarMensajePuntos("¡Bonus de punts per enfonsar una xarxa en 2 torns!");
-                                        mostrarMensajePuntos("+6000 per destruir la xarxa més petita a la primera");                                        
-                                    }
-                                }
-
-
-                                hundidoSinFallar = true;
-
-                                if (todosBarcosDestruidos()) {
-                                    mostrarMensaje("Has guanyat la partida!");
-                                    partidaActiva = false; // Desactivar la partida
-                                    mostrarBotones();
-                                    mostrarNombre();
-                                    calcularBonificacionPorTiempo(); // Llama a la bonificación final
-                                }
-                            }
-                            return; // Salir del ciclo
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
 
 
 // Función que actualiza los puntos en el HTML
@@ -397,12 +327,381 @@ function calcularBonificacionPorTiempo() {
     actualizarPuntos();
 }
 
+function getbackground() {
+    var elemento = document.getElementById('game');
+    elemento.style.backgroundImage = `url(images/calaveraTormenta.jpg)`;
+    elemento.classList.remove('animacion-fondo'); // Remove the class to restart the animation
+    void elemento.offsetWidth; // Trigger reflow to restart the animation
+    elemento.classList.add('animacion-fondo');
+}
+
+function getText() {
+    var elemento = document.getElementById('gameTitle');
+    elemento.classList.remove('animacion-text');
+    elemento.classList.add('animacion-text');
+}
+
+// Booleandos
+let partidaActiva = true;
+let debeVaciarMensajes = false;
+
+/* ******************************** */
+/* MARK: PRACTICE GAME --> Turno de la IA */
+/* ******************************** */
+
+// Variables para Practice Tool
+// practicePlayerBoats 
+// practicePlayerBoard
+// practiceEnemyBoats 
+// practiceEnemyBoard
+
+let playerTurn = true;
+const attackedPositions = [];
+
+let playerHits = 0;  // Aciertos del jugador
+let iaHits = 0;      // Aciertos de la IA
+
+function determinarGanadorPorAciertos() {
+    clearInterval(cronometro);
+    partidaActiva = false;
+    
+    if (playerHits > iaHits) {
+        mostrarMensaje("¡Has ganado la partida por tener más aciertos!", "green");
+        pageWin();
+    } else if (iaHits > playerHits) {
+        mostrarMensaje("La IA ha ganado la partida por tener más aciertos.", "red");
+        pageLose();
+    } else {
+        mostrarMensaje("La IA ha ganado por empate.", "blue");
+        pageLose();
+    }
+    
+    mostrarBotones();
+    mostrarNombre();
+    calcularBonificacionPorTiempo();
+}
+
+
+// Turno de la IA
+function turnoIA() {
+    if (partidaActiva && !playerTurn) {
+        if (practiceAmmoEnabled && practiceEnemyAmmo === 0 && practicePlayerAmmo === 0) {
+            setTimeout(determinarGanadorPorAciertos, 2000);
+            return;
+        } else if (practiceAmmoEnabled && practiceEnemyAmmo === 0) {
+            setTimeout(() => {
+                showNotificationIA(`La IA no té més munició. Torn de ${practicePlayerName}`);
+                playerTurn = true;
+                cambiarTurno(playerTurn);
+            }, 2000);
+            return;
+        }
+
+        let row, col;
+        let hit = false;
+        let barcoHundido = false;
+
+        do {
+            row = Math.floor(Math.random() * 10) + 1;
+            col = Math.floor(Math.random() * 10) + 1;
+        } while (attackedPositions.some(pos => pos.row === row && pos.col === col));
+
+        const td = document.querySelector(`tr:nth-child(${row + 1}) td:nth-child(${col + 1})`);
+        
+        if (td) {
+            let name = td.getAttribute('name');
+
+            // Almacenar posición atacada
+            attackedPositions.push({ row: row, col: col }); // Guardar la posición en attackedPositions
+            
+            //Suena la musica de espera
+            iaSound();
+
+            showNotificationIA("Torn de IA, pensant moviment...");
+
+            setTimeout(() => {
+                if (practiceAmmoEnabled) {
+                    if (practiceEnemyAmmo === 0 && practicePlayerAmmo === 0) {
+                        setTimeout(determinarGanadorPorAciertos, 2000);
+                        return;
+                    }
+
+                    practiceEnemyAmmo--;
+                    document.getElementById('practiceEnemyAmmo').textContent = practiceEnemyAmmo + "/40";
+                }
+
+                if (name === " ") {
+                    td.innerHTML = "~"; 
+                    td.style.backgroundColor = "blue";
+                    showNotificationIAGame("La IA ha fallat");
+                    //mostrarMensaje("La IA ha fallat", "yellow");
+                    waterSoundIA();
+                    if (practiceAmmoEnabled && practicePlayerAmmo === 0) {
+                        setTimeout(() => {
+                            showNotificationIA(`${practicePlayerName} no té més munició. Segueix el torn de la IA.`);
+                            //mostrarMensaje("Player no tiene más munición. Sigue el turno de la IA.", "yellow");
+                        }, 2000);
+                        playerTurn = false;
+                        //Suena la musica de espera
+                        iaSound();
+                        setTimeout(turnoIA, 2000);
+                    } else {
+                        setTimeout(() => {
+                            showNotificationPlayer(`Torn de ${practicePlayerName}`);
+                            //mostrarMensaje("Turno de Player.", "yellow");
+                            playerTurn = true;
+                            cambiarTurno(playerTurn);
+                        }, 2000);
+                    }
+                } else {
+                    attackSoundIA();
+                    for (let barco of barcos) {
+                        if (barco.tipo === name) {
+                            barco.vida -= 1;
+                            td.innerHTML = "X"; 
+                            td.style.backgroundColor = "red";
+                            //mostrarMensaje(`¡La IA ha tocado una xarxa de ${barco.tamaño}!`, "yellow");
+                            iaHits++;  // Incrementar aciertos de la IA
+
+                            if (barco.vida === 0) {
+                                barcoHundido = true;
+                                setTimeout(() => showNotificationIAGame(`¡La IA ha enfonsat una xarxa amb ${barco.tamaño} servidors!`), 2000);
+                                //setTimeout(() => mostrarMensaje(`¡La IA ha hundido una xarxa amb ${barco.tamaño} servidors!`, "red"), 2000);
+                            }else{
+                                showNotificationIAGame("¡La IA ha tocat una xarxa!");
+                            }
+
+                            hit = true;
+                            break;
+                        }
+                    }
+
+                    if (hit && barcoHundido) {
+                        setTimeout(() => {
+                            //showNotificationIAGame(`¡La IA ha hundido una xarxa amb ${barco.tamaño} servidors!`)
+                            //Suena la musica de espera
+                            iaSound();
+                            setTimeout(turnoIA, 2000);
+                        }, 200);
+                    } else if (hit) {
+                        //showNotificationIAGame("¡La IA ha tocado una xarxa!");
+                        //Suena la musica de espera
+                        iaSound();
+                        setTimeout(turnoIA, 2000);
+                    }
+                }
+            }, 2000);
+        }
+    }
+}
+
+function oscurecerTablero(tablero) {
+    tablero.classList.add('tablero-oculto');
+}
+
+function habilitarTablero(tablero) {
+    tablero.classList.remove('tablero-oculto');
+}
+
+function cambiarTurno(playerTurn) {
+    if (playerTurn) {
+        // Oscurecer la tabla del jugador y habilitar la tabla de la IA
+        oscurecerTablero(document.getElementById('practicePlayergameTable')); // Reemplaza con el ID real de tu tabla
+        habilitarTablero(document.getElementById('practiceEnemygameTable')); // Reemplaza con el ID real de tu tabla
+    } else {
+        // Oscurecer la tabla de la IA y habilitar la tabla del jugador
+        oscurecerTablero(document.getElementById('practiceEnemygameTable')); // Reemplaza con el ID real de tu tabla
+        habilitarTablero(document.getElementById('practicePlayergameTable')); // Reemplaza con el ID real de tu tabla
+    }
+}
+
+//cambiar pantalla 
+function pageWin() {
+    const playerName = encodeURIComponent(practicePlayerName); // Codifica el nombre para la URL
+
+    // Redirigir a win.php con los parámetros playerName y puntos
+    window.location.href = `win.php?playerName=${playerName}&puntos=${puntos}`;
+}
+
+
+
+function pageLose() {
+    const playerName = encodeURIComponent(practicePlayerName); // Codifica el nombre para la URL
+    // Redirigir a win.php con los parámetros playerName y puntos
+    window.location.href = `lose.php?playerName=${playerName}&puntos=${puntos}`;
+
+}
+
+
+/* ********************************** */
+/* MARK: CLASSIC GAME -> Destruir barcos*/
+/* ********************************** */
+
+// Función para comprobar si todos los barcos han sido destruidos
+function todosBarcosDestruidos() {
+    for (let barco of barcos) {
+        if (barco.vida > 0) {
+            // Si algún barco tiene vida restante, la partida no ha terminado
+            return false;
+        }
+    }
+    // Si todos los barcos tienen vida 0, la partida está ganada
+    return true;
+}
+
+function changeDataCell(td, gameMode = 'IA') {
+    if (!partidaActiva) return; // Si la partida no está activa, no hacer nada
+
+    if (debeVaciarMensajes) {
+        vaciarMensajePuntos();
+        debeVaciarMensajes = false; // Resetear la bandera
+    }
+
+    let name = td.getAttribute('name'); 
+    let row = td.parentElement.rowIndex; 
+    let col = td.cellIndex; 
+
+    if (row === 3 && col === 4) { 
+        activateEasterEgg(); 
+    }
+
+    if (td.classList.contains("codeName")) {
+        td.classList.remove("codeName");
+        td.classList.add("dado");
+        
+        turnosTotales++;
+
+        if (practiceAmmoEnabled == true) {
+            practicePlayerAmmo--;
+            var ammoPlayerElement = document.getElementById('practicePlayerAmmo');
+            ammoPlayerElement.textContent = practicePlayerAmmo + "/40";
+
+            if (practicePlayerAmmo == 0 && practiceEnemyAmmo > 0) {
+                showNotificationPlayerGame("No tienes más munición. Turno de la IA.");
+                //mostrarMensaje("No tienes más munición. Turno de la IA.", "yellow");
+                cambiarTurno();
+                playerTurn = false;
+                setTimeout(turnoIA, 2000); 
+                return;
+            }
+        }
+
+        if (name === " ") {
+            td.innerHTML = "~"; 
+            showNotificationPlayerGame("¡Has fallat!");
+
+            if (practiceAmmoEnabled === true && practiceEnemyAmmo > 0) {
+                cambiarTurno(); 
+                playerTurn = false;
+                setTimeout(turnoIA, 2000);
+            } else if (practiceAmmoEnabled === true && practiceEnemyAmmo === 0) {
+                showNotificationPlayer("La IA no tiene más munición. Sigue tu turno.");
+                //mostrarMensaje("La IA no tiene más munición. Sigue tu turno.", "yellow");
+                playerTurn = true;
+            } else if (practiceAmmoEnabled === false) {
+                cambiarTurno();
+                playerTurn = false;
+                setTimeout(turnoIA, 2000);
+            }
+
+            turnosAguaSeguidos++;
+            if (turnosAguaSeguidos >= 5) {
+                puntos -= 50;
+                actualizarPuntos();
+                mostrarMensajePuntos("¡Has perdut 50 punts!");
+                turnosAguaSeguidos = 0;
+            }
+
+            hundidoSinFallar = false; 
+
+        } else {
+            hundidoSinFallar = true; 
+            for (let barco of barcos) {
+                if (barco.tipo === name) {
+                    let row = td.parentElement.rowIndex;
+                    let col = td.cellIndex;
+
+                    for (let coord of barco.coordenadas) {
+                        if (coord[0] === row && coord[1] === col) {
+                            barco.vida -= 1; 
+                            td.innerHTML = "X"; 
+                            showNotificationPlayerGame("Has tocat una xarxa!");
+                            //mostrarMensaje(`¡Has tocat una xarxa de ${barco.tamaño}!`);
+                            puntos += 50; 
+                            playerHits++;  // Incrementar aciertos del jugador
+                            mostrarMensajePuntos("+50 punts per atacar un servidor\n");
+                            actualizarPuntos();
+
+                            turnosAguaSeguidos = 0;
+
+                            if (barco.vida === 0) {
+                                barcosHundidos++; 
+                                showNotificationPlayerGame(`¡Tens el control de la xarxa amb ${barco.tamaño} servidors`);
+                                //mostrarMensaje(`¡Tens el control de la xarxa amb ${barco.tamaño} servidors`);
+                                debeVaciarMensajes = true;
+
+                                if (hundidoSinFallar) {
+                                    let multiplicador = barco.tamaño;
+                                    let puntosAntesMultiplicador = puntos; 
+                                    puntos += puntosAntesMultiplicador * (multiplicador - 1); 
+                                    mostrarMensajePuntos("+" + (puntos - puntosAntesMultiplicador) + " per destruir una xarxa");
+                                    actualizarPuntos();
+                                    mostrarMensajePuntos(`¡Punts multiplicats per ${multiplicador} en enfonsar de cop una xarxa de ${barco.tamaño} servidors!`);
+                                }
+
+                                if (barco.tamaño == "4" && turnosTotales <= 4) {
+                                    puntos += 6000; 
+                                    actualizarPuntos();
+                                    mostrarMensajePuntos("+6000 per destruir la xarxa més petita a la primera");
+                                }
+
+                                hundidoSinFallar = true;
+
+                                if (todosBarcosDestruidos()) {
+                                    if (gameMode = 'IA') {
+                                        calcularBonificacionPorTiempo();
+                                        partidaActiva = false;
+                                        pageWin();
+                                    } else{
+                                        calcularBonificacionPorTiempo();
+                                        partidaActiva = false;
+                                        pageWin();
+                                        // getbackground();
+                                        // getText();
+                                        // changeMusic();
+                                        // const gameTitleElement = document.getElementById("gameTitle");
+                                        // gameTitleElement.innerText = "Felicitats has hackejat tots els servidors!!";
+                                        // mostrarBotones();
+                                        // mostrarNombre();
+                                        // calcularBonificacionPorTiempo();
+                                        // partidaActiva = false; // Desactivar la partida
+                                    }
+                                }
+                            }
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (practiceAmmoEnabled === true && practiceEnemyAmmo == 0 && practicePlayerAmmo == 0) {
+            determinarGanadorPorAciertos();  // Llamada para determinar el ganador
+            return;
+        }
+    }
+}
+
+/* ********************************** */
+/* MARK: Ganar Partida -> Guardar nombre*/
+/* ********************************** */
 
 // Guardar Nombre, Puntos y Fecha en ranking.txt
-
 function saveScore() {
-    var playerName = document.getElementById("name").value;
+    var playerName = document.getElementById("inputNameWinLose").value; // Obtener el nombre del jugador
     var points = document.querySelector(".points").textContent.split(": ")[1];  // Obtener puntos
+
+    // Formatear la fecha y la hora
     var options = { 
         timeZone: "Europe/Madrid", 
         year: 'numeric', 
@@ -421,7 +720,9 @@ function saveScore() {
     formattedDate = date + ' ' + time.split(':').join(':');
 
     const errorMessage = document.getElementById('errorMessage');
+    const successMessageContainer = document.getElementById('successMessageContainer'); // Contenedor para el mensaje de éxito
 
+    // Comprobar la longitud del nombre del jugador
     if (playerName.length < 3) {
         errorMessage.style.display = 'block'; // Mostrar mensaje de error
         return; // No continuar si el nombre es demasiado corto
@@ -429,37 +730,66 @@ function saveScore() {
         errorMessage.style.display = 'none'; // Ocultar mensaje si es válido
     }
 
-    if (playerName !== "") {
-        // Crear un objeto con los datos del jugador
-        var playerData = {
-            name: playerName,
-            score: points,
-            date: formattedDate // Usar la fecha formateada
-        };  
+    // Crear un objeto con los datos del jugador
+    var playerData = {
+        name: playerName,
+        score: points,
+        date: formattedDate // Usar la fecha formateada
+    };  
 
-        // Enviar los datos al archivo PHP mediante fetch
-        fetch('win.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(playerData)
-        })
-        .then(response => response.text())
-        .then(data => {
-            // console.log('Puntuación guardada:', data);
-            // alert("Jugador guardado!");
-            mostrarMensaje("Felicitats " + playerData.name + "! Revisa el ranking per veure la teva posició.");
-            ocultarNombre();
+                        // Ocultar el botón
+                        document.getElementById("nameButton").style.display = 'none'; 
 
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-    } else {
-        alert("Por favor, ingresa tu nombre.");
-    }
+                        // Crear un nuevo párrafo para el mensaje de éxito
+                        var successMessage = document.createElement("p");
+                        successMessage.textContent = "La teva puntuació ha estat guardada!";
+                        successMessage.className = "successMessage"; // Puedes añadir una clase para estilizarlo
+                        successMessageContainer.appendChild(successMessage); // Añadir el mensaje al contenedor
+                        
+                        ocultarNombre(); // Llama a la función para ocultar el nombre si es necesario
+                    
+
+    // Enviar los datos al archivo PHP mediante POST
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "ranking.php", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.success) {
+                    // Ocultar el botón
+                    document.getElementById("nameButton").style.display = 'none'; 
+
+                    // Crear un nuevo párrafo para el mensaje de éxito
+                    var successMessage = document.createElement("p");
+                    successMessage.textContent = "La teva puntuació ha estat guardada!";
+                    successMessage.className = "successMessage"; // Puedes añadir una clase para estilizarlo
+                    successMessageContainer.appendChild(successMessage); // Añadir el mensaje al contenedor
+                    
+                    ocultarNombre(); // Llama a la función para ocultar el nombre si es necesario
+                } else {
+                    console.error("Error al guardar el registro: " + response.message);
+                }
+            } else {
+                console.error("Error en la petición: " + xhr.status);
+            }
+        }
+    };
+
+    // Ocultar el botón antes de enviar la solicitud
+    document.getElementById("nameButton").style.display = 'none'; 
+    xhr.send(JSON.stringify(playerData));
 }
+
+
+
+
+
+/* ********* */
+/* MARK: Sonidos*/
+/* ********* */
 
 //Para que se escuche la musica de fondo
 document.addEventListener('DOMContentLoaded', () => {
@@ -471,7 +801,7 @@ document.addEventListener('DOMContentLoaded', () => {
             audioSrc = 'sounds/backgroundSoundIndex.mp3';
             break;
         case 'bodyRanking':
-            audioSrc = 'sounds/backgroundSoundRanking.mp3';
+            audioSrc = 'sounds/backgroundSoundIndex.mp3';
             break;
         case 'game':
             audioSrc = 'sounds/backgroundSoundGame.mp3';
@@ -494,7 +824,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     audio.src = audioSrc;
 
-    // Aplicar el estado guardado del audio
+    /* Aplicar el estado guardado del audio
     if (localStorage.getItem('audioMuted') === 'true') {
         audio.muted = true;
         document.getElementById('audioControlButton').textContent = 'Unmute';
@@ -517,8 +847,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('audioMuted', 'true');
             }
         });
-    }
+    }*/
 });
+
+//Cambia la musica por la de win
+function changeMusic(){
+    const audio = document.getElementById('backgroundSound');
+    if (audio) {
+        audio.src = 'sounds/winSound.mp3';
+        audio.play();
+    } 
+}
 
 //Sonido botones
 document.addEventListener("DOMContentLoaded", function() {
@@ -534,6 +873,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+// Sonido de cuando le da a un barco 
 document.addEventListener("DOMContentLoaded", function() {
     const buttons = document.querySelectorAll('.attackSound');
     
@@ -547,25 +887,133 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+// Sonido cunado le da al agua
+document.addEventListener("DOMContentLoaded", function() {
+    const buttons = document.querySelectorAll('.waterSound');
+    
+    buttons.forEach(button => {
+        button.addEventListener('click', function() {
+            const sound = new Audio('sounds/waterSound.mp3');
+            sound.play().catch(error => {
+                console.error('Error al reproducir el sonido:', error);
+            });
+        });
+    });
+});
+
+//Funciones de click
+
+// Sonido de la espera del ataque de la IA
+function iaSound() {
+    var sonido = document.getElementById('iaSound');
+    sonido.play();
+}
+
+// Sonido de cuando le da a un barco la IA
+function attackSoundIA() {
+    var sonido = document.getElementById('attackSoundIA');
+    sonido.play();
+}
+
+// Sonido cunado le da al agua la IA
+function waterSoundIA() {
+    var sonido = document.getElementById('waterSoundIA');
+    sonido.play();
+}
+
+/* **************** */
+/* MARK: Notificaciones*/
+/* **************** */
+
 // Notificaciones CSS
-function showNotification(message, type) {
-    var notification = document.createElement('div');
-    notification.className = 'CSSnotification ' + type; // Usa la nueva clase
-    notification.textContent = message;
 
-    document.getElementById('CSSnotificationContainer').appendChild(notification);
+// Notifica el turno del jugador
+function showNotificationPlayer(message) {
+    const container = document.getElementById('notificationContainer');
+    const notification = document.createElement('div');
+    notification.classList.add('notificationGame');
 
-    // Desvanecer la notificación después de 3 segundos
-    setTimeout(function() {
-        notification.style.opacity = '0';
-        setTimeout(function() {
-            notification.remove();
-        }, 500); // Esperar a que se desvanezca antes de eliminar
+    notification.classList.add('notificationPlayer');
+    notification.innerText = message;
+
+    container.appendChild(notification);
+
+    setTimeout(() => {
+        container.removeChild(notification);
     }, 3000);
 }
 
-// Ejemplo de uso
-showNotification('¡Success!', 'CSSsuccess');
-showNotification('Info.', 'CSSinfo');
-showNotification('Error', 'CSSerror');
-showNotification('Warning', 'CSSwarning');
+// Notifica Si le ha dado al barco o no
+function showNotificationPlayerGame(message) {
+    const container = document.getElementById('notificationContainerGame');
+    const notification = document.createElement('div');
+    notification.classList.add('notificationGame');
+
+    notification.classList.add('notificationPlayerGame');
+    notification.innerText = message;
+
+    container.appendChild(notification);
+
+    setTimeout(() => {
+        container.removeChild(notification);
+    }, 3000);
+}
+
+// Notifica el turno de la IA
+function showNotificationIA(message) {
+    const container = document.getElementById('notificationContainer');
+    const notification = document.createElement('div');
+    notification.classList.add('notificationGame');
+    
+    notification.classList.add('notificationIA');
+    notification.innerText = message;
+
+    container.appendChild(notification);
+
+    setTimeout(() => {
+        container.removeChild(notification);
+    }, 3000);
+}
+
+// Notifica si la IA le ha dado al barco o no
+function showNotificationIAGame(message) {
+    const container = document.getElementById('notificationContainerGame');
+    const notification = document.createElement('div');
+    notification.classList.add('notificationGame');
+    
+    notification.classList.add('notificationIAGame');
+    notification.innerText = message;
+
+    container.appendChild(notification);
+
+    setTimeout(() => {
+        container.removeChild(notification);
+    }, 3000);
+}
+
+/* Permitir y no permitir click */
+
+function disableClick() {
+    document.getElementById('notTouch').classList.add('no-clickeable');
+}
+
+function allowClick() {
+    document.getElementById('notTouch').classList.remove('no-clickeable');
+}
+
+// Mostrar / Ocultar opciones adicionales
+
+function showCheckbox() {
+    var extraOptions = document.getElementById('extraOptions');
+    var btn = document.getElementById('extraOptionsBtn');
+    var optionsForm = document.getElementById('optionsForm');
+    
+    // Usamos getComputedStyle para obtener el estilo actual
+    var display = window.getComputedStyle(extraOptions).display;
+
+    if (display === 'none') {
+        extraOptions.style.display = 'block'; // Muestra las opciones
+    } else {
+        extraOptions.style.display = 'none'; // Oculta las opciones
+    }
+}
