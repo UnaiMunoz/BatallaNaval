@@ -110,6 +110,25 @@ body{
     background-blend-mode: overlay;
 }
 
+#bodyForbidden{
+    background: url(images/bocasRedondas.jpg);
+    background-color: #000000ab;
+    background-blend-mode: overlay;
+    background-size: cover;
+    color: white;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#bodyForbidden h1{
+    font-size: 100px;
+    color: red;
+    width: unset;
+    margin: unset;
+}
+
 h1{
     font-weight: normal;
     margin: auto;
@@ -540,17 +559,36 @@ input[type="text"]:focus {
 }
 
 #extraOptions {
-    width: 19% !important;
+    width: 18% !important;
     position: absolute;
-    top: 225px;
-    left: 358px;
+    top: 30px;
+    left: -280px;
     background-color: black;
     border: solid #3700ff;
     padding: 10px;
     z-index: 100;
-    border-radius: 20px 20px 20px 0px;
+    border-radius: 0px 20px 20px 20px;
     display: none;
 }
+
+.extraOptionsEntryMove {
+    animation: moveEntryOptions 1s forwards;
+}
+
+.extraOptionsOutputMove {
+    animation: moveOutputOptions 1s forwards;
+}
+
+@keyframes moveEntryOptions {
+    0% { left: -280px; }
+    100% { left: 30px; }
+}
+
+@keyframes moveOutputOptions {
+    0% { left: 30px; }
+    100% { left: -280px; }
+}
+
 
 /* Oscurecer tabla en los turnos */
 
@@ -734,50 +772,54 @@ tr:hover .selecRanking::before {
     background-color: #000000 !important;
 }
 
-.notificationPlayer {
+.notificationLeft {
     border-radius: 0px 20px 20px 20px;
     background-color: #000000 !important;
-    border: 2px solid #3700ff;
+    border: 2px;
+    border-style: solid;
     left: -50%;
     margin-top: 15%;
-    animation: movimentPlayer 3s forwards;
+    animation: movimentLeft 3s forwards;
 }
 
-.notificationIA {
-    border-radius: 20px 0px 20px 20px;
-    background-color: #000000 !important;
-    border: 2px solid yellow;
-    right: -50%;
-    margin-top: 15%;
-    animation: movimentIA 3s forwards;
-}
-
-.notificationPlayerGame {
+.notificationLeftGame {
     border-radius: 0px 20px 20px 20px;
     background-color: #000000 !important;
-    border: 2px solid #3700ff;
+    border: 2px;
+    border-style: solid;
     left: -50%;
     margin-top: 20%;
-    animation: movimentPlayer 3s forwards;
+    animation: movimentLeft 3s forwards;
 }
 
-.notificationIAGame {
+.notificationRight {
     border-radius: 20px 0px 20px 20px;
     background-color: #000000 !important;
-    border: 2px solid yellow;
+    border: 2px;
+    border-style: solid;
     right: -50%;
-    margin-top: 20%;
-    animation: movimentIA 3s forwards;
+    margin-top: 15%;
+    animation: movimenRight 3s forwards;
 }
 
-@keyframes movimentPlayer {
+.notificationRightGame {
+    border-radius: 20px 0px 20px 20px;
+    background-color: #000000 !important;
+    border: 2px;
+    border-style: solid;
+    right: -50%;
+    margin-top: 20%;
+    animation: movimenRight 3s forwards;
+}
+
+@keyframes movimentLeft {
     0% { left : -50%; }
     25% { left: 5%;}
     75% { left: 5%;}
     0% { left : -50%; }
 }
 
-@keyframes movimentIA {
+@keyframes movimenRight {
     0% { right : -50%; }
     25% { right: 5%;}
     75% { right: 5%;}

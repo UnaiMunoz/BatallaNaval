@@ -45,13 +45,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('gameForm').submit();
     };
 
-    // Mostrar opciones avanzadas sin recargar la página
-    extraOptionsBtn.onclick = function(event) {
-        event.preventDefault();
-        extraOptions.style.display = extraOptions.style.display === 'none' ? 'block' : 'none';
-    };
-
-
 });
 
 /* ******************************* */
@@ -390,7 +383,7 @@ function turnoIA() {
             return;
         } else if (practiceAmmoEnabled && practiceEnemyAmmo === 0) {
             setTimeout(() => {
-                showNotificationIA(`La IA no té més munició. Torn de ${practicePlayerName}`);
+                showNotification(`La IA no té més munició. Torn de ${practicePlayerName}`,"Right","yellow");
                 playerTurn = true;
                 cambiarTurno(playerTurn);
             }, 2000);
@@ -417,7 +410,7 @@ function turnoIA() {
             //Suena la musica de espera
             iaSound();
 
-            showNotificationIA("Torn de IA, pensant moviment...");
+            showNotification("Torn de IA, pensant moviment...","Right","yellow");
 
             setTimeout(() => {
                 if (practiceAmmoEnabled) {
@@ -433,12 +426,12 @@ function turnoIA() {
                 if (name === " ") {
                     td.innerHTML = "~"; 
                     td.style.backgroundColor = "blue";
-                    showNotificationIAGame("La IA ha fallat");
+                    showNotificationGame("La IA ha fallat","Right","yellow");
                     //mostrarMensaje("La IA ha fallat", "yellow");
                     waterSoundIA();
                     if (practiceAmmoEnabled && practicePlayerAmmo === 0) {
                         setTimeout(() => {
-                            showNotificationIA(`${practicePlayerName} no té més munició. Segueix el torn de la IA.`);
+                            showNotification(`${practicePlayerName} no té més munició. Segueix el torn de la IA.`,"Right","yellow");
                             //mostrarMensaje("Player no tiene más munición. Sigue el turno de la IA.", "yellow");
                         }, 2000);
                         playerTurn = false;
@@ -447,7 +440,7 @@ function turnoIA() {
                         setTimeout(turnoIA, 2000);
                     } else {
                         setTimeout(() => {
-                            showNotificationPlayer(`Torn de ${practicePlayerName}`);
+                            showNotification(`Torn de ${practicePlayerName}`,"Left","#3700ff");
                             //mostrarMensaje("Turno de Player.", "yellow");
                             playerTurn = true;
                             cambiarTurno(playerTurn);
@@ -465,10 +458,10 @@ function turnoIA() {
 
                             if (barco.vida === 0) {
                                 barcoHundido = true;
-                                setTimeout(() => showNotificationIAGame(`¡La IA ha enfonsat una xarxa amb ${barco.tamaño} servidors!`), 2000);
+                                setTimeout(() => showNotificationGame(`¡La IA ha enfonsat una xarxa amb ${barco.tamaño} servidors!`, "Right", "yellow"), 2000);
                                 //setTimeout(() => mostrarMensaje(`¡La IA ha hundido una xarxa amb ${barco.tamaño} servidors!`, "red"), 2000);
                             }else{
-                                showNotificationIAGame("¡La IA ha tocat una xarxa!");
+                                showNotificationGame("¡La IA ha tocat una xarxa!","Rigth","yellow");
                             }
 
                             hit = true;
@@ -478,13 +471,11 @@ function turnoIA() {
 
                     if (hit && barcoHundido) {
                         setTimeout(() => {
-                            //showNotificationIAGame(`¡La IA ha hundido una xarxa amb ${barco.tamaño} servidors!`)
                             //Suena la musica de espera
                             iaSound();
                             setTimeout(turnoIA, 2000);
                         }, 200);
                     } else if (hit) {
-                        //showNotificationIAGame("¡La IA ha tocado una xarxa!");
                         //Suena la musica de espera
                         iaSound();
                         setTimeout(turnoIA, 2000);
@@ -577,8 +568,7 @@ function changeDataCell(td, gameMode = 'IA') {
             ammoPlayerElement.textContent = practicePlayerAmmo + "/40";
 
             if (practicePlayerAmmo == 0 && practiceEnemyAmmo > 0) {
-                showNotificationPlayerGame("No tienes más munición. Turno de la IA.");
-                //mostrarMensaje("No tienes más munición. Turno de la IA.", "yellow");
+                showNotificationGame("No tens més munició. Torn de la IA.","Left","#3700ff");
                 cambiarTurno();
                 playerTurn = false;
                 setTimeout(turnoIA, 2000); 
@@ -588,14 +578,18 @@ function changeDataCell(td, gameMode = 'IA') {
 
         if (name === " ") {
             td.innerHTML = "~"; 
-            showNotificationPlayerGame("¡Has fallat!");
+            if (gameMode == 'IA'){
+                showNotificationGame("¡Has fallat!","Left","#3700ff");
+            }else{
+                showNotificationGame("¡Has fallat!","Right","#3700ff");
+            }
 
             if (practiceAmmoEnabled === true && practiceEnemyAmmo > 0) {
                 cambiarTurno(); 
                 playerTurn = false;
                 setTimeout(turnoIA, 2000);
             } else if (practiceAmmoEnabled === true && practiceEnemyAmmo === 0) {
-                showNotificationPlayer("La IA no tiene más munición. Sigue tu turno.");
+                showNotification("La IA no té més munició. Segueix el teu torn.","Left","#3700ff");
                 //mostrarMensaje("La IA no tiene más munición. Sigue tu turno.", "yellow");
                 playerTurn = true;
             } else if (practiceAmmoEnabled === false) {
@@ -625,7 +619,11 @@ function changeDataCell(td, gameMode = 'IA') {
                         if (coord[0] === row && coord[1] === col) {
                             barco.vida -= 1; 
                             td.innerHTML = "X"; 
-                            showNotificationPlayerGame("Has tocat una xarxa!");
+                            if (gameMode == 'IA'){
+                                showNotificationGame("Has tocat una xarxa!","Left","#3700ff");
+                            }else{
+                                showNotificationGame("Has tocat una xarxa!","Right","#3700ff");
+                            }
                             //mostrarMensaje(`¡Has tocat una xarxa de ${barco.tamaño}!`);
                             puntos += 50; 
                             playerHits++;  // Incrementar aciertos del jugador
@@ -636,7 +634,11 @@ function changeDataCell(td, gameMode = 'IA') {
 
                             if (barco.vida === 0) {
                                 barcosHundidos++; 
-                                showNotificationPlayerGame(`¡Tens el control de la xarxa amb ${barco.tamaño} servidors`);
+                                if (gameMode == 'IA'){
+                                    showNotificationGame(`¡Tens el control de la xarxa amb ${barco.tamaño} servidors`,"Left","#3700ff");
+                                }else{
+                                    showNotificationGame(`¡Tens el control de la xarxa amb ${barco.tamaño} servidors`,"Right","#3700ff");
+                                }
                                 //mostrarMensaje(`¡Tens el control de la xarxa amb ${barco.tamaño} servidors`);
                                 debeVaciarMensajes = true;
 
@@ -931,64 +933,55 @@ function waterSoundIA() {
 /* MARK: Notificaciones*/
 /* **************** */
 
-// Notificaciones CSS
+// Notifica Turno, direcion de la notificacion y el color del borde
+function showNotification(message, direction, color) {
+    // Obtiene el contenedor donde se mostrarán las notificaciones
+    const container = document.getElementById('notificationContainer');
 
-// Notifica el turno del jugador
-function showNotificationPlayer(message) {
+    // Crea un nuevo elemento div para la notificación
+    const notification = document.createElement('div');
+    
+    // Añade la clase CSS para el estilo de la notificación
+    notification.classList.add('notificationGame');
+    
+    // Establece el texto de la notificación
+    notification.innerText = message;
+
+    // Determina la dirección de la notificación
+    if (direction === "Left") {
+        // Si la dirección es "Left", añade la clase correspondiente
+        notification.classList.add('notificationLeft');
+    } else {
+        // Si no, se asume que la dirección es "Right" y se añade la clase correspondiente
+        notification.classList.add('notificationRight');
+    }
+
+    // Aplica el color del borde que se pasa como argumento
+    notification.style.borderColor = color;
+
+    // Añade la notificación al contenedor
+    container.appendChild(notification);
+
+    // Configura un temporizador para eliminar la notificación después de 3 segundos
+    setTimeout(() => {
+        container.removeChild(notification);
+    }, 3000);
+}
+
+// Notifica Si le ha dado al barco o no, direcion de la notificacion y el color del borde
+function showNotificationGame(message, direction, color) {
     const container = document.getElementById('notificationContainer');
     const notification = document.createElement('div');
     notification.classList.add('notificationGame');
-
-    notification.classList.add('notificationPlayer');
     notification.innerText = message;
 
-    container.appendChild(notification);
+    if (direction === "Left") {
+        notification.classList.add('notificationLeftGame');
+    } else {
+        notification.classList.add('notificationRightGame');
+    }
 
-    setTimeout(() => {
-        container.removeChild(notification);
-    }, 3000);
-}
-
-// Notifica Si le ha dado al barco o no
-function showNotificationPlayerGame(message) {
-    const container = document.getElementById('notificationContainerGame');
-    const notification = document.createElement('div');
-    notification.classList.add('notificationGame');
-
-    notification.classList.add('notificationPlayerGame');
-    notification.innerText = message;
-
-    container.appendChild(notification);
-
-    setTimeout(() => {
-        container.removeChild(notification);
-    }, 3000);
-}
-
-// Notifica el turno de la IA
-function showNotificationIA(message) {
-    const container = document.getElementById('notificationContainer');
-    const notification = document.createElement('div');
-    notification.classList.add('notificationGame');
-    
-    notification.classList.add('notificationIA');
-    notification.innerText = message;
-
-    container.appendChild(notification);
-
-    setTimeout(() => {
-        container.removeChild(notification);
-    }, 3000);
-}
-
-// Notifica si la IA le ha dado al barco o no
-function showNotificationIAGame(message) {
-    const container = document.getElementById('notificationContainerGame');
-    const notification = document.createElement('div');
-    notification.classList.add('notificationGame');
-    
-    notification.classList.add('notificationIAGame');
-    notification.innerText = message;
+    notification.style.borderColor = color; // Aplica el color para ambas direcciones si es necesario.
 
     container.appendChild(notification);
 
@@ -1009,17 +1002,26 @@ function allowClick() {
 
 // Mostrar / Ocultar opciones adicionales
 
-function showCheckbox() {
+function showCheckboxAdvanced() {
     var extraOptions = document.getElementById('extraOptions');
-    var btn = document.getElementById('extraOptionsBtn');
-    var optionsForm = document.getElementById('optionsForm');
     
     // Usamos getComputedStyle para obtener el estilo actual
     var display = window.getComputedStyle(extraOptions).display;
 
-    if (display === 'none') {
+    if (display === 'none' || display === '') {
+        // Aseguramos que las clases de animación estén removidas antes de comenzar
+        extraOptions.classList.remove('extraOptionsOutputMove');
         extraOptions.style.display = 'block'; // Muestra las opciones
+        // Añadimos la clase de animación de entrada
+        extraOptions.classList.add('extraOptionsEntryMove');
     } else {
-        extraOptions.style.display = 'none'; // Oculta las opciones
+        // Añadimos la clase de animación de salida
+        extraOptions.classList.add('extraOptionsOutputMove');
+        
+        // Usa setTimeout para esperar hasta que la animación termine
+        setTimeout(function() {
+            extraOptions.style.display = 'none'; // Oculta las opciones
+            extraOptions.classList.remove('extraOptionsOutputMove'); // Remueve la clase después de ocultar
+        }, 1000); // Ajusta el tiempo según la duración de tu animación
     }
 }
