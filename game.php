@@ -689,7 +689,6 @@ Notas:
                         echo    "<script>
                                     var barcos = " . json_encode($practiceEnemyBoats) . ";
                                     var practiceEnemyBoard = " . json_encode($tabla) . ";
-
                                 </script>";
 
                 echo '</div>';

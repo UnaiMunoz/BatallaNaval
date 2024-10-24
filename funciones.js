@@ -581,6 +581,70 @@ function saveScore() {
     }
 }
 
+function ocultarNombreWin() {
+    const input = document.querySelector('#inputNameWin'); // Usa el ID específico
+    const button = document.querySelector('#nameButton'); // Usa el ID específico
+
+    if (input && button) {
+        input.style.display = 'none'; // Ocultar el input
+        button.style.display = 'none'; // Ocultar el botón
+    }
+}
+
+
+function saveScore2() {
+    var playerName = document.getElementById("inputNameWin").value;
+    var points = document.querySelector(".points").textContent.split(": ")[1];  // Obtener puntos
+    var options = { 
+        timeZone: "Europe/Madrid", 
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit', 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        hour12: false 
+    };
+    var now = new Date();
+    var dateTimeFormat = new Intl.DateTimeFormat('es-ES', options);
+    var formattedDate = dateTimeFormat.format(now).replace(/\//g, '-').replace(',', '');
+
+    // Separar fecha y hora
+    var [date, time] = formattedDate.split(' ');
+    formattedDate = date + ' ' + time.split(':').join(':');
+
+    const errorMessage = document.getElementById('errorMessage');
+
+    if (playerName.length < 3) {
+        errorMessage.style.display = 'block'; // Mostrar mensaje de error
+        return; // No continuar si el nombre es demasiado corto
+    } else {
+        errorMessage.style.display = 'none'; // Ocultar mensaje si es válido
+    }
+
+    if (playerName !== "") {
+        // Crear un objeto con los datos del jugador
+        var playerData = {
+            name: playerName,
+            score: points,
+            date: formattedDate // Usar la fecha formateada
+        };  
+
+        // Enviar los datos al archivo PHP mediante POST
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "ranking.php", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                ocultarNombreWin();
+            }
+        };
+
+        xhr.send(JSON.stringify(playerData));
+    } else {
+        alert("Por favor, ingresa tu nombre.");
+    }
+}
+
 /* ********* */
 /* Sonidos   */
 /* ********* */
