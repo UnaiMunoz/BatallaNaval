@@ -509,7 +509,7 @@ Notas:
                         if ($limitedAmmo == 'true') {
                             echo "<p class='ammoTitle'>Munició</p>";
                             echo "<p id='practicePlayerAmmo'>40/40</p>";                            
-                            $playerAmmo = 10;
+                            $playerAmmo = 40;
 
                             echo "<script>
                                 var practicePlayerAmmo = " . json_encode($playerAmmo) . ";
@@ -707,7 +707,7 @@ Notas:
                         if ($limitedAmmo == 'true') {
                             echo "<p class='ammoTitle'>Munició</p>";
                             echo "<p id='practiceEnemyAmmo'>40/40</p>";
-                            $enemyAmmo = 2;
+                            $enemyAmmo = 40;
                             echo "<script>
                             var practiceEnemyAmmo = " . json_encode($enemyAmmo) . ";
                             </script>";
