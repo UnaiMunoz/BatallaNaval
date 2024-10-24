@@ -5,20 +5,51 @@
 // Script para habilitar el botón Classic Game si JavaScript está habilitado
 document.addEventListener('DOMContentLoaded', function() {
     var classicGameBtn = document.getElementById('classicGameBtn');
-    classicGameBtn.classList.remove('disabled'); // Elimina la clase disabled
-    classicGameBtn.removeAttribute('disabled'); // Quita el atributo disabled
+    var practiceGameBtn = document.getElementById('practiceGameBtn');
+    var indexNameInput = document.getElementById('indexName');
+    var nameError = document.getElementById('nameError');
+    var extraOptionsBtn = document.getElementById('extraOptionsBtn');
+    var extraOptions = document.getElementById('extraOptions');
+
+    // Inicialmente, el mensaje estará visible
+    nameError.textContent = 'El nom ha de tenir mínim 3 caràcters.';
+
+    // Habilitar botones solo cuando el nombre tiene entre 3 y 30 caracteres
+    indexNameInput.addEventListener('input', function() {
+        var nameLength = indexNameInput.value.length;
+        if (nameLength >= 3 && nameLength <= 30) {
+            classicGameBtn.classList.remove('disabled');
+            classicGameBtn.removeAttribute('disabled');
+            practiceGameBtn.classList.remove('disabled');
+            practiceGameBtn.removeAttribute('disabled');
+            nameError.style.color = 'transparent'; // Hacer el texto transparente
+        } else {
+            classicGameBtn.classList.add('disabled');
+            classicGameBtn.setAttribute('disabled', true);
+            practiceGameBtn.classList.add('disabled');
+            practiceGameBtn.setAttribute('disabled', true);
+            nameError.style.color = 'red'; // Mostrar mensaje de error
+        }
+    });
+
+    // Configuración de botones de juego
     classicGameBtn.onclick = function() {
-        document.getElementById('gameForm').action = 'game.php?mode=classic'; // Establece la acción con el modo classic
-        document.getElementById('gameForm').submit(); // Envía el formulario
+        document.getElementById('gameForm').action = 'game.php?mode=classic';
+        document.getElementById('gameForm').submit();
     };
 
-    var practiceGameBtn = document.getElementById('practiceGameBtn');
-    practiceGameBtn.classList.remove('disabled'); // Elimina la clase disabled
-    practiceGameBtn.removeAttribute('disabled'); // Quita el atributo disabled
     practiceGameBtn.onclick = function() {
-        document.getElementById('gameForm').action = 'game.php?mode=practice'; // Establece la acción con el modo practice
-        document.getElementById('gameForm').submit(); // Envía el formulario
+        document.getElementById('gameForm').action = 'game.php?mode=practice';
+        document.getElementById('gameForm').submit();
     };
+
+    // Mostrar opciones avanzadas sin recargar la página
+    extraOptionsBtn.onclick = function(event) {
+        event.preventDefault();
+        extraOptions.style.display = extraOptions.style.display === 'none' ? 'block' : 'none';
+    };
+
+
 });
 
 /* ******************************* */
@@ -110,6 +141,21 @@ let puntosAntesDeHundir = 0;
 /* ****************** */
 /* MARK: Funciones    */
 /* ****************** */
+
+function showCheckbox() {
+    var extraOptions = document.getElementById('extraOptions');
+    var btn = document.getElementById('extraOptionsBtn');
+    var optionsForm = document.getElementById('optionsForm');
+    
+    // Usamos getComputedStyle para obtener el estilo actual
+    var display = window.getComputedStyle(extraOptions).display;
+
+    if (display === 'none') {
+        extraOptions.style.display = 'block'; // Muestra las opciones
+    } else {
+        extraOptions.style.display = 'none'; // Oculta las opciones
+    }
+}
 
 // Función para mostrar los botones
 function mostrarBotones() {
@@ -307,90 +353,148 @@ let debeVaciarMensajes = false;
 let playerTurn = true;
 const attackedPositions = [];
 
+let playerHits = 0;  // Aciertos del jugador
+let iaHits = 0;      // Aciertos de la IA
+
+function determinarGanadorPorAciertos() {
+    clearInterval(cronometro);
+    partidaActiva = false;
+    
+    if (playerHits > iaHits) {
+        mostrarMensaje("¡Has ganado la partida por tener más aciertos!", "green");
+    } else if (iaHits > playerHits) {
+        mostrarMensaje("La IA ha ganado la partida por tener más aciertos.", "red");
+    } else {
+        mostrarMensaje("La IA ha ganado por empate.", "blue");
+    }
+    
+    mostrarBotones();
+    mostrarNombre();
+    calcularBonificacionPorTiempo();
+}
+
 // Turno de la IA
 function turnoIA() {
     if (partidaActiva && !playerTurn) {
+        if (practiceAmmoEnabled && practiceEnemyAmmo === 0 && practicePlayerAmmo === 0) {
+            setTimeout(determinarGanadorPorAciertos, 2000);
+            return;
+        } else if (practiceAmmoEnabled && practiceEnemyAmmo === 0) {
+            setTimeout(() => {
+                mostrarMensaje("La IA no tiene más munición. Turno de Player.", "yellow");
+                cambiarTurno();
+                playerTurn = true;
+            }, 2000);
+            return;
+        }
+
         let row, col;
-        let hit = false; // Variable para determinar si se ha dado en un barco
-        let barcoHundido = false; // Variable para verificar si un barco ha sido hundido
+        let hit = false;
+        let barcoHundido = false;
 
         do {
-            // Genera coordenadas aleatorias entre 1 y 10 (para que ignore la primera fila y columna)
-            row = Math.floor(Math.random() * 10) + 1; // Genera 1 a 10
-            col = Math.floor(Math.random() * 10) + 1; // Genera 1 a 10
-        } while (attackedPositions.some(pos => pos.row === row && pos.col === col)); // Verifica si la posición ya ha sido atacada
+            row = Math.floor(Math.random() * 10) + 1;
+            col = Math.floor(Math.random() * 10) + 1;
+        } while (attackedPositions.some(pos => pos.row === row && pos.col === col));
 
-        // Lógica para atacar al jugador
-        const td = document.querySelector(`tr:nth-child(${row + 1}) td:nth-child(${col + 1})`); // Asumiendo que los <td> están en un <tr>
-
+        const td = document.querySelector(`tr:nth-child(${row + 1}) td:nth-child(${col + 1})`);
+        
         if (td) {
-            let name = td.getAttribute('name'); // Obtener el nombre de la celda
+            let name = td.getAttribute('name');
 
             // Almacenar posición atacada
             attackedPositions.push({ row: row, col: col }); // Guardar la posición en attackedPositions
-
-            // Mostrar primero el mensaje de "esperando tirada"
-            mostrarMensaje("Turno de IA, esperando tirada...", "yellow");
 
             //Suena la musica de espera
             iaSound();
 
             // Esperar 2 segundos antes de mostrar el resultado del ataque de la IA
             setTimeout(() => {
-                let hit = false; // Variable para saber si la IA ha impactado
+                mostrarMensaje("Torn de IA, pensant moviment...", "yellow");
+            }, 200);
 
-                if (name === " ") {
-                    // Casilla vacía (agua)
-                    td.innerHTML = "~"; 
-                    td.style.backgroundColor = "blue"; // Cambia el color a azul para indicar un fallo
-                    mostrarMensaje("La IA ha fallado", "yellow");
-
-                    waterSoundIA();
-
-                    // Después de 2 segundos, mostrar "Turno de Player"
-                    setTimeout(() => {
-                        mostrarMensaje("Turno de Player", "white");
-                        playerTurn = true; // Cambia el turno al jugador
-                    }, 2000); // Espera de 2 segundos antes de mostrar el turno del jugador
-
-                } else {
-                    // Impacto en un barco
-                    for (let barco of barcos) {
-                        if (barco.tipo === name) {
-                            barco.vida -= 1; 
-                            td.innerHTML = "X"; 
-                            td.style.backgroundColor = "red"; // Cambia el color a rojo para indicar un impacto
-                            mostrarMensaje(`¡La IA ha tocado una xarxa de ${barco.tamaño}!`, "yellow");
-
-                            // Verificar si el barco ha sido hundido
-                            if (barco.vida === 0) {
-                                barcoHundido = true;
-                                mostrarMensaje(`¡La IA ha hundido una xarxa amb ${barco.tamaño} servidors!`, "red");
-                            }
-
-                            hit = true; // Se ha dado en un barco
-                            break; // Salir del ciclo al encontrar el barco
-                        }
+            setTimeout(() => {
+                if (practiceAmmoEnabled) {
+                    if (practiceEnemyAmmo === 0 && practicePlayerAmmo === 0) {
+                        setTimeout(determinarGanadorPorAciertos, 200);
+                        return;
                     }
 
-                    attackSoundIA();
-
-                    // Si ha impactado, y hundió un barco, esperar antes de continuar
-                    if (hit) {
-                        if (barcoHundido) {
-                            // Espera 2 segundos para mostrar el mensaje de "ha hundido una xarxa"
-                            setTimeout(() => {
-                                setTimeout(turnoIA, 1000); // La IA vuelve a atacar después de 1 segundo
-                            }, 2000); // Espera adicional para hundimiento
-                        } else {
-                            // Si solo ha golpeado, pero no hundió, continuar normalmente
-                            setTimeout(turnoIA, 1000); // La IA vuelve a atacar después de 1 segundo
-                        }
-                    }
+                    practiceEnemyAmmo--;
+                    document.getElementById('practiceEnemyAmmo').textContent = practiceEnemyAmmo + "/40";
                 }
 
-            }, 2000); // Espera de 2 segundos antes de mostrar el resultado del ataque de la IA
-        }      
+                if (name === " ") {
+                    td.innerHTML = "~"; 
+                    td.style.backgroundColor = "blue";
+                    mostrarMensaje("La IA ha fallat", "yellow");
+
+                    if (practiceAmmoEnabled && practicePlayerAmmo > 0) {
+                        setTimeout(() => {
+                            mostrarMensaje("Turno de Player.", "yellow");
+                            cambiarTurno();
+                            playerTurn = true;
+                        }, 2000);
+                    } else if (practiceAmmoEnabled && practicePlayerAmmo === 0) {
+                        setTimeout(() => {
+                            mostrarMensaje("Player no tiene más munición. Sigue el turno de la IA.", "yellow");
+                        }, 2000);
+                        playerTurn = false;
+                        setTimeout(turnoIA, 200);
+                    }
+                    waterkSoundIA();
+                } else {
+                    for (let barco of barcos) {
+                        if (barco.tipo === name) {
+                            barco.vida -= 1;
+                            td.innerHTML = "X"; 
+                            td.style.backgroundColor = "red";
+                            mostrarMensaje(`¡La IA ha tocado una xarxa de ${barco.tamaño}!`, "yellow");
+                            iaHits++;  // Incrementar aciertos de la IA
+
+                            if (barco.vida === 0) {
+                                barcoHundido = true;
+                                setTimeout(() => mostrarMensaje(`¡La IA ha hundido una xarxa amb ${barco.tamaño} servidors!`, "red"), 200);
+                            }
+
+                            hit = true;
+                            break;
+                        }
+                    }
+
+                    if (hit && barcoHundido) {
+                        setTimeout(() => {
+                            mostrarMensaje("Torn de " + practicePlayerName, "white");
+                            cambiarTurno();
+                            playerTurn = true;
+                        }, 200);
+                    } else if (hit) {
+                        setTimeout(turnoIA, 200);
+                    }
+                    attackSoundIA();
+                }
+            }, 200);
+        }
+    }
+}
+
+function oscurecerTablero(tablero) {
+    tablero.classList.add('tablero-oculto');
+}
+
+function habilitarTablero(tablero) {
+    tablero.classList.remove('tablero-oculto');
+}
+
+function cambiarTurno() {
+    if (!playerTurn) {
+        // Oscurecer la tabla del jugador y habilitar la tabla de la IA
+        oscurecerTablero(document.getElementById('practicePlayergameTable')); // Reemplaza con el ID real de tu tabla
+        habilitarTablero(document.getElementById('practiceEnemygameTable')); // Reemplaza con el ID real de tu tabla
+    } else {
+        // Oscurecer la tabla de la IA y habilitar la tabla del jugador
+        oscurecerTablero(document.getElementById('practiceEnemygameTable')); // Reemplaza con el ID real de tu tabla
+        habilitarTablero(document.getElementById('practicePlayergameTable')); // Reemplaza con el ID real de tu tabla
     }
 }
 
@@ -418,10 +522,7 @@ function changeDataCell(td, gameMode = 'IA') {
         debeVaciarMensajes = false; // Resetear la bandera
     }
 
-    // Obtener el atributo 'name' de la celda (nombre del barco o vacío)
     let name = td.getAttribute('name'); 
-
-    // Verificar si es la casilla "C4"
     let row = td.parentElement.rowIndex; 
     let col = td.cellIndex; 
 
@@ -429,91 +530,91 @@ function changeDataCell(td, gameMode = 'IA') {
         activateEasterEgg(); 
     }
 
-    // Comprobar si el clic corresponde a una casilla con un barco
     if (td.classList.contains("codeName")) {
         td.classList.remove("codeName");
         td.classList.add("dado");
         
-        // Incrementa el número total de turnos
-        turnosTotales++; 
+        turnosTotales++;
+
+        if (practiceAmmoEnabled == true) {
+            practicePlayerAmmo--;
+            var ammoPlayerElement = document.getElementById('practicePlayerAmmo');
+            ammoPlayerElement.textContent = practicePlayerAmmo + "/40";
+
+            if (practicePlayerAmmo == 0 && practiceEnemyAmmo > 0) {
+                mostrarMensaje("No tienes más munición. Turno de la IA.", "yellow");
+                cambiarTurno();
+                playerTurn = false;
+                setTimeout(turnoIA, 2000); 
+                return;
+            }
+        }
 
         if (name === " ") {
-            // Casilla vacía (agua)
             td.innerHTML = "~"; 
             mostrarMensaje("¡Has fallat!");
-            turnosAguaSeguidos++; // Incrementa la cantidad de turnos sin tocar un barco
 
-            // Si hay 5 turnos de agua seguidos, restar 50 puntos
+            if (practiceAmmoEnabled === true && practiceEnemyAmmo > 0) {
+                cambiarTurno(); 
+                playerTurn = false;
+                setTimeout(turnoIA, 2000);
+            } else if (practiceAmmoEnabled === true && practiceEnemyAmmo === 0) {
+                mostrarMensaje("La IA no tiene más munición. Sigue tu turno.", "yellow");
+                playerTurn = true;
+            } else if (practiceAmmoEnabled === false) {
+                cambiarTurno();
+                playerTurn = false;
+                turnoIA();
+            }
+
+            turnosAguaSeguidos++;
             if (turnosAguaSeguidos >= 5) {
                 puntos -= 50;
                 actualizarPuntos();
                 mostrarMensajePuntos("¡Has perdut 50 punts!");
-                turnosAguaSeguidos = 0; // Reinicia el contador de turnos de agua seguidos
+                turnosAguaSeguidos = 0;
             }
 
-            // Rompe la cadena de hundir sin fallar
-            hundidoSinFallar = false;
-            
-            // Cambia el turno a la IA
-            if (gameMode === 'IA') {
-                playerTurn = false;
-                setTimeout(turnoIA, 2000); // Llama a la función de IA después de un breve retraso
-            }
-        
+            hundidoSinFallar = false; 
+
         } else {
-            // Impacto en un barco
             hundidoSinFallar = true; 
             for (let barco of barcos) {
                 if (barco.tipo === name) {
-                    let row = td.parentElement.rowIndex; // Obtener índice de fila
-                    let col = td.cellIndex; // Obtener índice de columna
+                    let row = td.parentElement.rowIndex;
+                    let col = td.cellIndex;
 
                     for (let coord of barco.coordenadas) {
                         if (coord[0] === row && coord[1] === col) {
-                            // Reducir la vida del barco
                             barco.vida -= 1; 
-                            td.innerHTML = "X"; // Indicar que el barco ha sido tocado
-                            // mostrarMensaje(`¡Has tocat ${barco.tipo}!`);
+                            td.innerHTML = "X"; 
                             mostrarMensaje(`¡Has tocat una xarxa de ${barco.tamaño}!`);
-                            puntos += 50; // Sumar 50 puntos por tocar un barco
+                            puntos += 50; 
+                            playerHits++;  // Incrementar aciertos del jugador
                             mostrarMensajePuntos("+50 punts per atacar un servidor\n");
                             actualizarPuntos();
 
-                            turnosAguaSeguidos = 0; // Reinicia el contador de turnos de agua
+                            turnosAguaSeguidos = 0;
 
-                            // Verificar si el barco ha sido hundido
                             if (barco.vida === 0) {
-                                barcosHundidos++; // Incrementar barcos hundidos
-                                // mostrarMensaje(`Has enfonsat ${barco.tipo}!`);
+                                barcosHundidos++; 
                                 mostrarMensaje(`¡Tens el control de la xarxa amb ${barco.tamaño} servidors`);
                                 debeVaciarMensajes = true;
 
-                                // **Multiplicador si hundes sin fallar**
                                 if (hundidoSinFallar) {
                                     let multiplicador = barco.tamaño;
-
-                                    // Guardamos los puntos antes de aplicar el multiplicador
                                     let puntosAntesMultiplicador = puntos; 
-
-                                    // Aplicar el multiplicador correctamente
                                     puntos += puntosAntesMultiplicador * (multiplicador - 1); 
                                     mostrarMensajePuntos("+" + (puntos - puntosAntesMultiplicador) + " per destruir una xarxa");
                                     actualizarPuntos();
-                                    // mostrarMensajePuntos(`¡Punts multiplicats per ${multiplicador} en enfonsar de cop ${barco.tipo}!`);
                                     mostrarMensajePuntos(`¡Punts multiplicats per ${multiplicador} en enfonsar de cop una xarxa de ${barco.tamaño} servidors!`);
-
                                 }
 
-                                // **Multiplicador especial para Fragata**
-                                if (barco.tamaño == "4") {
-                                    if (turnosTotales <= 2) {
-                                        puntos += 6000; // Bonus por hundir la Fragata en 2 turnos
-                                        actualizarPuntos();
-                                        mostrarMensajePuntos("¡Bonus de punts per enfonsar una xarxa en 2 torns!");
-                                        mostrarMensajePuntos("+6000 per destruir la xarxa més petita a la primera");                                        
-                                    }
+                                if (barco.tamaño == "4" && turnosTotales <= 2) {
+                                    puntos += 6000; 
+                                    actualizarPuntos();
+                                    mostrarMensajePuntos("+6000 per destruir la xarxa més petita a la primera");
                                 }
-
 
                                 hundidoSinFallar = true;
 
@@ -527,14 +628,19 @@ function changeDataCell(td, gameMode = 'IA') {
                                     partidaActiva = false; // Desactivar la partida
                                     mostrarBotones();
                                     mostrarNombre();
-                                    calcularBonificacionPorTiempo(); // Llama a la bonificación final
+                                    calcularBonificacionPorTiempo();
                                 }
                             }
-                            return; // Salir del ciclo
+                            return;
                         }
                     }
                 }
             }
+        }
+
+        if (practiceAmmoEnabled === true && practiceEnemyAmmo == 0 && practicePlayerAmmo == 0) {
+            determinarGanadorPorAciertos();  // Llamada para determinar el ganador
+            return;
         }
     }
 }
@@ -591,6 +697,7 @@ function saveScore() {
                 ocultarNombre();
             }
         };
+
         xhr.send(JSON.stringify(playerData));
     } else {
         alert("Por favor, ingresa tu nombre.");
@@ -611,7 +718,7 @@ document.addEventListener('DOMContentLoaded', () => {
             audioSrc = 'sounds/backgroundSoundIndex.mp3';
             break;
         case 'bodyRanking':
-            audioSrc = 'audioContainersounds/backgroundSoundIndex.mp3';
+            audioSrc = 'sounds/backgroundSoundIndex.mp3';
             break;
         case 'game':
             audioSrc = 'sounds/backgroundSoundGame.mp3';

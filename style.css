@@ -255,15 +255,10 @@ main {
 }
 
 /* Easter Egg */
-/*.contentEasterEgg h1 {
-    overflow: hidden;
-    white-space: nowrap;
-} borrar*/
-
 .glitchTitle {
     position: relative;
     font-size: 2em; /* Ajusta según el tamaño del texto que desees */
-    /*color: #00FF00; /* Color verde para el título */
+    color: #00FF00; /* Color verde para el título */
     animation: glitch-animation 1s infinite;
 }
 
@@ -546,6 +541,44 @@ input[type="text"]:focus {
     content: ']';
 }
 
+#extraOptions {
+    width: 19% !important;
+    position: absolute;
+    top: 225px;
+    left: 358px;
+    background-color: black;
+    border: solid #3700ff;
+    padding: 10px;
+    z-index: 100;
+    border-radius: 20px 20px 20px 0px;
+    display: none;
+}
+
+/* Oscurecer tabla en los turnos */
+
+.tablero-oculto {
+    pointer-events: none; /* Desactiva los clics en la tabla */
+    opacity: 0.5; /* Reduce la opacidad para oscurecer */
+}
+
+/* Configuracion variables */
+
+/* #limitedAmmo{
+    opacity: 0.5;
+    color: #888888;
+} */
+#armoredShips{
+    opacity: 0.5;
+    color: #888888;
+}
+#specialAttacks{
+    opacity: 0.5;
+    color: #888888;
+}
+
+.ammoTitle{
+    margin-top: 1vw;
+}
 
 /* ******************************* */
 /* MARK: CSS for ranking.php */
@@ -683,7 +716,9 @@ tr:hover .selecRanking::before {
     content: ']';
 }
 
-/* Notification CSS */
+/* ******************************* */
+/* MARK: Notificaciones */
+/* ******************************* */
 #notificationContainer , 
 #notificationContainergame {
     position: relative;
