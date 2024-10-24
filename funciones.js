@@ -369,10 +369,10 @@ function determinarGanadorPorAciertos() {
         pageWin();
     } else if (iaHits > playerHits) {
         mostrarMensaje("La IA ha ganado la partida por tener más aciertos.", "red");
-        pagelose();
+        pageLose();
     } else {
         mostrarMensaje("La IA ha ganado por empate.", "blue");
-        pagelose();
+        pageLose();
     }
     
     mostrarBotones();
@@ -521,11 +521,12 @@ function cambiarTurno(playerTurn) {
 
 //cambiar pantalla 
 function pageWin() {
-    window.location.assign("win.php");
+    document.location.href = "win.php";
+    //window.location.replace("win.php");
 }
 
-function pagelose() {
-    window.location.assign("lose.php");
+function pageLose() {
+    //window.location.replace("lose.php");
 }
 
 
@@ -655,7 +656,7 @@ function changeDataCell(td, gameMode = 'IA') {
                                 hundidoSinFallar = true;
 
                                 if (todosBarcosDestruidos()) {
-                                    if (mode == 'practice') {
+                                    if (mode === 'practice') {
                                         pageWin();
                                     } else{
                                         getbackground();
