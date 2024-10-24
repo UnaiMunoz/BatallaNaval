@@ -742,7 +742,7 @@ function saveScore() {
 
                         // Crear un nuevo párrafo para el mensaje de éxito
                         var successMessage = document.createElement("p");
-                        successMessage.textContent = "Tu puntuación ha sido guardada!";
+                        successMessage.textContent = "La teva puntuació ha estat guardada!";
                         successMessage.className = "successMessage"; // Puedes añadir una clase para estilizarlo
                         successMessageContainer.appendChild(successMessage); // Añadir el mensaje al contenedor
                         
@@ -764,7 +764,7 @@ function saveScore() {
 
                     // Crear un nuevo párrafo para el mensaje de éxito
                     var successMessage = document.createElement("p");
-                    successMessage.textContent = "Tu puntuación ha sido guardada!";
+                    successMessage.textContent = "La teva puntuació ha estat guardada!";
                     successMessage.className = "successMessage"; // Puedes añadir una clase para estilizarlo
                     successMessageContainer.appendChild(successMessage); // Añadir el mensaje al contenedor
                     
