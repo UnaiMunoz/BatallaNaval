@@ -722,17 +722,19 @@ tr:hover .selecRanking::before {
 #notificationContainer , 
 #notificationContainergame {
     position: relative;
+    z-index: 200;
 }
 
 .notificationGame {
     position: absolute;
     padding: 10px;
     margin: 10px;
-    background-color: #000000;
+    background-color: #000000 !important;
     border-radius: 0px 20px 20px 20px;
 }
 
 .notificationPlayer {
+    background-color: #000000 !important;
     border: 2px solid #3700ff;
     left: -50%;
     margin-top: 15%;
@@ -740,23 +742,26 @@ tr:hover .selecRanking::before {
 }
 
 .notificationIA {
-    border: 2px solid #ff0000;
+    background-color: #000000 !important;
+    border: 2px solid yellow;
     right: -50%;
     margin-top: 15%;
     animation: movimentIA 3s forwards;
 }
 
 .notificationPlayerGame {
+    background-color: #000000 !important;
     border: 2px solid #3700ff;
     left: -50%;
-    margin-top: 17%;
+    margin-top: 20%;
     animation: movimentPlayer 3s forwards;
 }
 
 .notificationIAGame {
-    border: 2px solid #ff0000;
+    background-color: #000000 !important;
+    border: 2px solid yellow;
     right: -50%;
-    margin-top: 17%;
+    margin-top: 20%;
     animation: movimentIA 3s forwards;
 }
 
@@ -776,4 +781,232 @@ tr:hover .selecRanking::before {
 
 .CSSwarning {
     background-color: #ff9800; /* Naranja */
+}
+
+/* ******************************* */
+/* MARK: CSS for win.php */
+/* ******************************* */
+
+#bodyWin{
+    background: url(images/calaveraTormenta.png);
+    background-size: cover;
+    background-color: #0c0c0c93;
+    background-blend-mode: overlay;
+    overflow-x: hidden;
+    animation: moverFondo 2.5s;
+}
+
+#gameTitle{
+    font-size: 2.5vw;
+}
+
+#inputNameWinLose{
+    margin-top: 100px;
+    margin-bottom: 50px;
+    display: block;
+    color: white
+}
+
+#inputNameWinLose::placeholder{
+    color:white
+}
+
+#nameButton{
+    padding: 1vw;
+    font-size: 1.6vw;
+    background-color: unset;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 11px;
+}
+
+#nameButton:hover::before{
+    content: '[';
+}
+
+#nameButton:hover::after{
+    content: ']';
+}
+
+#buttonsWin:hover::before{
+    content: '[';
+}
+
+#buttonsWin:hover::after{
+    content: ']';
+}
+
+#winSection{
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#divnombreWin{
+    width: 30%;
+    display: none;
+    font-size: 1.6vw;
+    color: #ffffff;
+}
+
+#divnombreWin::before{
+    content: '[';
+}
+
+#divnombreWin::after{
+    content: ']';
+}
+
+#divnombreWin input:focus {
+    outline: none;
+}
+
+.section {
+    width: 50%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#buttonWin{
+    margin-top: 70px;
+}
+
+
+/* ******************************* */
+/* MARK: CSS for lose.php */
+/* ******************************* */
+
+#bodyLose {
+    background-image: url('images/calaveraCerrada.png');
+    background-color: #6b5f5fab;
+    background-blend-mode: overlay;
+    background-size: cover;
+    animation: cambiarFondo 2s infinite;
+    height: 100%;
+}
+
+
+#gameTitle{
+    font-size: 2.5vw;
+}
+
+#inputNameLose{
+    margin-top: 100px;
+    margin-bottom: 50px;
+    display: block;
+    color: white
+}
+
+#inputNameLose::placeholder{
+    color:white
+}
+
+#buttonsLose:hover::before{
+    content: '[';
+}
+
+#buttonsLose:hover::after{
+    content: ']';
+}
+
+#loseSection{
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#divnombreLose{
+    width: 30%;
+    display: none;
+    font-size: 1.6vw;
+    color: #ffffff;
+}
+
+#divnombreLose::before{
+    content: '[';
+}
+
+#divnombreLose::after{
+    content: ']';
+}
+
+#divnombreLose input:focus {
+    outline: none;
+}
+
+
+#buttonLose{
+    margin-top: 70px;
+}
+
+
+@keyframes moverFondo {
+    0% {
+        background-position: 0% 0%;
+    }
+    16% {
+        background-position: 400px 0%;
+    }
+    33% {
+        background-position: 0% 400px;
+    }
+    49% {
+        background-position: -400px 0%;
+    }
+    65% {
+        background-position: 0% -400px;
+    }
+    82% {
+        background-position: 0% 0%;
+    }
+    100% {
+        background-position: 0% 0%;
+    }
+}
+
+@keyframes parpadeoWin {
+    0% {
+        color: white; /* Color inicial */
+    }
+    50% {
+        color: green; /* Color intermedio */
+    }
+    100% {
+        color: white; /* Color final */
+    }
+}
+
+@keyframes parpadeoLose {
+    0% {
+        color: white; /* Color inicial */
+    }
+    50% {
+        color: red; /* Color intermedio */
+    }
+    100% {
+        color: white; /* Color final */
+    }
+}
+
+
+@keyframes cambiarFondo {
+    0% {
+      background-image: url('images/calaberaAbierta.png');
+    }
+    50% {
+      background-image: url('images/calaveraCerrada.png');
+    }
+    100% {
+      background-image: url('images/calaberaAbierta.png');
+    }
+  }
+
+.animacion-text-win {
+    animation: parpadeoWin 1s infinite; /* Duración de la animación y que se repita indefinidamente */
+}
+
+.animacion-text-lose {
+    animation: parpadeoLose 1s infinite; /* Duración de la animación y que se repita indefinidamente */
 }

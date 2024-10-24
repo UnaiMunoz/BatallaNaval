@@ -32,6 +32,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    var mode = "<?php echo $mode; ?>";
+
     // Configuración de botones de juego
     classicGameBtn.onclick = function() {
         document.getElementById('gameForm').action = 'game.php?mode=classic';
@@ -274,15 +276,17 @@ function applyEasterEgg() {
 
             clickCounterC4 = 0; // Reiniciar el contador
 
-            // Para el timer
-            clearInterval(cronometro);
-            mostrarMensaje("Has guanyat la partida!");
-            partidaActiva = false; // Desactivar la partida
-            calcularBonificacionPorTiempo(); // Llama a la bonificación final
-            mostrarNombre();
-            mostrarBotones();
-
-
+            if (mode == 'practice') {
+                pageWin();
+            } else{
+                // Para el timer
+                clearInterval(cronometro);
+                //mostrarMensaje("Has guanyat la partida!");
+                partidaActiva = false; // Desactivar la partida
+                calcularBonificacionPorTiempo(); // Llama a la bonificación final
+                mostrarNombre();
+                mostrarBotones();
+            }
         }
     };
 }
@@ -362,10 +366,13 @@ function determinarGanadorPorAciertos() {
     
     if (playerHits > iaHits) {
         mostrarMensaje("¡Has ganado la partida por tener más aciertos!", "green");
+        pageWin();
     } else if (iaHits > playerHits) {
         mostrarMensaje("La IA ha ganado la partida por tener más aciertos.", "red");
+        pagelose();
     } else {
         mostrarMensaje("La IA ha ganado por empate.", "blue");
+        pagelose();
     }
     
     mostrarBotones();
@@ -381,9 +388,10 @@ function turnoIA() {
             return;
         } else if (practiceAmmoEnabled && practiceEnemyAmmo === 0) {
             setTimeout(() => {
-                mostrarMensaje("La IA no tiene más munición. Turno de Player.", "yellow");
-                cambiarTurno();
+                showNotificationIA("La IA no tiene más munición. Turno de Player.");
+                //mostrarMensaje("La IA no tiene más munición. Turno de Player.", "yellow");
                 playerTurn = true;
+                cambiarTurno(playerTurn);
             }, 2000);
             return;
         }
@@ -404,19 +412,21 @@ function turnoIA() {
 
             // Almacenar posición atacada
             attackedPositions.push({ row: row, col: col }); // Guardar la posición en attackedPositions
-
+            
             //Suena la musica de espera
             iaSound();
 
+            showNotificationIA("Torn de IA, pensant moviment...");
+
             // Esperar 2 segundos antes de mostrar el resultado del ataque de la IA
             setTimeout(() => {
-                mostrarMensaje("Torn de IA, pensant moviment...", "yellow");
-            }, 200);
+                //mostrarMensaje("Torn de IA, pensant moviment...", "yellow");
+            }, 2000);
 
             setTimeout(() => {
                 if (practiceAmmoEnabled) {
                     if (practiceEnemyAmmo === 0 && practicePlayerAmmo === 0) {
-                        setTimeout(determinarGanadorPorAciertos, 200);
+                        setTimeout(determinarGanadorPorAciertos, 2000);
                         return;
                     }
 
@@ -427,34 +437,42 @@ function turnoIA() {
                 if (name === " ") {
                     td.innerHTML = "~"; 
                     td.style.backgroundColor = "blue";
-                    mostrarMensaje("La IA ha fallat", "yellow");
-
-                    if (practiceAmmoEnabled && practicePlayerAmmo > 0) {
+                    showNotificationIAGame("La IA ha fallat");
+                    //mostrarMensaje("La IA ha fallat", "yellow");
+                    waterSoundIA();
+                    if (practiceAmmoEnabled && practicePlayerAmmo === 0) {
                         setTimeout(() => {
-                            mostrarMensaje("Turno de Player.", "yellow");
-                            cambiarTurno();
-                            playerTurn = true;
-                        }, 2000);
-                    } else if (practiceAmmoEnabled && practicePlayerAmmo === 0) {
-                        setTimeout(() => {
-                            mostrarMensaje("Player no tiene más munición. Sigue el turno de la IA.", "yellow");
+                            showNotificationIA("Player no tiene más munición. Sigue el turno de la IA.");
+                            //mostrarMensaje("Player no tiene más munición. Sigue el turno de la IA.", "yellow");
                         }, 2000);
                         playerTurn = false;
-                        setTimeout(turnoIA, 200);
+                        //Suena la musica de espera
+                        iaSound();
+                        setTimeout(turnoIA, 2000);
+                    } else {
+                        setTimeout(() => {
+                            showNotificationPlayer("Turno de Player.");
+                            //mostrarMensaje("Turno de Player.", "yellow");
+                            playerTurn = true;
+                            cambiarTurno(playerTurn);
+                        }, 2000);
                     }
-                    waterkSoundIA();
                 } else {
+                    attackSoundIA();
                     for (let barco of barcos) {
                         if (barco.tipo === name) {
                             barco.vida -= 1;
                             td.innerHTML = "X"; 
                             td.style.backgroundColor = "red";
-                            mostrarMensaje(`¡La IA ha tocado una xarxa de ${barco.tamaño}!`, "yellow");
+                            //mostrarMensaje(`¡La IA ha tocado una xarxa de ${barco.tamaño}!`, "yellow");
                             iaHits++;  // Incrementar aciertos de la IA
 
                             if (barco.vida === 0) {
                                 barcoHundido = true;
-                                setTimeout(() => mostrarMensaje(`¡La IA ha hundido una xarxa amb ${barco.tamaño} servidors!`, "red"), 200);
+                                setTimeout(() => showNotificationIAGame(`¡La IA ha hundido una xarxa amb ${barco.tamaño} servidors!`), 2000);
+                                //setTimeout(() => mostrarMensaje(`¡La IA ha hundido una xarxa amb ${barco.tamaño} servidors!`, "red"), 2000);
+                            }else{
+                                showNotificationIAGame("¡La IA ha tocado una xarxa!");
                             }
 
                             hit = true;
@@ -464,16 +482,19 @@ function turnoIA() {
 
                     if (hit && barcoHundido) {
                         setTimeout(() => {
-                            mostrarMensaje("Torn de " + practicePlayerName, "white");
-                            cambiarTurno();
-                            playerTurn = true;
+                            //showNotificationIAGame(`¡La IA ha hundido una xarxa amb ${barco.tamaño} servidors!`)
+                            //Suena la musica de espera
+                            iaSound();
+                            setTimeout(turnoIA, 2000);
                         }, 200);
                     } else if (hit) {
-                        setTimeout(turnoIA, 200);
+                        //showNotificationIAGame("¡La IA ha tocado una xarxa!");
+                        //Suena la musica de espera
+                        iaSound();
+                        setTimeout(turnoIA, 2000);
                     }
-                    attackSoundIA();
                 }
-            }, 200);
+            }, 2000);
         }
     }
 }
@@ -486,8 +507,8 @@ function habilitarTablero(tablero) {
     tablero.classList.remove('tablero-oculto');
 }
 
-function cambiarTurno() {
-    if (!playerTurn) {
+function cambiarTurno(playerTurn) {
+    if (playerTurn) {
         // Oscurecer la tabla del jugador y habilitar la tabla de la IA
         oscurecerTablero(document.getElementById('practicePlayergameTable')); // Reemplaza con el ID real de tu tabla
         habilitarTablero(document.getElementById('practiceEnemygameTable')); // Reemplaza con el ID real de tu tabla
@@ -497,6 +518,16 @@ function cambiarTurno() {
         habilitarTablero(document.getElementById('practicePlayergameTable')); // Reemplaza con el ID real de tu tabla
     }
 }
+
+//cambiar pantalla 
+function pageWin() {
+    window.location.assign("win.php");
+}
+
+function pagelose() {
+    window.location.assign("lose.php");
+}
+
 
 /* ********************************** */
 /* MARK: CLASSIC GAME -> Destruir barcos*/
@@ -542,7 +573,8 @@ function changeDataCell(td, gameMode = 'IA') {
             ammoPlayerElement.textContent = practicePlayerAmmo + "/40";
 
             if (practicePlayerAmmo == 0 && practiceEnemyAmmo > 0) {
-                mostrarMensaje("No tienes más munición. Turno de la IA.", "yellow");
+                showNotificationPlayerGame("No tienes más munición. Turno de la IA.");
+                //mostrarMensaje("No tienes más munición. Turno de la IA.", "yellow");
                 cambiarTurno();
                 playerTurn = false;
                 setTimeout(turnoIA, 2000); 
@@ -552,14 +584,16 @@ function changeDataCell(td, gameMode = 'IA') {
 
         if (name === " ") {
             td.innerHTML = "~"; 
-            mostrarMensaje("¡Has fallat!");
+            showNotificationPlayerGame("¡Has fallat!");
+            //mostrarMensaje("¡Has fallat!");
 
             if (practiceAmmoEnabled === true && practiceEnemyAmmo > 0) {
                 cambiarTurno(); 
                 playerTurn = false;
                 setTimeout(turnoIA, 2000);
             } else if (practiceAmmoEnabled === true && practiceEnemyAmmo === 0) {
-                mostrarMensaje("La IA no tiene más munición. Sigue tu turno.", "yellow");
+                showNotificationPlayer("La IA no tiene más munición. Sigue tu turno.");
+                //mostrarMensaje("La IA no tiene más munición. Sigue tu turno.", "yellow");
                 playerTurn = true;
             } else if (practiceAmmoEnabled === false) {
                 cambiarTurno();
@@ -588,7 +622,8 @@ function changeDataCell(td, gameMode = 'IA') {
                         if (coord[0] === row && coord[1] === col) {
                             barco.vida -= 1; 
                             td.innerHTML = "X"; 
-                            mostrarMensaje(`¡Has tocat una xarxa de ${barco.tamaño}!`);
+                            showNotificationPlayerGame("Has tocat una xarxa!");
+                            //mostrarMensaje(`¡Has tocat una xarxa de ${barco.tamaño}!`);
                             puntos += 50; 
                             playerHits++;  // Incrementar aciertos del jugador
                             mostrarMensajePuntos("+50 punts per atacar un servidor\n");
@@ -598,7 +633,8 @@ function changeDataCell(td, gameMode = 'IA') {
 
                             if (barco.vida === 0) {
                                 barcosHundidos++; 
-                                mostrarMensaje(`¡Tens el control de la xarxa amb ${barco.tamaño} servidors`);
+                                showNotificationPlayerGame(`¡Tens el control de la xarxa amb ${barco.tamaño} servidors`);
+                                //mostrarMensaje(`¡Tens el control de la xarxa amb ${barco.tamaño} servidors`);
                                 debeVaciarMensajes = true;
 
                                 if (hundidoSinFallar) {
@@ -610,7 +646,7 @@ function changeDataCell(td, gameMode = 'IA') {
                                     mostrarMensajePuntos(`¡Punts multiplicats per ${multiplicador} en enfonsar de cop una xarxa de ${barco.tamaño} servidors!`);
                                 }
 
-                                if (barco.tamaño == "4" && turnosTotales <= 2) {
+                                if (barco.tamaño == "4" && turnosTotales <= 4) {
                                     puntos += 6000; 
                                     actualizarPuntos();
                                     mostrarMensajePuntos("+6000 per destruir la xarxa més petita a la primera");
@@ -619,16 +655,20 @@ function changeDataCell(td, gameMode = 'IA') {
                                 hundidoSinFallar = true;
 
                                 if (todosBarcosDestruidos()) {
-                                    getbackground();
-                                    getText();
-                                    changeMusic();
-                                    const gameTitleElement = document.getElementById("gameTitle");
-                                    gameTitleElement.innerText = "Felicitats has hackejat tots els servidors!!";
-                                    /*mostrarMensaje("Has guanyat la partida!");*/
-                                    partidaActiva = false; // Desactivar la partida
-                                    mostrarBotones();
-                                    mostrarNombre();
-                                    calcularBonificacionPorTiempo();
+                                    if (mode == 'practice') {
+                                        pageWin();
+                                    } else{
+                                        getbackground();
+                                        getText();
+                                        changeMusic();
+                                        const gameTitleElement = document.getElementById("gameTitle");
+                                        gameTitleElement.innerText = "Felicitats has hackejat tots els servidors!!";
+                                        /*mostrarMensaje("Has guanyat la partida!");*/
+                                        partidaActiva = false; // Desactivar la partida
+                                        mostrarBotones();
+                                        mostrarNombre();
+                                        calcularBonificacionPorTiempo();
+                                    }
                                 }
                             }
                             return;
@@ -820,7 +860,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 //Funciones de click
 
-// Sonido de la espera dle ataque de la IA
+// Sonido de la espera del ataque de la IA
 function iaSound() {
     var sonido = document.getElementById('iaSound');
     sonido.play();
@@ -898,7 +938,7 @@ function showNotificationIAGame(message) {
     const notification = document.createElement('div');
     notification.classList.add('notificationGame');
     
-    notification.classList.add('notificationGameIAGame');
+    notification.classList.add('notificationIAGame');
     notification.innerText = message;
 
     container.appendChild(notification);

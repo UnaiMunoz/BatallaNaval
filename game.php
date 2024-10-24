@@ -272,8 +272,6 @@ Notas:
                                         var practiceAmmoEnabled = " . json_encode(false) . ";
                                     </script>";
                             }
-                            
-                            
 
                             echo    "<script>
                                         var barcos = " . json_encode($barcos) . ";
@@ -514,7 +512,7 @@ Notas:
                         if ($limitedAmmo == 'true') {
                             echo "<p class='ammoTitle'>Munició</p>";
                             echo "<p id='practicePlayerAmmo'>40/40</p>";                            
-                            $playerAmmo = 10;
+                            $playerAmmo = 40;
 
                             echo "<script>
                                 var practicePlayerAmmo = " . json_encode($playerAmmo) . ";
@@ -600,7 +598,7 @@ Notas:
 
                         // Array de barcos [nombre, tamaño]
                         $practiceEnemyBoats = [
-                            new Barco("Barca", 1),
+                            new Barco("Barca", 1)/*,
                             new Barco("Barca", 1),
                             new Barco("Barca", 1),
                             new Barco("Barca", 1),
@@ -609,7 +607,7 @@ Notas:
                             new Barco("Fragata", 2),
                             new Barco("Submarino", 3),
                             new Barco("Submarino", 3),
-                            new Barco("Destructor", 4),
+                            new Barco("Destructor", 4)*/
                         ];
         
                         // String para saber las coordenadas de cada barcos
@@ -712,7 +710,7 @@ Notas:
                         if ($limitedAmmo == 'true') {
                             echo "<p class='ammoTitle'>Munició</p>";
                             echo "<p id='practiceEnemyAmmo'>40/40</p>";
-                            $enemyAmmo = 2;
+                            $enemyAmmo = 40;
                             echo "<script>
                             var practiceEnemyAmmo = " . json_encode($enemyAmmo) . ";
                             </script>";
