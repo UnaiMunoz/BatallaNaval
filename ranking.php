@@ -19,7 +19,6 @@ Se muestra una tabla con los datos de los jugadores y un paginador para navegar 
 El paginador se muestra si hay más de 25 registros.
 -->
 
-
 <body id="bodyRanking">
     
     <?php
