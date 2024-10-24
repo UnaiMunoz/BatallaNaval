@@ -416,16 +416,17 @@ function turnoIA() {
             attackedPositions.push({ row: row, col: col }); // Guardar la posición en attackedPositions
             
             //Suena la musica de espera
-            
+            iaSound();
 
-            setTimeout(() => showNotificationIA("Torn de IA, pensant moviment..."), 1000);
-            setTimeout(() => iaSound(), 1000);
+            showNotificationIA("Torn de IA, pensant moviment...");
 
-            
-
+            // Esperar 2 segundos antes de mostrar el resultado del ataque de la IA
+            setTimeout(() => {
+                //mostrarMensaje("Torn de IA, pensant moviment...", "yellow");
+            }, 2000);
 
             setTimeout(() => {
-                if (practiceAmmoEnabled == true) {
+                if (practiceAmmoEnabled) {
                     if (practiceEnemyAmmo === 0 && practicePlayerAmmo === 0) {
                         setTimeout(determinarGanadorPorAciertos, 2000);
                         return;
@@ -441,7 +442,7 @@ function turnoIA() {
                     showNotificationIAGame("La IA ha fallat");
                     //mostrarMensaje("La IA ha fallat", "yellow");
                     waterSoundIA();
-                    if (practiceAmmoEnabled == true && practicePlayerAmmo === 0) {
+                    if (practiceAmmoEnabled && practicePlayerAmmo === 0) {
                         setTimeout(() => {
                             showNotificationIA("Player no tiene más munición. Sigue el turno de la IA.");
                             //mostrarMensaje("Player no tiene más munición. Sigue el turno de la IA.", "yellow");
@@ -451,11 +452,12 @@ function turnoIA() {
                         iaSound();
                         setTimeout(turnoIA, 2000);
                     } else {
-                        showNotificationPlayer("Turno de Player.");
-                        //mostrarMensaje("Turno de Player.", "yellow");
-                        playerTurn = true;
-                        cambiarTurno(playerTurn);
-              
+                        setTimeout(() => {
+                            showNotificationPlayer("Turno de Player.");
+                            //mostrarMensaje("Turno de Player.", "yellow");
+                            playerTurn = true;
+                            cambiarTurno(playerTurn);
+                        }, 2000);
                     }
                 } else {
                     attackSoundIA();
@@ -494,7 +496,7 @@ function turnoIA() {
                         setTimeout(turnoIA, 2000);
                     }
                 }
-            }, 3000);
+            }, 2000);
         }
     }
 }
