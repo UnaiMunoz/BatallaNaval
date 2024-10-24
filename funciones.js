@@ -658,23 +658,23 @@ function changeDataCell(td, gameMode = 'IA') {
                                 hundidoSinFallar = true;
 
                                 if (todosBarcosDestruidos()) {
-                                    if (gameMode = 'IA') {
+                                    if (gameMode == 'IA') {
                                         calcularBonificacionPorTiempo();
                                         partidaActiva = false;
                                         pageWin();
                                     } else{
-                                        calcularBonificacionPorTiempo();
+                                        /*calcularBonificacionPorTiempo();
                                         partidaActiva = false;
-                                        pageWin();
-                                        // getbackground();
-                                        // getText();
-                                        // changeMusic();
-                                        // const gameTitleElement = document.getElementById("gameTitle");
-                                        // gameTitleElement.innerText = "Felicitats has hackejat tots els servidors!!";
-                                        // mostrarBotones();
-                                        // mostrarNombre();
-                                        // calcularBonificacionPorTiempo();
-                                        // partidaActiva = false; // Desactivar la partida
+                                        pageWin();*/
+                                        getbackground();
+                                        getText();
+                                        changeMusic();
+                                        const gameTitleElement = document.getElementById("gameTitle");
+                                        gameTitleElement.innerText = "Felicitats has hackejat tots els servidors!!";
+                                        mostrarBotones();
+                                        mostrarNombre();
+                                        calcularBonificacionPorTiempo();
+                                        partidaActiva = false; // Desactivar la partida
                                     }
                                 }
                             }
@@ -805,6 +805,12 @@ document.addEventListener('DOMContentLoaded', () => {
             break;
         case 'game':
             audioSrc = 'sounds/backgroundSoundGame.mp3';
+            break;
+        case 'bodyWin':
+            audioSrc = 'sounds/winSound.mp3';
+            break;
+        case 'bodyLose':
+            audioSrc = 'sounds/loseSound.mp3';
             break;
         default:
             console.error('No audio source found for this page.');

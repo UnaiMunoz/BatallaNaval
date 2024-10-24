@@ -5,7 +5,7 @@
             // Si no prové de 'game.php', retornar error 403
             header('HTTP/1.0 403 Forbidden', true, 403);
             echo "<!DOCTYPE html>
-                <html lang='es'>
+                <html lang='ca'>
                 <html>
                         <head>
                                 <meta charset='utf-8'>
@@ -20,7 +20,7 @@
     }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ca">
 <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,6 +35,9 @@
                     <h1 class="animacion-text-lose" id="gameTitle">Has perdut!</h1>
             </div>
     </header>
+
+    <div id="audioContainer"></div>
+
     <?php
                 // Obtener los parámetros de la URL
                 $playerName = isset($_GET['playerName']) ? htmlspecialchars($_GET['playerName']) : 'Desconocido';

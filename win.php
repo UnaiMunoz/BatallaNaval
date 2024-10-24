@@ -31,6 +31,8 @@
 </head>
 <body id="bodyWin">
 
+        <div id="audioContainer"></div>
+
         <header>
                 <div>
                         <h1 class="animacion-text-win" id="gameTitle">Felicitats has hackejat els servidors!</h1>

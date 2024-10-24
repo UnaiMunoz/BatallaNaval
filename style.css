@@ -508,8 +508,6 @@ input[type="text"]::placeholder {
 /* Focus efecto */
 input[type="text"]:focus {
     outline: none;
-    border-color: #000000 !important;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
 }
 
 #buttonName{
@@ -797,7 +795,7 @@ tr:hover .selecRanking::before {
     background-color: #0c0c0c93;
     background-blend-mode: overlay;
     overflow-x: hidden;
-    animation: moverFondo 2.5s;
+    animation: moverFondo 5s alternate;
 }
 
 #gameTitle{
@@ -805,14 +803,22 @@ tr:hover .selecRanking::before {
 }
 
 #inputNameWinLose{
-    margin-top: 100px;
-    margin-bottom: 50px;
     display: block;
-    color: white
+    color: white;
+    border-style: none;
+    background-color: unset;
+    width: 68%;
+    height: 50px;
+    text-align: center;
+    font-size: 1.6vw;
 }
 
 #inputNameWinLose::placeholder{
     color:white
+}
+
+#bodyWin .points{
+    margin: 8% 0;
 }
 
 #nameButton{
@@ -823,7 +829,7 @@ tr:hover .selecRanking::before {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-left: 11px;
+    margin: 8% 0%;
 }
 
 #nameButton:hover::before{
@@ -848,23 +854,26 @@ tr:hover .selecRanking::before {
     margin-bottom: 20px;
 }
 
-#divnombreWin{
-    width: 30%;
-    display: none;
+#nombreWin{
+    display: ruby;
     font-size: 1.6vw;
     color: #ffffff;
 }
 
-#divnombreWin::before{
+#nombreWin::before{
     content: '[';
 }
 
-#divnombreWin::after{
+#nombreWin::after{
     content: ']';
 }
 
-#divnombreWin input:focus {
+#inputNameWinLose input:focus {
     outline: none;
+}
+
+#nombreWin:hover{
+    cursor: pointer;
 }
 
 .section {
@@ -874,7 +883,7 @@ tr:hover .selecRanking::before {
 }
 
 #buttonWin{
-    margin-top: 70px;
+    margin-top: 8%;
 }
 
 
