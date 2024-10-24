@@ -390,8 +390,7 @@ function turnoIA() {
             return;
         } else if (practiceAmmoEnabled && practiceEnemyAmmo === 0) {
             setTimeout(() => {
-                showNotificationIA("La IA no tiene más munición. Turno de Player.");
-                //mostrarMensaje("La IA no tiene más munición. Turno de Player.", "yellow");
+                showNotificationIA(`La IA no té més munició. Torn de ${practicePlayerName}`);
                 playerTurn = true;
                 cambiarTurno(playerTurn);
             }, 2000);
@@ -420,11 +419,6 @@ function turnoIA() {
 
             showNotificationIA("Torn de IA, pensant moviment...");
 
-            // Esperar 2 segundos antes de mostrar el resultado del ataque de la IA
-            setTimeout(() => {
-                //mostrarMensaje("Torn de IA, pensant moviment...", "yellow");
-            }, 2000);
-
             setTimeout(() => {
                 if (practiceAmmoEnabled) {
                     if (practiceEnemyAmmo === 0 && practicePlayerAmmo === 0) {
@@ -444,7 +438,7 @@ function turnoIA() {
                     waterSoundIA();
                     if (practiceAmmoEnabled && practicePlayerAmmo === 0) {
                         setTimeout(() => {
-                            showNotificationIA("Player no tiene más munición. Sigue el turno de la IA.");
+                            showNotificationIA(`${practicePlayerName} no té més munició. Segueix el torn de la IA.`);
                             //mostrarMensaje("Player no tiene más munición. Sigue el turno de la IA.", "yellow");
                         }, 2000);
                         playerTurn = false;
@@ -453,7 +447,7 @@ function turnoIA() {
                         setTimeout(turnoIA, 2000);
                     } else {
                         setTimeout(() => {
-                            showNotificationPlayer("Turno de Player.");
+                            showNotificationPlayer(`Torn de ${practicePlayerName}`);
                             //mostrarMensaje("Turno de Player.", "yellow");
                             playerTurn = true;
                             cambiarTurno(playerTurn);
@@ -471,10 +465,10 @@ function turnoIA() {
 
                             if (barco.vida === 0) {
                                 barcoHundido = true;
-                                setTimeout(() => showNotificationIAGame(`¡La IA ha hundido una xarxa amb ${barco.tamaño} servidors!`), 2000);
+                                setTimeout(() => showNotificationIAGame(`¡La IA ha enfonsat una xarxa amb ${barco.tamaño} servidors!`), 2000);
                                 //setTimeout(() => mostrarMensaje(`¡La IA ha hundido una xarxa amb ${barco.tamaño} servidors!`, "red"), 2000);
                             }else{
-                                showNotificationIAGame("¡La IA ha tocado una xarxa!");
+                                showNotificationIAGame("¡La IA ha tocat una xarxa!");
                             }
 
                             hit = true;
