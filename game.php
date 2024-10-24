@@ -116,7 +116,7 @@ Notas:
             
                             // Array de barcos [nombre, tamaño]
                             $barcos = [
-                                new Barco("Barca", 1)/*,
+                                new Barco("Barca", 1),
                                 new Barco("Barca", 1),
                                 new Barco("Barca", 1),
                                 new Barco("Barca", 1),
@@ -125,7 +125,7 @@ Notas:
                                 new Barco("Fragata", 2),
                                 new Barco("Submarino", 3),
                                 new Barco("Submarino", 3),
-                                new Barco("Destructor", 4)*/
+                                new Barco("Destructor", 4)
                             ];
             
                             // String para saber las coordenadas de cada barcos

@@ -732,10 +732,10 @@ tr:hover .selecRanking::before {
     padding: 10px;
     margin: 10px;
     background-color: #000000 !important;
-    border-radius: 0px 20px 20px 20px;
 }
 
 .notificationPlayer {
+    border-radius: 0px 20px 20px 20px;
     background-color: #000000 !important;
     border: 2px solid #3700ff;
     left: -50%;
@@ -744,6 +744,7 @@ tr:hover .selecRanking::before {
 }
 
 .notificationIA {
+    border-radius: 20px 0px 20px 20px;
     background-color: #000000 !important;
     border: 2px solid yellow;
     right: -50%;
@@ -752,6 +753,7 @@ tr:hover .selecRanking::before {
 }
 
 .notificationPlayerGame {
+    border-radius: 0px 20px 20px 20px;
     background-color: #000000 !important;
     border: 2px solid #3700ff;
     left: -50%;
@@ -760,6 +762,7 @@ tr:hover .selecRanking::before {
 }
 
 .notificationIAGame {
+    border-radius: 20px 0px 20px 20px;
     background-color: #000000 !important;
     border: 2px solid yellow;
     right: -50%;
