@@ -481,7 +481,7 @@ Notas:
                         // Imprimir la matriz 
         
                         # Mostrar tabla jugador       
-                        echo '<p class="showName">Tablero de ' . $playerName . '</p>';
+                        echo '<p class="showName">Xarxa de ' . $playerName . '</p>';
                         echo "<table id='practicePlayergameTable' class='gameTable'>";
                         for ($i = 0; $i < $numero + 1; $i++) {
                             echo "<tr>";
@@ -600,7 +600,7 @@ Notas:
 
                         // Array de barcos [nombre, tamaño]
                         $practiceEnemyBoats = [
-                            new Barco("Barca", 1)/*,
+                            new Barco("Barca", 1),
                             new Barco("Barca", 1),
                             new Barco("Barca", 1),
                             new Barco("Barca", 1),
@@ -609,7 +609,7 @@ Notas:
                             new Barco("Fragata", 2),
                             new Barco("Submarino", 3),
                             new Barco("Submarino", 3),
-                            new Barco("Destructor", 4)*/
+                            new Barco("Destructor", 4)
                         ];
         
                         // String para saber las coordenadas de cada barcos
@@ -680,7 +680,7 @@ Notas:
                         // Imprimir la matriz 
         
                         # Mostrar tabla IA
-                        echo '<p class="showName">Tablero de IA</p>';
+                        echo '<p class="showName">Xarxa enemiga</p>';
                         echo "<table id='practiceEnemygameTable' class='gameTable'>";
                         for ($i = 0; $i < $numero + 1; $i++) {
                             echo "<tr>";

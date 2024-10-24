@@ -30,7 +30,7 @@
                 <div id="divName">
                     <input id="indexName" name="playerName" placeholder="Escriu un nom per jugar" maxlength="30">
                 </div>
-                <p id="nameError" style="color: red !important; text-align:center; margin:15px;">El nom ha de tenir mínim 3 caràcters.</p>
+                <p id="nameError" style="color: red !important; margin:15px;">El nom ha de tenir mínim 3 caràcters.</p>
                 <button type="button" id="classicGameBtn" class="indexGame keySound disabled" disabled>Tutorial</button>
                 <button type="button" id="practiceGameBtn" class="indexGame keySound disabled" disabled>Partida Clàssica</button>
                 <input type="hidden" name="mode" id="modeInput" value="">
