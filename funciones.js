@@ -277,6 +277,7 @@ function applyEasterEgg() {
             clickCounterC4 = 0; // Reiniciar el contador
 
             if (mode == 'practice') {
+                clearInterval(cronometro);
                 pageWin();
             } else{
                 // Para el timer
@@ -380,6 +381,7 @@ function determinarGanadorPorAciertos() {
     calcularBonificacionPorTiempo();
 }
 
+
 // Turno de la IA
 function turnoIA() {
     if (partidaActiva && !playerTurn) {
@@ -414,17 +416,16 @@ function turnoIA() {
             attackedPositions.push({ row: row, col: col }); // Guardar la posición en attackedPositions
             
             //Suena la musica de espera
-            iaSound();
+            
 
-            showNotificationIA("Torn de IA, pensant moviment...");
+            setTimeout(() => showNotificationIA("Torn de IA, pensant moviment..."), 1000);
+            setTimeout(() => iaSound(), 1000);
 
-            // Esperar 2 segundos antes de mostrar el resultado del ataque de la IA
+            
+
+
             setTimeout(() => {
-                //mostrarMensaje("Torn de IA, pensant moviment...", "yellow");
-            }, 2000);
-
-            setTimeout(() => {
-                if (practiceAmmoEnabled) {
+                if (practiceAmmoEnabled == true) {
                     if (practiceEnemyAmmo === 0 && practicePlayerAmmo === 0) {
                         setTimeout(determinarGanadorPorAciertos, 2000);
                         return;
@@ -440,7 +441,7 @@ function turnoIA() {
                     showNotificationIAGame("La IA ha fallat");
                     //mostrarMensaje("La IA ha fallat", "yellow");
                     waterSoundIA();
-                    if (practiceAmmoEnabled && practicePlayerAmmo === 0) {
+                    if (practiceAmmoEnabled == true && practicePlayerAmmo === 0) {
                         setTimeout(() => {
                             showNotificationIA("Player no tiene más munición. Sigue el turno de la IA.");
                             //mostrarMensaje("Player no tiene más munición. Sigue el turno de la IA.", "yellow");
@@ -450,12 +451,11 @@ function turnoIA() {
                         iaSound();
                         setTimeout(turnoIA, 2000);
                     } else {
-                        setTimeout(() => {
-                            showNotificationPlayer("Turno de Player.");
-                            //mostrarMensaje("Turno de Player.", "yellow");
-                            playerTurn = true;
-                            cambiarTurno(playerTurn);
-                        }, 2000);
+                        showNotificationPlayer("Turno de Player.");
+                        //mostrarMensaje("Turno de Player.", "yellow");
+                        playerTurn = true;
+                        cambiarTurno(playerTurn);
+              
                     }
                 } else {
                     attackSoundIA();
@@ -494,7 +494,7 @@ function turnoIA() {
                         setTimeout(turnoIA, 2000);
                     }
                 }
-            }, 2000);
+            }, 3000);
         }
     }
 }
@@ -521,9 +521,13 @@ function cambiarTurno(playerTurn) {
 
 //cambiar pantalla 
 function pageWin() {
-    document.location.href = "win.php";
-    //window.location.replace("win.php");
+    const playerName = encodeURIComponent(practicePlayerName); // Codifica el nombre para la URL
+
+    // Redirigir a win.php con los parámetros playerName y puntos
+    window.location.href = `win.php?playerName=${playerName}&puntos=${puntos}`;
 }
+
+
 
 function pageLose() {
     //window.location.replace("lose.php");
@@ -586,7 +590,6 @@ function changeDataCell(td, gameMode = 'IA') {
         if (name === " ") {
             td.innerHTML = "~"; 
             showNotificationPlayerGame("¡Has fallat!");
-            //mostrarMensaje("¡Has fallat!");
 
             if (practiceAmmoEnabled === true && practiceEnemyAmmo > 0) {
                 cambiarTurno(); 
@@ -599,7 +602,7 @@ function changeDataCell(td, gameMode = 'IA') {
             } else if (practiceAmmoEnabled === false) {
                 cambiarTurno();
                 playerTurn = false;
-                turnoIA();
+                setTimeout(turnoIA, 2000);
             }
 
             turnosAguaSeguidos++;
@@ -656,19 +659,23 @@ function changeDataCell(td, gameMode = 'IA') {
                                 hundidoSinFallar = true;
 
                                 if (todosBarcosDestruidos()) {
-                                    if (mode === 'practice') {
+                                    if (gameMode = 'IA') {
+                                        calcularBonificacionPorTiempo();
+                                        partidaActiva = false;
                                         pageWin();
                                     } else{
-                                        getbackground();
-                                        getText();
-                                        changeMusic();
-                                        const gameTitleElement = document.getElementById("gameTitle");
-                                        gameTitleElement.innerText = "Felicitats has hackejat tots els servidors!!";
-                                        /*mostrarMensaje("Has guanyat la partida!");*/
-                                        partidaActiva = false; // Desactivar la partida
-                                        mostrarBotones();
-                                        mostrarNombre();
                                         calcularBonificacionPorTiempo();
+                                        partidaActiva = false;
+                                        pageWin();
+                                        // getbackground();
+                                        // getText();
+                                        // changeMusic();
+                                        // const gameTitleElement = document.getElementById("gameTitle");
+                                        // gameTitleElement.innerText = "Felicitats has hackejat tots els servidors!!";
+                                        // mostrarBotones();
+                                        // mostrarNombre();
+                                        // calcularBonificacionPorTiempo();
+                                        // partidaActiva = false; // Desactivar la partida
                                     }
                                 }
                             }
@@ -692,8 +699,10 @@ function changeDataCell(td, gameMode = 'IA') {
 
 // Guardar Nombre, Puntos y Fecha en ranking.txt
 function saveScore() {
-    var playerName = document.getElementById("name").value;
+    var playerName = document.getElementById("inputNameWinLose").value; // Obtener el nombre del jugador
     var points = document.querySelector(".points").textContent.split(": ")[1];  // Obtener puntos
+
+    // Formatear la fecha y la hora
     var options = { 
         timeZone: "Europe/Madrid", 
         year: 'numeric', 
@@ -712,7 +721,9 @@ function saveScore() {
     formattedDate = date + ' ' + time.split(':').join(':');
 
     const errorMessage = document.getElementById('errorMessage');
+    const successMessageContainer = document.getElementById('successMessageContainer'); // Contenedor para el mensaje de éxito
 
+    // Comprobar la longitud del nombre del jugador
     if (playerName.length < 3) {
         errorMessage.style.display = 'block'; // Mostrar mensaje de error
         return; // No continuar si el nombre es demasiado corto
@@ -720,30 +731,62 @@ function saveScore() {
         errorMessage.style.display = 'none'; // Ocultar mensaje si es válido
     }
 
-    if (playerName !== "") {
-        // Crear un objeto con los datos del jugador
-        var playerData = {
-            name: playerName,
-            score: points,
-            date: formattedDate // Usar la fecha formateada
-        };  
+    // Crear un objeto con los datos del jugador
+    var playerData = {
+        name: playerName,
+        score: points,
+        date: formattedDate // Usar la fecha formateada
+    };  
 
-        // Enviar los datos al archivo PHP mediante POST
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "ranking.php", true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                mostrarMensaje("Felicitats " + playerData.name + "! Revisa el ranking per veure la teva posició.");
-                ocultarNombre();
+                        // Ocultar el botón
+                        document.getElementById("nameButton").style.display = 'none'; 
+
+                        // Crear un nuevo párrafo para el mensaje de éxito
+                        var successMessage = document.createElement("p");
+                        successMessage.textContent = "Tu puntuación ha sido guardada!";
+                        successMessage.className = "successMessage"; // Puedes añadir una clase para estilizarlo
+                        successMessageContainer.appendChild(successMessage); // Añadir el mensaje al contenedor
+                        
+                        ocultarNombre(); // Llama a la función para ocultar el nombre si es necesario
+                    
+
+    // Enviar los datos al archivo PHP mediante POST
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "ranking.php", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.success) {
+                    // Ocultar el botón
+                    document.getElementById("nameButton").style.display = 'none'; 
+
+                    // Crear un nuevo párrafo para el mensaje de éxito
+                    var successMessage = document.createElement("p");
+                    successMessage.textContent = "Tu puntuación ha sido guardada!";
+                    successMessage.className = "successMessage"; // Puedes añadir una clase para estilizarlo
+                    successMessageContainer.appendChild(successMessage); // Añadir el mensaje al contenedor
+                    
+                    ocultarNombre(); // Llama a la función para ocultar el nombre si es necesario
+                } else {
+                    console.error("Error al guardar el registro: " + response.message);
+                }
+            } else {
+                console.error("Error en la petición: " + xhr.status);
             }
-        };
+        }
+    };
 
-        xhr.send(JSON.stringify(playerData));
-    } else {
-        alert("Por favor, ingresa tu nombre.");
-    }
+    // Ocultar el botón antes de enviar la solicitud
+    document.getElementById("nameButton").style.display = 'none'; 
+    xhr.send(JSON.stringify(playerData));
 }
+
+
+
+
 
 /* ********* */
 /* MARK: Sonidos*/

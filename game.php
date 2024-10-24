@@ -116,7 +116,7 @@ Notas:
             
                             // Array de barcos [nombre, tamaño]
                             $barcos = [
-                                new Barco("Barca", 1),
+                                new Barco("Barca", 1)/*,
                                 new Barco("Barca", 1),
                                 new Barco("Barca", 1),
                                 new Barco("Barca", 1),
@@ -125,7 +125,7 @@ Notas:
                                 new Barco("Fragata", 2),
                                 new Barco("Submarino", 3),
                                 new Barco("Submarino", 3),
-                                new Barco("Destructor", 4)
+                                new Barco("Destructor", 4)*/
                             ];
             
                             // String para saber las coordenadas de cada barcos
@@ -223,6 +223,7 @@ Notas:
             
                             // Imprimir la matriz 
             
+                            echo '<p class="showName">Hola! ' . $playerName . '</p>';
                             # Mostrar la tabla
                             echo "<table class='gameTable'>";
                             for ($i = 0; $i < $numero + 1; $i++) {
@@ -270,6 +271,7 @@ Notas:
                             } else {
                                 echo "<script>
                                         var practiceAmmoEnabled = " . json_encode(false) . ";
+                                        var practicePlayerName = " . json_encode($playerName) . ";
                                     </script>";
                             }
 
@@ -323,7 +325,6 @@ Notas:
                 $playerName = $_POST['playerName'];
                 echo "<script>
                         document.addEventListener('DOMContentLoaded', function() {
-                        mostrarMensaje('Torn de " . htmlspecialchars($playerName, ENT_QUOTES, 'UTF-8') . "'); // Muestra el mensaje al cargar la página
                         setTimeout(turnoIA, 1000); // Llama a la IA automáticamente después de un breve retraso
                         });
                     </script>";
@@ -480,7 +481,7 @@ Notas:
                         // Imprimir la matriz 
         
                         # Mostrar tabla jugador       
-                        echo '<p>Tablero de ' . $playerName . '</p>';
+                        echo '<p class="showName">Tablero de ' . $playerName . '</p>';
                         echo "<table id='practicePlayergameTable' class='gameTable'>";
                         for ($i = 0; $i < $numero + 1; $i++) {
                             echo "<tr>";
@@ -522,6 +523,7 @@ Notas:
                         } else {
                             echo "<script>
                                 var practiceAmmoEnabled = " . json_encode(false) . ";
+                                var practicePlayerName = " . json_encode($playerName) . ";
                             </script>";
                         }
 
@@ -678,7 +680,7 @@ Notas:
                         // Imprimir la matriz 
         
                         # Mostrar tabla IA
-                        echo '<p>Tablero de IA</p>';
+                        echo '<p class="showName">Tablero de IA</p>';
                         echo "<table id='practiceEnemygameTable' class='gameTable'>";
                         for ($i = 0; $i < $numero + 1; $i++) {
                             echo "<tr>";
