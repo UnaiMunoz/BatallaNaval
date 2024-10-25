@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="funciones.js"></script>
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    
 </head>
 
 <!-- 
@@ -19,31 +20,34 @@ Se muestra una tabla con los datos de los jugadores y un paginador para navegar 
 El paginador se muestra si hay más de 25 registros.
 -->
 
-
 <body id="bodyRanking">
-
+    
     <?php
         // Lee los datos enviados desde el JavaScript
         $inputData = file_get_contents("php://input");
         $data = json_decode($inputData, true);
 
-        // Extraer nombre, puntuación y fecha
-        $name = $data['name'];
-        $score = $data['score'];
-        $date = $data['date'];
+        // Verifica que $data no sea null
+        if ($data !== null) {
+            // Extraer nombre, puntuación y fecha si existen
+            $name = isset($data['name']) ? $data['name'] : '';
+            $score = isset($data['score']) ? $data['score'] : 0;
+            $date = isset($data['date']) ? $data['date'] : '';
 
-        // Verificar si el nombre no está vacío
-        if (!empty($name)) {
-            // Formatear la línea a escribir
-            $linea = "$name;$score;$date\n";
+            // Verificar si el nombre no está vacío
+            if (!empty($name)) {
+                // Formatear la línea a escribir
+                $linea = "$name;$score;$date\n";
 
-            // Escribir en el archivo ranking.txt
-            $file = fopen("ranking.txt", "a"); // Abrir archivo en modo añadir
-            fwrite($file, $linea);
-            fclose($file);
+                // Escribir en el archivo ranking.txt
+                $file = fopen("ranking.txt", "a"); // Abrir archivo en modo añadir
+                fwrite($file, $linea);
+                fclose($file);
+            }
+        } else {
+            // Manejar el error si $data es null (JSON no válido o no recibido)
+            error_log("Error: No se recibieron datos JSON válidos.");
         }
-
-        // Enviar una respuesta (opcional)
     ?>
 
     <header>
@@ -74,6 +78,7 @@ El paginador se muestra si hay más de 25 registros.
         if ($file) {
             // Leer todo el archivo y almacenar los registros en un array
             $registros = [];
+            $ultimoRegistro = null; // Variable para almacenar el último registro
             while (($linea = fgets($file)) !== false) {
                 // Separa los datos por el delimitador ";"
                 $datos = explode(';', trim($linea));
@@ -85,17 +90,21 @@ El paginador se muestra si hay más de 25 registros.
                         'points' => (int) trim($datos[1]), // Convierte puntuación a entero
                         'date' => trim($datos[2]),
                     ];
+                    $ultimoRegistro = [
+                        'name' => trim($datos[0]),
+                        'points' => (int) trim($datos[1]),
+                        'date' => trim($datos[2]),
+                    ]; // Actualiza el último registro
                 }
             }
 
             // Cerrar el archivo
             fclose($file);
 
-            // usort => Ordena los registros por puntuación en orden descendente y por date en orden ascendente
+            // Ordenar los registros por puntuación y fecha
             usort($registros, function ($a, $b) {
                 if ($a['points'] === $b['points']) {
-                    // Si las pointses son iguales, comparar por date
-                    return strcmp($a['date'], $b['date']); // Orden ascendente por date
+                    return strcmp($a['date'], $b['date']); // Orden ascendente por fecha
                 }
                 return $b['points'] <=> $a['points']; // Orden descendente por puntuación
             });
@@ -122,8 +131,18 @@ El paginador se muestra si hay más de 25 registros.
                 $points = $registros[$i]['points'];
                 $date = $registros[$i]['date'];
 
-                // Mostrar fila
-                echo "<tr class='keySound'>";
+                // Determinar si este registro es el último de ranking.txt
+                $isLastRecord = ($name === $ultimoRegistro['name'] && 
+                                $points === $ultimoRegistro['points'] && 
+                                $date === $ultimoRegistro['date']);
+
+                // Mostrar fila con una clase adicional si es el último registro
+                if ($isLastRecord) {
+                    echo "<tr class='keySound lastRecord'>"; // Añadimos 'lastRecord' a la clase
+                } else {
+                    echo "<tr class='keySound'>";
+                }
+
                 echo "<td class='selecRanking'>$posicion</td>";
                 echo "<td>$name</td>";
                 echo "<td>$points</td>";
@@ -169,6 +188,7 @@ El paginador se muestra si hay más de 25 registros.
         } else {
             echo "No se encuentra el archivo ranking.txt";
         }
+
     ?>
 
     </main>

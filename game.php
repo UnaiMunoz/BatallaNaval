@@ -23,47 +23,30 @@ Notas:
 - Los barcos son: Fragata (2), Submarino (3), Destructor (4) y Portaaviones (5).
 -->
 
+    <div id="notificationContainer"></div>
+
+    <div id="notificationContainerGame"></div>
+
+    <div id="audioContainer"></div>
+
+    <audio id="iaSound">
+        <source src="sounds/iaSound.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="attackSoundIA">
+        <source src="sounds/attackSound.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="waterSoundIA">
+        <source src="sounds/waterSound.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="notTouch">
     <header>
         <div class="contentEasterEgg">
             <h1 class="text" id="gameTitle">Binary Battleship</h1>
         </div>
     </header>
-
-    <?php
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            // Sanitizar el nombre del jugador
-            $playerName = htmlspecialchars(trim($_POST['playerName']));
-
-            // Verificar si el nombre está vacío
-            if (empty($playerName)) {
-                header("Location: index.php?error=emptyname");
-                exit;
-            }
-
-            // Verificar si el nombre tiene entre 3 y 30 caracteres
-            if (strlen($playerName) < 3 || strlen($playerName) > 30) {
-                // Si el nombre no es válido, redirigir al formulario con un mensaje de error
-                header("Location: index.php?error=invalidname");
-                exit;
-            }
-
-        } else {
-            // Si no hay datos POST, redirigir a index.php
-            header("Location: index.php");
-            exit;
-        }
-    ?>
-
-
-    <?php
-        session_start();
-        // Establir una variable de sessió que confirmi l'accés permès
-        $_SESSION['acceso_permitido'] = true;
-    ?>
     
-    <h2 id="namePlayerGame">Bienvenido al juego, <?php echo $playerName; ?>!</h2>
     <a href="index.php" id="goBackButton"><button id="goBack" class="keySound">Inici</button></a>
-
 
     <!-- Mensaje que aparece si JavaScript no está habilitado -->
     <noscript>
@@ -73,11 +56,20 @@ Notas:
             <a href="https://www.enable-javascript.com/es/" target="_blank">Fes clic aquí per saber com habilitar JavaScript</a>
         </div>
     </noscript>
-
+    
     <?php
+
+        // Variables de configuración
+        $limitedAmmo = isset($_POST['limitedAmmo']) ? 'true' : 'false';
+        // $armoredShips = isset($_POST['armoredShips']) ? 'true' : 'false';
+        // $specialAttacks = isset($_POST['specialAttacks']) ? 'true' : 'false';
+
+        // echo "Limited Ammo: " . $limitedAmmo . "<br>";
+
         if (isset($_GET['mode'])) {
             $mode = $_GET['mode'];
             if ($mode == 'classic') {
+                $playerName = $_POST['playerName'];
                 // Cargar contenido específico para el modo Classic
                 echo '<div id="game_Container">';
                     echo '<div class="section board">';
@@ -133,7 +125,7 @@ Notas:
                                 new Barco("Fragata", 2),
                                 new Barco("Submarino", 3),
                                 new Barco("Submarino", 3),
-                                new Barco("Destructor", 4),
+                                new Barco("Destructor", 4)
                             ];
             
                             // String para saber las coordenadas de cada barcos
@@ -231,6 +223,7 @@ Notas:
             
                             // Imprimir la matriz 
             
+                            echo '<p class="showName">Hola! ' . $playerName . '</p>';
                             # Mostrar la tabla
                             echo "<table class='gameTable'>";
                             for ($i = 0; $i < $numero + 1; $i++) {
@@ -251,7 +244,7 @@ Notas:
                                         }elseif($tabla[$i][$j] == "P"){
                                             echo "<td name='Portaaviones' class='codeName attackSound' onclick='changeDataCell(this, \"classic\")'>" . $tabla[$i][$j] . "</td>";
                                         }else{
-                                            echo "<td name=' ' class='codeName attackSound' onclick='changeDataCell(this, \"classic\")'>" . $tabla[$i][$j] . "</td>";
+                                            echo "<td name=' ' class='codeName waterSound' onclick='changeDataCell(this, \"classic\")'>" . $tabla[$i][$j] . "</td>";
                                         }
                                         
                                     }
@@ -266,15 +259,28 @@ Notas:
                             // Imprimir en la consola del navegador
                             echo "<script>console.log('Secret Locations: ". json_encode($StringBarcos) . "');</script>";
             
+                            if ($limitedAmmo == 'true') {
+                                echo "<p class='ammoTitle'>Munició</p>";
+                                echo "<p id='practicePlayerAmmo'>40/40</p>";
+                                $playerAmmo = 40;
+
+                                echo "<script>
+                                    var practicePlayerAmmo = " . json_encode($playerAmmo) . ";
+                                    var practiceAmmoEnabled = " . json_encode(true) . ";
+                                </script>";
+                            } else {
+                                echo "<script>
+                                        var practiceAmmoEnabled = " . json_encode(false) . ";
+                                        var practicePlayerName = " . json_encode($playerName) . ";
+                                    </script>";
+                            }
+
                             echo    "<script>
                                         var barcos = " . json_encode($barcos) . ";
                                     </script>";
             
             
                             // echo "Número de barcos creados: " . count($barcos) . "<br>";
-            
-            
-                        
             
                     echo '</div>';
         
@@ -292,9 +298,12 @@ Notas:
                         // Notificaciones del juego
                         echo '<p class="notification"></p>';
                     
-                        // Escribir nombre
+                        // Escribir nombre                
                         echo '<div class="input-group">';
-                            echo '<input type="text" id="name" placeholder="Escriu el teu nom" required class="hidden" maxlength="20">';
+                            echo '<div id="divNameGame">';
+                            echo "<input type='text' id='name' placeholder='Escriu el teu nom' required class='hidden' maxlength='30' value='$playerName'>";
+                            
+                            echo '</div>';
                             echo '<button id="buttonName" class="keySound" onclick="saveScore()">Envia</button>';
                         echo '</div>';
                     
@@ -313,10 +322,9 @@ Notas:
 
                 
             } elseif ($mode == 'practice') {
-
+                $playerName = $_POST['playerName'];
                 echo "<script>
                         document.addEventListener('DOMContentLoaded', function() {
-                        mostrarMensaje('Turno de Player'); // Muestra el mensaje al cargar la página en modo practice
                         setTimeout(turnoIA, 1000); // Llama a la IA automáticamente después de un breve retraso
                         });
                     </script>";
@@ -376,7 +384,7 @@ Notas:
                             new Barco("Fragata", 2),
                             new Barco("Submarino", 3),
                             new Barco("Submarino", 3),
-                            new Barco("Destructor", 4),
+                            new Barco("Destructor", 4)
                         ];
         
                         // String para saber las coordenadas de cada barcos
@@ -472,8 +480,8 @@ Notas:
         
                         // Imprimir la matriz 
         
-                        # Mostrar tabla jugador
-                        echo '<p>Tablero del jugador</p>';
+                        # Mostrar tabla jugador       
+                        echo '<p class="showName">Xarxa de ' . $playerName . '</p>';
                         echo "<table id='practicePlayergameTable' class='gameTable'>";
                         for ($i = 0; $i < $numero + 1; $i++) {
                             echo "<tr>";
@@ -483,17 +491,17 @@ Notas:
                                 }
                                 else{
                                     if($tabla[$i][$j] == "F"){
-                                        echo "<td name='Fragata' class='codeName'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name='Fragata'>" . $tabla[$i][$j] . "</td>";
                                     } elseif($tabla[$i][$j] == "B"){
-                                        echo "<td name='Barca' class='codeName'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name='Barca'>" . $tabla[$i][$j] . "</td>";
                                     }elseif($tabla[$i][$j] == "S"){
-                                        echo "<td name='Submarino' class='codeName'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name='Submarino'>" . $tabla[$i][$j] . "</td>";
                                     }elseif($tabla[$i][$j] == "D"){
-                                        echo "<td name='Destructor' class='codeName'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name='Destructor'>" . $tabla[$i][$j] . "</td>";
                                     }elseif($tabla[$i][$j] == "P"){
-                                        echo "<td name='Portaaviones' class='codeName'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name='Portaaviones'>" . $tabla[$i][$j] . "</td>";
                                     }else{
-                                        echo "<td name=' ' class='codeName'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name=' '>" . $tabla[$i][$j] . "</td>";
                                     }
                                     
                                 }
@@ -501,6 +509,23 @@ Notas:
                             echo "</tr>";
                         }
                         echo "</table>";
+
+                        if ($limitedAmmo == 'true') {
+                            echo "<p class='ammoTitle'>Munició</p>";
+                            echo "<p id='practicePlayerAmmo'>40/40</p>";                            
+                            $playerAmmo = 40;
+
+                            echo "<script>
+                                var practicePlayerAmmo = " . json_encode($playerAmmo) . ";
+                                var practiceAmmoEnabled = " . json_encode(true) . ";
+                                var practicePlayerName = " . json_encode($playerName) . ";
+                            </script>";
+                        } else {
+                            echo "<script>
+                                var practiceAmmoEnabled = " . json_encode(false) . ";
+                                var practicePlayerName = " . json_encode($playerName) . ";
+                            </script>";
+                        }
 
                         
                         // Imprimir en la consola del navegador
@@ -531,7 +556,9 @@ Notas:
                 
                     // Escribir nombre
                     echo '<div class="input-group">';
-                        echo '<input type="text" id="name" placeholder="Escriu el teu nom" required class="hidden" maxlength="20">';
+                        echo '<div id="divNameGame">';
+                            echo "<input type='text' id='name' placeholder='Escriu el teu nom' required class='hidden' maxlength='30' value='$playerName;'>";
+                        echo '</div>';
                         echo '<button id="buttonName" class="keySound" onclick="saveScore()">Envia</button>';
                     echo '</div>';
                 
@@ -573,7 +600,7 @@ Notas:
 
                         // Array de barcos [nombre, tamaño]
                         $practiceEnemyBoats = [
-                            new Barco("Barca", 1),
+                            new Barco("Barca", 1)/*,
                             new Barco("Barca", 1),
                             new Barco("Barca", 1),
                             new Barco("Barca", 1),
@@ -582,7 +609,7 @@ Notas:
                             new Barco("Fragata", 2),
                             new Barco("Submarino", 3),
                             new Barco("Submarino", 3),
-                            new Barco("Destructor", 4),
+                            new Barco("Destructor", 4)*/
                         ];
         
                         // String para saber las coordenadas de cada barcos
@@ -653,7 +680,7 @@ Notas:
                         // Imprimir la matriz 
         
                         # Mostrar tabla IA
-                        echo '<p>Tablero IA</p>';
+                        echo '<p class="showName">Xarxa enemiga</p>';
                         echo "<table id='practiceEnemygameTable' class='gameTable'>";
                         for ($i = 0; $i < $numero + 1; $i++) {
                             echo "<tr>";
@@ -673,7 +700,7 @@ Notas:
                                     }elseif($tabla[$i][$j] == "P"){
                                         echo "<td name='Portaaviones' class='codeName attackSound' onclick='changeDataCell(this, \"IA\")'>" . $tabla[$i][$j] . "</td>";
                                     }else{
-                                        echo "<td name=' ' class='codeName attackSound' onclick='changeDataCell(this, \"IA\")'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name=' ' class='codeName waterSound' onclick='changeDataCell(this, \"IA\")'>" . $tabla[$i][$j] . "</td>";
                                     }
                                     
                                 }
@@ -682,6 +709,14 @@ Notas:
                         }
                         echo "</table>";
 
+                        if ($limitedAmmo == 'true') {
+                            echo "<p class='ammoTitle'>Munició</p>";
+                            echo "<p id='practiceEnemyAmmo'>40/40</p>";
+                            $enemyAmmo = 40;
+                            echo "<script>
+                            var practiceEnemyAmmo = " . json_encode($enemyAmmo) . ";
+                            </script>";
+                        }
                         
                         // Imprimir en la consola del navegador
                         echo "<script>console.log('IA Board: ". json_encode($StringBarcos) . "');</script>";
@@ -700,7 +735,7 @@ Notas:
         }
     ?>
 
-    <div id="CSSnotificationContainer"></div>
+    </div>
 
 </body>
 </html>
