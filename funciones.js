@@ -802,13 +802,14 @@ function changeDataCell(td, gameMode = 'IA') {
             // Modo normal
             if (gameMode == 'IA') {
 
+                playerTurn = false;
+                cambiarTurno();
+
                 setTimeout(() => {
-                    playerTurn = false;
-                    cambiarTurno();
                     iaSound();
                     turnoIA();
                 }, 2000);
-                
+
             }
 
             
