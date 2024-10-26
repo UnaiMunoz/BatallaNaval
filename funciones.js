@@ -137,21 +137,6 @@ let puntosAntesDeHundir = 0;
 /* MARK: Funciones    */
 /* ****************** */
 
-function showCheckbox() {
-    var extraOptions = document.getElementById('extraOptions');
-    var btn = document.getElementById('extraOptionsBtn');
-    var optionsForm = document.getElementById('optionsForm');
-    
-    // Usamos getComputedStyle para obtener el estilo actual
-    var display = window.getComputedStyle(extraOptions).display;
-
-    if (display === 'none') {
-        extraOptions.style.display = 'block'; // Muestra las opciones
-    } else {
-        extraOptions.style.display = 'none'; // Oculta las opciones
-    }
-}
-
 // Función para mostrar los botones
 function mostrarBotones() {
     const buttons = document.querySelector('.buttons');
@@ -377,6 +362,9 @@ function determinarGanadorPorAciertos() {
     calcularBonificacionPorTiempo();
 }
 
+
+
+
 function oscurecerTablero(tablero) {
     tablero.classList.add('tablero-oculto');
 }
@@ -384,6 +372,8 @@ function oscurecerTablero(tablero) {
 function habilitarTablero(tablero) {
     tablero.classList.remove('tablero-oculto');
 }
+
+
 
 //cambiar pantalla 
 function pageWin() {
@@ -579,7 +569,7 @@ function turnoIA() {
     let cellElement = document.querySelector(`#practicePlayergameTable tr:nth-child(${row + 1}) td:nth-child(${col + 1})`);
 
 
-    showNotificationIA("Torn de IA, pensant moviment...");
+    showNotification("Torn de IA, pensant moviment...","Right","yellow");
 
     
 
@@ -612,7 +602,7 @@ function turnoIA() {
             cellElement.style.backgroundColor = "blue"; // Cambia el color a tu preferencia
             practicePlayerBoard[row][col] = "~"; // Actualizar el tablero para marcar el agua
 
-            showNotificationIA("La IA ha fallado");
+            showNotificationGame("La IA ha fallado","Right","yellow");
             waterSoundIA();
 
             // Cambiar el sentido si toca agua
@@ -625,7 +615,7 @@ function turnoIA() {
                 setTimeout(() => {
                     playerTurn = true;
                     cambiarTurno(playerTurn);
-                    showNotificationPlayer(`${practicePlayerName} no te tirades. IA tira de nou`);
+                    showNotification(`${practicePlayerName} no te tirades. IA tira de nou`,"Left","#3700ff");
                 }, 2000);
                 setTimeout(() => {
                     setTimeout(() => {
@@ -637,7 +627,7 @@ function turnoIA() {
             }
             else {
                 setTimeout(() => {
-                    showNotificationPlayer(`Torn de ${practicePlayerName}`);
+                    showNotification(`Torn de ${practicePlayerName}`,"Left", "#3700ff");
                     playerTurn = true;
                     cambiarTurno(playerTurn)
                 }, 3000);
@@ -657,7 +647,7 @@ function turnoIA() {
 
             practicePlayerBoard[row][col] = "X"; // Actualizar el tablero para marcar el impacto
 
-            showNotificationIA(`La IA ha tocado tu ${targetCell}`);
+            showNotificationGame(`La IA ha tocado tu xarxa`,"Right","yellow");
             attackSoundIA();
 
             // Guardar la primera coordenada de impacto
@@ -676,7 +666,7 @@ function turnoIA() {
                 barcoImpactado.vida -= 1;
 
                 if (barcoImpactado.vida === 0) {
-                    showNotificationIA(`La IA ha destruido tu ${barcoImpactado.tipo}`);
+                    showNotificationGame(`La IA ha destruido tu ${barcoImpactado.tipo}`,"Right","yellow"); //cambiar
 
                     // Resetear coordenadas de primer impacto
                     firstHit.row = null;
@@ -694,9 +684,9 @@ function turnoIA() {
 
             // Si se habilita la munición limitada y la IA se queda sin tiradas
             if (practiceAmmoEnabled && practiceEnemyAmmo === 0) {
-                showNotificationPlayer(`IA no te més tirades, torn de ${practicePlayerName}`);
+                showNotification(`IA no te més tirades, torn de ${practicePlayerName}`,"Left","#3700ff");
                 setTimeout(() => {
-                    showNotificationPlayer(`Torn de ${practicePlayerName}`);
+                    showNotification(`Torn de ${practicePlayerName}`,"Left","#3700ff");
                     playerTurn = true;
                     cambiarTurno(playerTurn)
                 }, 3000);
@@ -762,11 +752,13 @@ function changeDataCell(td, gameMode = 'IA') {
         // Si toca agua
         if (name === " ") {
             td.innerHTML = "~"; 
-            if (gameMode == 'IA'){
+
+            if (gameMode = 'IA'){
                 showNotificationGame("¡Has fallat!","Left","#3700ff");
             }else{
                 showNotificationGame("¡Has fallat!","Right","#3700ff");
             }
+            
             // Quitar 50 puntos por tocar agua 5 veces
             turnosAguaSeguidos++;
             if (turnosAguaSeguidos == 5) {
@@ -781,7 +773,11 @@ function changeDataCell(td, gameMode = 'IA') {
                 setTimeout(() => {
                     playerTurn = false;
                     cambiarTurno();
-                    showNotificationPlayer(`IA no te tirades, ${practicePlayerName} tira de nou`);
+                    if (gameMode = 'IA'){
+                        showNotification(`IA no te tirades, ${practicePlayerName} tira de nou`,"Left","#3700ff");
+                    }else{
+                        showNotification(`IA no te tirades, ${practicePlayerName} tira de nou`,"Right","#3700ff");
+                    }
                     setTimeout(() => {
                         playerTurn = true;
                         cambiarTurno(playerTurn);
@@ -828,7 +824,11 @@ function changeDataCell(td, gameMode = 'IA') {
                             td.innerHTML = "X";
                             puntos += 50;
                             playerHits++;
-                            showNotificationPlayerGame("Has tocat una xarxa!");
+                            if (gameMode = 'IA'){
+                                showNotificationGame("Has tocat una xarxa!","Left","#3700ff");
+                            }else{
+                                showNotificationGame("Has tocat una xarxa!","Right","#3700ff");
+                            }
                             mostrarMensajePuntos("+50 punts per atacar un servidor\n");
                             actualizarPuntos();
 
@@ -837,7 +837,11 @@ function changeDataCell(td, gameMode = 'IA') {
 
                             // Si el barco se hunde en la tirada
                             if (barco.vida === 0) {
-                                showNotificationPlayerGame(`¡Tens el control de la xarxa amb ${barco.tamaño} servidors`);
+                                if (gameMode = 'IA'){
+                                    showNotificationGame(`¡Tens el control de la xarxa amb ${barco.tamaño} servidors`,"Left", "#3700ff");
+                                }else{
+                                    showNotificationGame(`¡Tens el control de la xarxa amb ${barco.tamaño} servidors`,"Right", "#3700ff");
+                                }             
                                 debeVaciarMensajes = true;
 
                                 // Puntos si hunde el barco sin fallar
@@ -889,7 +893,11 @@ function changeDataCell(td, gameMode = 'IA') {
                                 playerTurn = false;  
                                 cambiarTurno();    
                                 setTimeout(() => {
-                                    showNotificationPlayer(`${practicePlayerName} no te més tirades, torn de la IA`);
+                                    if (gameMode = 'IA'){
+                                        showNotification(`${practicePlayerName} no te més tirades, torn de la IA`,"Left","#3700ff");
+                                    }else{
+                                        showNotification(`${practicePlayerName} no te més tirades, torn de la IA`,"Right","#3700ff");
+                                    }     
                                 }, 2000);
                                 setTimeout(() => {
                                     turnoIA();           

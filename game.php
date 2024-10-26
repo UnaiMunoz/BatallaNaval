@@ -61,8 +61,9 @@ Notas:
 
         // Variables de configuración
         $limitedAmmo = isset($_POST['limitedAmmo']) ? 'true' : 'false';
+        echo "limitedAmmo: " . $limitedAmmo;
         // $armoredShips = isset($_POST['armoredShips']) ? 'true' : 'false';
-        // $specialAttacks = isset($_POST['specialAttacks']) ? 'true' : 'false';
+        $specialAttacks = isset($_POST['specialAttacks']) ? 'true' : 'false';
 
         // echo "Limited Ammo: " . $limitedAmmo . "<br>";
 

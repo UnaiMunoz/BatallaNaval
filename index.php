@@ -12,9 +12,9 @@
 
     <!-- Formulario para las opciones avanzadas -->
     <div id="extraOptions">
-        <label><input type="checkbox" id="limitedAmmo" name="limitedAmmo"> Màxim 40GB RAM</label><br>
-        <label><input type="checkbox" disabled id="armoredShips" name="armoredShips"> Activar AntiVirus</label><br>
-        <label><input type="checkbox" disabled id="specialAttacks" name="specialAttacks"> Descarregar WannaCry </label>
+        <label><input type="checkbox" id="limitedAmmo" name="limitedAmmo"> Munició limitada</label><br>
+        <label><input type="checkbox" disabled id="armoredShips" name="armoredShips"> Vaixells acorassats</label><br>
+        <label><input type="checkbox" id="specialAttacks" name="specialAttacks"> Atacs especials</label>
     </div>
 
     <header>

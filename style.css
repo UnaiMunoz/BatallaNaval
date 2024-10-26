@@ -599,15 +599,7 @@ input[type="text"]:focus {
 
 /* Configuracion variables */
 
-/* #limitedAmmo{
-    opacity: 0.5;
-    color: #888888;
-} */
 #armoredShips{
-    opacity: 0.5;
-    color: #888888;
-}
-#specialAttacks{
     opacity: 0.5;
     color: #888888;
 }
