@@ -45,6 +45,13 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('gameForm').submit();
     };
 
+    // Mostrar opciones avanzadas sin recargar la página
+    extraOptionsBtn.onclick = function(event) {
+        event.preventDefault();
+        extraOptions.style.display = extraOptions.style.display === 'none' ? 'block' : 'none';
+    };
+
+
 });
 
 /* ******************************* */
@@ -377,6 +384,9 @@ function determinarGanadorPorAciertos() {
     calcularBonificacionPorTiempo();
 }
 
+
+
+
 function oscurecerTablero(tablero) {
     tablero.classList.add('tablero-oculto');
 }
@@ -384,6 +394,8 @@ function oscurecerTablero(tablero) {
 function habilitarTablero(tablero) {
     tablero.classList.remove('tablero-oculto');
 }
+
+
 
 //cambiar pantalla 
 function pageWin() {
@@ -444,12 +456,23 @@ let firstHit = { row: null, col: null };
 let secondHit = { row: null, col: null };
 let direccionEncontrada = false;
 let cambioSentido = false;
+let celdasAtacadas = [];
+let celdaAcorazada = { row: null, col: null };
+let celdaAcorazadaEncontrada = false;
 
 // Turno de la IA
 function turnoIA() {
 
+    // ArmoredShip encontrado
+    if (celdaAcorazada.row !== null && celdaAcorazada.col !== null) {
+        console.log("Coordenadas celda acorazada");
+        row = celdaAcorazada.row;
+        col = celdaAcorazada.col;
+
+    }
+
     // Cambiar sentido de ataque
-    if (direccionEncontrada && cambioSentido) {
+    else if (direccionEncontrada && cambioSentido) {
         // Determinar si la dirección es horizontal o vertical
         const direccionHorizontal = firstHit.row === secondHit.row;
         let siguienteMovimiento;
@@ -477,9 +500,10 @@ function turnoIA() {
         // Verificar si el movimiento está dentro del tablero y no ha sido atacado
         if (siguienteMovimiento.row >= 1 && siguienteMovimiento.row < practicePlayerBoard.length &&
             siguienteMovimiento.col >= 1 && siguienteMovimiento.col < practicePlayerBoard[0].length &&
+            !celdasAtacadas.some(celda => celda.row === siguienteMovimiento.row && celda.col === siguienteMovimiento.col) &&
             practicePlayerBoard[siguienteMovimiento.row][siguienteMovimiento.col] !== "X" &&
             practicePlayerBoard[siguienteMovimiento.row][siguienteMovimiento.col] !== "~") {
-    
+
             // Establecer el próximo ataque en la celda opuesta
             row = siguienteMovimiento.row;
             col = siguienteMovimiento.col;
@@ -488,34 +512,42 @@ function turnoIA() {
             do {
                 row = Math.floor(Math.random() * (practicePlayerBoard.length - 1)) + 1;
                 col = Math.floor(Math.random() * (practicePlayerBoard[0].length - 1)) + 1;
-            } while (practicePlayerBoard[row][col] === "X" || practicePlayerBoard[row][col] === "~");
+            } while (practicePlayerBoard[row][col] === "X" || practicePlayerBoard[row][col] === "~" ||
+                     celdasAtacadas.some(celda => celda.row === row && celda.col === col));
         }
     
         // Reiniciar cambioSentido para evitar alternar continuamente
         cambioSentido = false;
-    } else
+    }
     
-
     // IA ha encontrado la direccion de un barco
-    if (direccionEncontrada && cambioSentido === false) {
+    else if (direccionEncontrada && cambioSentido === false) {
+
+        console.log("Sigiendo direccion");
+
+
         // Determinar si la dirección es horizontal o vertical
         const direccionHorizontal = firstHit.row === secondHit.row;
         let posiblesMovimientos = [];
     
         // Si es horizontal, verifica izquierda y derecha
         if (direccionHorizontal) {
-            if (secondHit.col > 1 && practicePlayerBoard[secondHit.row][secondHit.col - 1] !== "X" && practicePlayerBoard[secondHit.row][secondHit.col - 1] !== "~") {
+            if (secondHit.col > 1 && !celdasAtacadas.some(celda => celda.row === secondHit.row && celda.col === secondHit.col - 1) &&
+                practicePlayerBoard[secondHit.row][secondHit.col - 1] !== "X" && practicePlayerBoard[secondHit.row][secondHit.col - 1] !== "~") {
                 posiblesMovimientos.push({ row: secondHit.row, col: secondHit.col - 1 }); // Izquierda
             }
-            if (secondHit.col < practicePlayerBoard[0].length - 1 && practicePlayerBoard[secondHit.row][secondHit.col + 1] !== "X" && practicePlayerBoard[secondHit.row][secondHit.col + 1] !== "~") {
+            if (secondHit.col < practicePlayerBoard[0].length - 1 && !celdasAtacadas.some(celda => celda.row === secondHit.row && celda.col === secondHit.col + 1) &&
+                practicePlayerBoard[secondHit.row][secondHit.col + 1] !== "X" && practicePlayerBoard[secondHit.row][secondHit.col + 1] !== "~") {
                 posiblesMovimientos.push({ row: secondHit.row, col: secondHit.col + 1 }); // Derecha
             }
         } else {
             // Si es vertical, verifica arriba y abajo
-            if (secondHit.row > 1 && practicePlayerBoard[secondHit.row - 1][secondHit.col] !== "X" && practicePlayerBoard[secondHit.row - 1][secondHit.col] !== "~") {
+            if (secondHit.row > 1 && !celdasAtacadas.some(celda => celda.row === secondHit.row - 1 && celda.col === secondHit.col) &&
+                practicePlayerBoard[secondHit.row - 1][secondHit.col] !== "X" && practicePlayerBoard[secondHit.row - 1][secondHit.col] !== "~") {
                 posiblesMovimientos.push({ row: secondHit.row - 1, col: secondHit.col }); // Arriba
             }
-            if (secondHit.row < practicePlayerBoard.length - 1 && practicePlayerBoard[secondHit.row + 1][secondHit.col] !== "X" && practicePlayerBoard[secondHit.row + 1][secondHit.col] !== "~") {
+            if (secondHit.row < practicePlayerBoard.length - 1 && !celdasAtacadas.some(celda => celda.row === secondHit.row + 1 && celda.col === secondHit.col) &&
+                practicePlayerBoard[secondHit.row + 1][secondHit.col] !== "X" && practicePlayerBoard[secondHit.row + 1][secondHit.col] !== "~") {
                 posiblesMovimientos.push({ row: secondHit.row + 1, col: secondHit.col }); // Abajo
             }
         }
@@ -530,23 +562,33 @@ function turnoIA() {
             do {
                 row = Math.floor(Math.random() * (practicePlayerBoard.length - 1)) + 1;
                 col = Math.floor(Math.random() * (practicePlayerBoard[0].length - 1)) + 1;
-            } while (practicePlayerBoard[row][col] === "X" || practicePlayerBoard[row][col] === "~");
+            } while (practicePlayerBoard[row][col] === "X" || practicePlayerBoard[row][col] === "~" ||
+                     celdasAtacadas.some(celda => celda.row === row && celda.col === col));
         }
-    } else if (firstHit.row !== null && firstHit.col !== null) {
+    } 
+    
+
+    // Calcular patrón de tirada
+    else if (firstHit.row !== null && firstHit.col !== null) {
+        console.log("Buscando Celdas Adyacentes");
         // IA Inteligente: intenta atacar cerca de la coordenada de firstHit
         let posiblesMovimientos = [];
 
         // Verificar y agregar las celdas alrededor de firstHit si están dentro del tablero y no han sido atacadas
-        if (firstHit.row > 1 && practicePlayerBoard[firstHit.row - 1][firstHit.col] !== "X" && practicePlayerBoard[firstHit.row - 1][firstHit.col] !== "~") {
+        if (firstHit.row > 1 && !celdasAtacadas.some(celda => celda.row === firstHit.row - 1 && celda.col === firstHit.col) &&
+            practicePlayerBoard[firstHit.row - 1][firstHit.col] !== "X" && practicePlayerBoard[firstHit.row - 1][firstHit.col] !== "~") {
             posiblesMovimientos.push({ row: firstHit.row - 1, col: firstHit.col }); // Celda arriba
         }
-        if (firstHit.row < practicePlayerBoard.length - 1 && practicePlayerBoard[firstHit.row + 1][firstHit.col] !== "X" && practicePlayerBoard[firstHit.row + 1][firstHit.col] !== "~") {
+        if (firstHit.row < practicePlayerBoard.length - 1 && !celdasAtacadas.some(celda => celda.row === firstHit.row + 1 && celda.col === firstHit.col) &&
+            practicePlayerBoard[firstHit.row + 1][firstHit.col] !== "X" && practicePlayerBoard[firstHit.row + 1][firstHit.col] !== "~") {
             posiblesMovimientos.push({ row: firstHit.row + 1, col: firstHit.col }); // Celda abajo
         }
-        if (firstHit.col > 1 && practicePlayerBoard[firstHit.row][firstHit.col - 1] !== "X" && practicePlayerBoard[firstHit.row][firstHit.col - 1] !== "~") {
+        if (firstHit.col > 1 && !celdasAtacadas.some(celda => celda.row === firstHit.row && celda.col === firstHit.col - 1) &&
+            practicePlayerBoard[firstHit.row][firstHit.col - 1] !== "X" && practicePlayerBoard[firstHit.row][firstHit.col - 1] !== "~") {
             posiblesMovimientos.push({ row: firstHit.row, col: firstHit.col - 1 }); // Celda izquierda
         }
-        if (firstHit.col < practicePlayerBoard[0].length - 1 && practicePlayerBoard[firstHit.row][firstHit.col + 1] !== "X" && practicePlayerBoard[firstHit.row][firstHit.col + 1] !== "~") {
+        if (firstHit.col < practicePlayerBoard[0].length - 1 && !celdasAtacadas.some(celda => celda.row === firstHit.row && celda.col === firstHit.col + 1) &&
+            practicePlayerBoard[firstHit.row][firstHit.col + 1] !== "X" && practicePlayerBoard[firstHit.row][firstHit.col + 1] !== "~") {
             posiblesMovimientos.push({ row: firstHit.row, col: firstHit.col + 1 }); // Celda derecha
         }
 
@@ -560,15 +602,23 @@ function turnoIA() {
             do {
                 row = Math.floor(Math.random() * (practicePlayerBoard.length - 1)) + 1;
                 col = Math.floor(Math.random() * (practicePlayerBoard[0].length - 1)) + 1;
-            } while (practicePlayerBoard[row][col] === "X" || practicePlayerBoard[row][col] === "~");
+            } while (practicePlayerBoard[row][col] === "X" || 
+                     practicePlayerBoard[row][col] === "~" || 
+                     celdasAtacadas.some(celda => celda.row === row && celda.col === col));
         }
 
-    } else {
+    } 
+
+    // Tiro aleatorio
+    else {
+        console.log("Tirada aleatoria");
         // Selección aleatoria de coordenadas cuando no hay un primer impacto
         do {
             row = Math.floor(Math.random() * (practicePlayerBoard.length - 1)) + 1;
             col = Math.floor(Math.random() * (practicePlayerBoard[0].length - 1)) + 1;
-        } while (practicePlayerBoard[row][col] === "X" || practicePlayerBoard[row][col] === "~");
+        } while (practicePlayerBoard[row][col] === "X" || 
+                practicePlayerBoard[row][col] === "~" || 
+                celdasAtacadas.some(celda => celda.row === row && celda.col === col));
     }
 
 
@@ -580,8 +630,6 @@ function turnoIA() {
 
 
     showNotificationIA("Torn de IA, pensant moviment...");
-
-    
 
     // Lanzar tirada despues de 2 segundos
     setTimeout(() => {
@@ -604,13 +652,16 @@ function turnoIA() {
                 
             }
         }
-        
+
+        // Agua
         if (targetCell === " ") {
+
+            // Marcar la celda como atacada
+            celdasAtacadas.push({ row: row, col: col });
             // Agua
             cellElement.innerHTML = "~"; // Marcar el agua
             cellElement.classList.add("agua"); // Puedes añadir una clase CSS para el agua
             cellElement.style.backgroundColor = "blue"; // Cambia el color a tu preferencia
-            practicePlayerBoard[row][col] = "~"; // Actualizar el tablero para marcar el agua
 
             showNotificationIA("La IA ha fallado");
             waterSoundIA();
@@ -645,26 +696,73 @@ function turnoIA() {
             
 
 
-        } else {
+        } 
+
+        // Acierto
+        else {
             
+            // Marcar la celda como atacada
+            celdasAtacadas.push({ row: row, col: col });
+
             // Acierto de la IA
             iaHits++; 
 
-            // Ha tocado un barco
-            cellElement.innerHTML = "X"; // Marcar el impacto
-            cellElement.classList.add("impacto"); // Clase CSS para impacto
-            cellElement.style.backgroundColor = "red"; // Cambia el color a tu preferencia
+            // Modo ArmoredShips --> ?
+            if (practiceArmoredShips === true && celdaAcorazadaEncontrada === false) {
+                console.log("Celda acorazada encontrada");
+                cellElement.innerHTML = "?"; 
+                cellElement.classList.add("playerCellArmored"); 
+                cellElement.style.backgroundColor = "orange"; 
+                showNotificationIA("La IA ha encontrado un servidor");
+                celdaAcorazada = { row: row, col: col };
+                celdaAcorazadaEncontrada = true;
+                setTimeout(() => {
+                    showNotificationPlayer(`Torn de ${practicePlayerName}`);
+                    playerTurn = true;
+                    cambiarTurno(playerTurn)
+                }, 3000);
+                return;
+            } 
 
-            practicePlayerBoard[row][col] = "X"; // Actualizar el tablero para marcar el impacto
+            else if (practiceArmoredShips === true && celdaAcorazadaEncontrada === true) {
 
-            showNotificationIA(`La IA ha tocado tu ${targetCell}`);
-            attackSoundIA();
+                console.log("Celda acorazada marcada");
+
+                // Atacar la celda marcada con "?"
+                row = celdaAcorazada.row;
+                col = celdaAcorazada.col;
+            
+                // Lógica para atacar la celda y manejar el resultado
+                cellElement.innerHTML = "X"; 
+                cellElement.style.backgroundColor = "red"; 
+                showNotificationIA(`La IA ha tocado tu ${targetCell}`);
+                attackSoundIA();
+            
+                // Reiniciar el estado de la celda acorazada
+                celdaAcorazadaEncontrada = false;
+                celdaAcorazada = { row: null, col: null };
+            } 
+
+            // Modo normal
+            else {
+                cellElement.innerHTML = "X"; 
+                cellElement.style.backgroundColor = "red"; 
+                showNotificationIA(`La IA ha tocado tu ${targetCell}`);
+                attackSoundIA();
+                if (firstHit.row === null && firstHit.col === null) {
+                    firstHit.row = row;
+                    firstHit.col = col;
+                }
+            }
+            
+            
 
             // Guardar la primera coordenada de impacto
             if (firstHit.row === null && firstHit.col === null) {
                 firstHit.row = row;
                 firstHit.col = col;
             } else {
+                console.log("Direccion encontrada");
                 direccionEncontrada = true;
                 secondHit.row = row;
                 secondHit.col = col;
@@ -672,8 +770,13 @@ function turnoIA() {
 
             // Comprobar si hunde el barco
             let barcoImpactado = practicePlayerBoats.find(barco => barco.tipo[0] === targetCell);
+            
             if (barcoImpactado) {
+
+                console.log("-1 de vida");
+
                 barcoImpactado.vida -= 1;
+
 
                 if (barcoImpactado.vida === 0) {
                     showNotificationIA(`La IA ha destruido tu ${barcoImpactado.tipo}`);
@@ -681,13 +784,16 @@ function turnoIA() {
                     // Resetear coordenadas de primer impacto
                     firstHit.row = null;
                     firstHit.col = null;
-                    // Resetear coordenadas de primer impacto
                     secondHit.row = null;
                     secondHit.col = null;
 
                     // Resetear direccion inteligente
                     direccionEncontrada = false;
                     cambioSentido = false;
+
+                    // Resetear el modo ArmoredShips
+                    celdaAcorazadaEncontrada = false;
+                    celdaAcorazada = { row: null, col: null };
 
                 }
             }
@@ -709,6 +815,7 @@ function turnoIA() {
                 turnoIA();
             }, 2000);
         }
+
     } , 3000);
 }
 
@@ -750,7 +857,7 @@ function changeDataCell(td, gameMode = 'IA') {
     }
 
     // Elimina glitch de la tabla
-    if (td.classList.contains("codeName")) {
+    if (td.classList.contains("codeName") || td.classList.contains("cellArmored")) {
         td.classList.remove("codeName");
 
         // Marcar celda como atacada
@@ -762,11 +869,10 @@ function changeDataCell(td, gameMode = 'IA') {
         // Si toca agua
         if (name === " ") {
             td.innerHTML = "~"; 
-            if (gameMode == 'IA'){
-                showNotificationGame("¡Has fallat!","Left","#3700ff");
-            }else{
-                showNotificationGame("¡Has fallat!","Right","#3700ff");
-            }
+            showNotificationPlayerGame("¡Has fallat!");
+
+
+
             // Quitar 50 puntos por tocar agua 5 veces
             turnosAguaSeguidos++;
             if (turnosAguaSeguidos == 5) {
@@ -787,9 +893,9 @@ function changeDataCell(td, gameMode = 'IA') {
                         cambiarTurno(playerTurn);
                     }, 2000);
                 }, 2000);
-            } else 
+            } 
             // Modo normal
-            if (gameMode == 'IA') {
+            else if (gameMode == 'IA') {
 
                 playerTurn = false;
                 cambiarTurno();
@@ -824,13 +930,43 @@ function changeDataCell(td, gameMode = 'IA') {
 
                         // Comprobar si el barco iterado coincide con las coordenadas tocadas
                         if (coord[0] === row && coord[1] === col) {
-                            barco.vida -= 1; 
-                            td.innerHTML = "X";
-                            puntos += 50;
-                            playerHits++;
-                            showNotificationPlayerGame("Has tocat una xarxa!");
-                            mostrarMensajePuntos("+50 punts per atacar un servidor\n");
-                            actualizarPuntos();
+                            
+
+                            // Modo ArmoredShips primer hit
+                            if (practiceArmoredShips && !td.classList.contains("cellArmored")) {
+                                showNotificationPlayerGame("Hi ha ping de resposta");
+                                td.classList.remove("dado");
+                                td.innerHTML = "?";
+                                td.classList.add("cellArmored");
+                                playerTurn = false;
+                                cambiarTurno();
+
+                                setTimeout(() => {
+                                    iaSound();
+                                    turnoIA();
+                                }, 2000);
+                            } 
+                            // Modo ArmoredShips segundo hit
+                            else if (practiceArmoredShips && td.classList.contains("cellArmored")) {
+                                barco.vida -= 1; 
+                                td.innerHTML = "X";
+                                puntos += 50;
+                                playerHits++;
+                                showNotificationPlayerGame("Has tocat una xarxa!");
+                                mostrarMensajePuntos("+50 punts per atacar un servidor\n");
+                                actualizarPuntos();
+                            }
+                            // Modo normal
+                            else if (!practiceArmoredShips){
+                                barco.vida -= 1; 
+                                td.innerHTML = "X";
+                                puntos += 50;
+                                playerHits++;
+                                showNotificationPlayerGame("Has tocat una xarxa!");
+                                mostrarMensajePuntos("+50 punts per atacar un servidor\n");
+                                actualizarPuntos();
+                            }
+
 
                             // Reestablece condición de turnos de agua seguidos
                             turnosAguaSeguidos = 0;
@@ -1145,55 +1281,64 @@ function waterSoundIA() {
 /* MARK: Notificaciones*/
 /* **************** */
 
-// Notifica Turno, direcion de la notificacion y el color del borde
-function showNotification(message, direction, color) {
-    // Obtiene el contenedor donde se mostrarán las notificaciones
-    const container = document.getElementById('notificationContainer');
+// Notificaciones CSS
 
-    // Crea un nuevo elemento div para la notificación
+// Notifica el turno del jugador
+function showNotificationPlayer(message) {
+    const container = document.getElementById('notificationContainer');
     const notification = document.createElement('div');
-    
-    // Añade la clase CSS para el estilo de la notificación
     notification.classList.add('notificationGame');
-    
-    // Establece el texto de la notificación
+
+    notification.classList.add('notificationPlayer');
     notification.innerText = message;
 
-    // Determina la dirección de la notificación
-    if (direction === "Left") {
-        // Si la dirección es "Left", añade la clase correspondiente
-        notification.classList.add('notificationLeft');
-    } else {
-        // Si no, se asume que la dirección es "Right" y se añade la clase correspondiente
-        notification.classList.add('notificationRight');
-    }
-
-    // Aplica el color del borde que se pasa como argumento
-    notification.style.borderColor = color;
-
-    // Añade la notificación al contenedor
     container.appendChild(notification);
 
-    // Configura un temporizador para eliminar la notificación después de 3 segundos
     setTimeout(() => {
         container.removeChild(notification);
     }, 3000);
 }
 
-// Notifica Si le ha dado al barco o no, direcion de la notificacion y el color del borde
-function showNotificationGame(message, direction, color) {
+// Notifica Si le ha dado al barco o no
+function showNotificationPlayerGame(message) {
+    const container = document.getElementById('notificationContainerGame');
+    const notification = document.createElement('div');
+    notification.classList.add('notificationGame');
+
+    notification.classList.add('notificationPlayerGame');
+    notification.innerText = message;
+
+    container.appendChild(notification);
+
+    setTimeout(() => {
+        container.removeChild(notification);
+    }, 3000);
+}
+
+// Notifica el turno de la IA
+function showNotificationIA(message) {
     const container = document.getElementById('notificationContainer');
     const notification = document.createElement('div');
     notification.classList.add('notificationGame');
+    
+    notification.classList.add('notificationIA');
     notification.innerText = message;
 
-    if (direction === "Left") {
-        notification.classList.add('notificationLeftGame');
-    } else {
-        notification.classList.add('notificationRightGame');
-    }
+    container.appendChild(notification);
 
-    notification.style.borderColor = color; // Aplica el color para ambas direcciones si es necesario.
+    setTimeout(() => {
+        container.removeChild(notification);
+    }, 3000);
+}
+
+// Notifica si la IA le ha dado al barco o no
+function showNotificationIAGame(message) {
+    const container = document.getElementById('notificationContainerGame');
+    const notification = document.createElement('div');
+    notification.classList.add('notificationGame');
+    
+    notification.classList.add('notificationIAGame');
+    notification.innerText = message;
 
     container.appendChild(notification);
 
@@ -1214,26 +1359,17 @@ function allowClick() {
 
 // Mostrar / Ocultar opciones adicionales
 
-function showCheckboxAdvanced() {
+function showCheckbox() {
     var extraOptions = document.getElementById('extraOptions');
+    var btn = document.getElementById('extraOptionsBtn');
+    var optionsForm = document.getElementById('optionsForm');
     
     // Usamos getComputedStyle para obtener el estilo actual
     var display = window.getComputedStyle(extraOptions).display;
 
-    if (display === 'none' || display === '') {
-        // Aseguramos que las clases de animación estén removidas antes de comenzar
-        extraOptions.classList.remove('extraOptionsOutputMove');
+    if (display === 'none') {
         extraOptions.style.display = 'block'; // Muestra las opciones
-        // Añadimos la clase de animación de entrada
-        extraOptions.classList.add('extraOptionsEntryMove');
     } else {
-        // Añadimos la clase de animación de salida
-        extraOptions.classList.add('extraOptionsOutputMove');
-        
-        // Usa setTimeout para esperar hasta que la animación termine
-        setTimeout(function() {
-            extraOptions.style.display = 'none'; // Oculta las opciones
-            extraOptions.classList.remove('extraOptionsOutputMove'); // Remueve la clase después de ocultar
-        }, 1000); // Ajusta el tiempo según la duración de tu animación
+        extraOptions.style.display = 'none'; // Oculta las opciones
     }
 }

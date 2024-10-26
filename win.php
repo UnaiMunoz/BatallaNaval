@@ -10,10 +10,8 @@
                                 <head>
                                         <meta charset='utf-8'>
                                         <title>Win</title>
-                                        <link rel='stylesheet' href='style.css'>
-                                        <link rel='icon' href='images/favicon.ico' type='image/x-icon'>
                                 </head>
-                                <body id='bodyForbidden'>
+                                <body>
                                         <h1>403 Forbidden</h1>
                                         <p>No tens permisos per accedir a aquesta pàgina</p>
                                 </body>

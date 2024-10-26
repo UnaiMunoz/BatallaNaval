@@ -110,25 +110,6 @@ body{
     background-blend-mode: overlay;
 }
 
-#bodyForbidden{
-    background: url(images/bocasRedondas.jpg);
-    background-color: #000000ab;
-    background-blend-mode: overlay;
-    background-size: cover;
-    color: white;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-}
-
-#bodyForbidden h1{
-    font-size: 100px;
-    color: red;
-    width: unset;
-    margin: unset;
-}
-
 h1{
     font-weight: normal;
     margin: auto;
@@ -559,36 +540,17 @@ input[type="text"]:focus {
 }
 
 #extraOptions {
-    width: 18% !important;
+    width: 19% !important;
     position: absolute;
-    top: 30px;
-    left: -280px;
+    top: 225px;
+    left: 358px;
     background-color: black;
     border: solid #3700ff;
     padding: 10px;
     z-index: 100;
-    border-radius: 0px 20px 20px 20px;
+    border-radius: 20px 20px 20px 0px;
     display: none;
 }
-
-.extraOptionsEntryMove {
-    animation: moveEntryOptions 1s forwards;
-}
-
-.extraOptionsOutputMove {
-    animation: moveOutputOptions 1s forwards;
-}
-
-@keyframes moveEntryOptions {
-    0% { left: -280px; }
-    100% { left: 30px; }
-}
-
-@keyframes moveOutputOptions {
-    0% { left: 30px; }
-    100% { left: -280px; }
-}
-
 
 /* Oscurecer tabla en los turnos */
 
@@ -598,19 +560,6 @@ input[type="text"]:focus {
 }
 
 /* Configuracion variables */
-
-/* #limitedAmmo{
-    opacity: 0.5;
-    color: #888888;
-} */
-#armoredShips{
-    opacity: 0.5;
-    color: #888888;
-}
-#specialAttacks{
-    opacity: 0.5;
-    color: #888888;
-}
 
 .ammoTitle{
     margin-top: 1vw;
@@ -772,54 +721,50 @@ tr:hover .selecRanking::before {
     background-color: #000000 !important;
 }
 
-.notificationLeft {
+.notificationPlayer {
     border-radius: 0px 20px 20px 20px;
     background-color: #000000 !important;
-    border: 2px;
-    border-style: solid;
+    border: 2px solid #3700ff;
     left: -50%;
     margin-top: 15%;
-    animation: movimentLeft 3s forwards;
+    animation: movimentPlayer 3s forwards;
 }
 
-.notificationLeftGame {
+.notificationIA {
+    border-radius: 20px 0px 20px 20px;
+    background-color: #000000 !important;
+    border: 2px solid yellow;
+    right: -50%;
+    margin-top: 15%;
+    animation: movimentIA 3s forwards;
+}
+
+.notificationPlayerGame {
     border-radius: 0px 20px 20px 20px;
     background-color: #000000 !important;
-    border: 2px;
-    border-style: solid;
+    border: 2px solid #3700ff;
     left: -50%;
     margin-top: 20%;
-    animation: movimentLeft 3s forwards;
+    animation: movimentPlayer 3s forwards;
 }
 
-.notificationRight {
+.notificationIAGame {
     border-radius: 20px 0px 20px 20px;
     background-color: #000000 !important;
-    border: 2px;
-    border-style: solid;
-    right: -50%;
-    margin-top: 15%;
-    animation: movimenRight 3s forwards;
-}
-
-.notificationRightGame {
-    border-radius: 20px 0px 20px 20px;
-    background-color: #000000 !important;
-    border: 2px;
-    border-style: solid;
+    border: 2px solid yellow;
     right: -50%;
     margin-top: 20%;
-    animation: movimenRight 3s forwards;
+    animation: movimentIA 3s forwards;
 }
 
-@keyframes movimentLeft {
+@keyframes movimentPlayer {
     0% { left : -50%; }
     25% { left: 5%;}
     75% { left: 5%;}
     0% { left : -50%; }
 }
 
-@keyframes movimenRight {
+@keyframes movimentIA {
     0% { right : -50%; }
     25% { right: 5%;}
     75% { right: 5%;}
