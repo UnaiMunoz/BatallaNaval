@@ -325,7 +325,6 @@ Notas:
                 $playerName = $_POST['playerName'];
                 echo "<script>
                         document.addEventListener('DOMContentLoaded', function() {
-                        setTimeout(turnoIA, 1000); // Llama a la IA automáticamente después de un breve retraso
                         });
                     </script>";
 
@@ -384,9 +383,9 @@ Notas:
                             new Barco("Fragata", 2),
                             new Barco("Submarino", 3),
                             new Barco("Submarino", 3),
-                            new Barco("Destructor", 4)
+                            new Barco("Destructor", 4),
                         ];
-        
+
                         // String para saber las coordenadas de cada barcos
                         $StringBarcos = "";
         
@@ -513,10 +512,8 @@ Notas:
                         if ($limitedAmmo == 'true') {
                             echo "<p class='ammoTitle'>Munició</p>";
                             echo "<p id='practicePlayerAmmo'>40/40</p>";                            
-                            $playerAmmo = 40;
 
                             echo "<script>
-                                var practicePlayerAmmo = " . json_encode($playerAmmo) . ";
                                 var practiceAmmoEnabled = " . json_encode(true) . ";
                                 var practicePlayerName = " . json_encode($playerName) . ";
                             </script>";
@@ -600,7 +597,7 @@ Notas:
 
                         // Array de barcos [nombre, tamaño]
                         $practiceEnemyBoats = [
-                            new Barco("Barca", 1)/*,
+                            new Barco("Barca", 1),
                             new Barco("Barca", 1),
                             new Barco("Barca", 1),
                             new Barco("Barca", 1),
@@ -609,7 +606,7 @@ Notas:
                             new Barco("Fragata", 2),
                             new Barco("Submarino", 3),
                             new Barco("Submarino", 3),
-                            new Barco("Destructor", 4)*/
+                            new Barco("Destructor", 4)
                         ];
         
                         // String para saber las coordenadas de cada barcos
@@ -713,7 +710,10 @@ Notas:
                             echo "<p class='ammoTitle'>Munició</p>";
                             echo "<p id='practiceEnemyAmmo'>40/40</p>";
                             $enemyAmmo = 40;
+                            $playerAmmo = 40;
+
                             echo "<script>
+                            var practicePlayerAmmo = " . json_encode($playerAmmo) . ";
                             var practiceEnemyAmmo = " . json_encode($enemyAmmo) . ";
                             </script>";
                         }

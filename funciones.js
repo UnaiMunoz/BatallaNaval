@@ -77,21 +77,21 @@ function getRandomCodeNumber(element) {
 }
 
 // Asegura que el DOM esté cargado antes de ejecutar el script
-document.addEventListener("DOMContentLoaded", function() {
-     // Seleccionar todos los elementos td con la clase "codeName"
-     const nameElements = document.querySelectorAll("td.codeName");
+// document.addEventListener("DOMContentLoaded", function() {
+//      // Seleccionar todos los elementos td con la clase "codeName"
+//      const nameElements = document.querySelectorAll("td.codeName");
 
-     // Establecer un intervalo para actualizar solo los elementos que no tienen "codeName"
-     setInterval(() => {
-         if (partidaActiva) { // Solo actualizar si la partida está activa
-             nameElements.forEach(element => {
-                 if (element.classList.contains("codeName")) {
-                     getRandomCodeNumber(element);
-                 }
-             });
-         }
-     }, 100);
-});
+//      // Establecer un intervalo para actualizar solo los elementos que no tienen "codeName"
+//      setInterval(() => {
+//          if (partidaActiva) { // Solo actualizar si la partida está activa
+//              nameElements.forEach(element => {
+//                  if (element.classList.contains("codeName")) {
+//                      getRandomCodeNumber(element);
+//                  }
+//              });
+//          }
+//      }, 100);
+// });
 
 /* ****************** */
 /* MARK: Timer        */
@@ -276,18 +276,14 @@ function applyEasterEgg() {
 
             clickCounterC4 = 0; // Reiniciar el contador
 
-            if (mode == 'practice') {
-                clearInterval(cronometro);
-                pageWin();
-            } else{
-                // Para el timer
-                clearInterval(cronometro);
-                //mostrarMensaje("Has guanyat la partida!");
-                partidaActiva = false; // Desactivar la partida
-                calcularBonificacionPorTiempo(); // Llama a la bonificación final
-                mostrarNombre();
-                mostrarBotones();
-            }
+            // Para el timer
+            clearInterval(cronometro);
+            //mostrarMensaje("Has guanyat la partida!");
+            partidaActiva = false; // Desactivar la partida
+            calcularBonificacionPorTiempo(); // Llama a la bonificación final
+            pageWin();
+            console.log("Easter Egg activado");
+            
         }
     };
 }
@@ -364,136 +360,32 @@ let iaHits = 0;      // Aciertos de la IA
 function determinarGanadorPorAciertos() {
     clearInterval(cronometro);
     partidaActiva = false;
+
+    console.log("Player Hits: " + playerHits);
+    console.log("IA Hits: " + iaHits);
     
     if (playerHits > iaHits) {
         mostrarMensaje("¡Has ganado la partida por tener más aciertos!", "green");
-        pageWin();
+        setTimeout(() => {
+            pageWin();
+        }, 5000);
     } else if (iaHits > playerHits) {
         mostrarMensaje("La IA ha ganado la partida por tener más aciertos.", "red");
-        pageLose();
+        setTimeout(() => {
+            pageLose();
+        }, 5000);    
     } else {
-        mostrarMensaje("La IA ha ganado por empate.", "blue");
-        pageLose();
+        mostrarMensaje("La IA ha ganado por empate.", "red");
+        setTimeout(() => {
+            pageLose();
+        }, 5000);    
     }
-    
-    mostrarBotones();
-    mostrarNombre();
+
     calcularBonificacionPorTiempo();
 }
 
 
-// Turno de la IA
-function turnoIA() {
-    if (partidaActiva && !playerTurn) {
-        if (practiceAmmoEnabled && practiceEnemyAmmo === 0 && practicePlayerAmmo === 0) {
-            setTimeout(determinarGanadorPorAciertos, 2000);
-            return;
-        } else if (practiceAmmoEnabled && practiceEnemyAmmo === 0) {
-            setTimeout(() => {
-                showNotificationIA(`La IA no té més munició. Torn de ${practicePlayerName}`);
-                playerTurn = true;
-                cambiarTurno(playerTurn);
-            }, 2000);
-            return;
-        }
 
-        let row, col;
-        let hit = false;
-        let barcoHundido = false;
-
-        do {
-            row = Math.floor(Math.random() * 10) + 1;
-            col = Math.floor(Math.random() * 10) + 1;
-        } while (attackedPositions.some(pos => pos.row === row && pos.col === col));
-
-        const td = document.querySelector(`tr:nth-child(${row + 1}) td:nth-child(${col + 1})`);
-        
-        if (td) {
-            let name = td.getAttribute('name');
-
-            // Almacenar posición atacada
-            attackedPositions.push({ row: row, col: col }); // Guardar la posición en attackedPositions
-            
-            //Suena la musica de espera
-            iaSound();
-
-            showNotificationIA("Torn de IA, pensant moviment...");
-
-            setTimeout(() => {
-                if (practiceAmmoEnabled) {
-                    if (practiceEnemyAmmo === 0 && practicePlayerAmmo === 0) {
-                        setTimeout(determinarGanadorPorAciertos, 2000);
-                        return;
-                    }
-
-                    practiceEnemyAmmo--;
-                    document.getElementById('practiceEnemyAmmo').textContent = practiceEnemyAmmo + "/40";
-                }
-
-                if (name === " ") {
-                    td.innerHTML = "~"; 
-                    td.style.backgroundColor = "blue";
-                    showNotificationIAGame("La IA ha fallat");
-                    //mostrarMensaje("La IA ha fallat", "yellow");
-                    waterSoundIA();
-                    if (practiceAmmoEnabled && practicePlayerAmmo === 0) {
-                        setTimeout(() => {
-                            showNotificationIA(`${practicePlayerName} no té més munició. Segueix el torn de la IA.`);
-                            //mostrarMensaje("Player no tiene más munición. Sigue el turno de la IA.", "yellow");
-                        }, 2000);
-                        playerTurn = false;
-                        //Suena la musica de espera
-                        iaSound();
-                        setTimeout(turnoIA, 2000);
-                    } else {
-                        setTimeout(() => {
-                            showNotificationPlayer(`Torn de ${practicePlayerName}`);
-                            //mostrarMensaje("Turno de Player.", "yellow");
-                            playerTurn = true;
-                            cambiarTurno(playerTurn);
-                        }, 2000);
-                    }
-                } else {
-                    attackSoundIA();
-                    for (let barco of barcos) {
-                        if (barco.tipo === name) {
-                            barco.vida -= 1;
-                            td.innerHTML = "X"; 
-                            td.style.backgroundColor = "red";
-                            //mostrarMensaje(`¡La IA ha tocado una xarxa de ${barco.tamaño}!`, "yellow");
-                            iaHits++;  // Incrementar aciertos de la IA
-
-                            if (barco.vida === 0) {
-                                barcoHundido = true;
-                                setTimeout(() => showNotificationIAGame(`¡La IA ha enfonsat una xarxa amb ${barco.tamaño} servidors!`), 2000);
-                                //setTimeout(() => mostrarMensaje(`¡La IA ha hundido una xarxa amb ${barco.tamaño} servidors!`, "red"), 2000);
-                            }else{
-                                showNotificationIAGame("¡La IA ha tocat una xarxa!");
-                            }
-
-                            hit = true;
-                            break;
-                        }
-                    }
-
-                    if (hit && barcoHundido) {
-                        setTimeout(() => {
-                            //showNotificationIAGame(`¡La IA ha hundido una xarxa amb ${barco.tamaño} servidors!`)
-                            //Suena la musica de espera
-                            iaSound();
-                            setTimeout(turnoIA, 2000);
-                        }, 200);
-                    } else if (hit) {
-                        //showNotificationIAGame("¡La IA ha tocado una xarxa!");
-                        //Suena la musica de espera
-                        iaSound();
-                        setTimeout(turnoIA, 2000);
-                    }
-                }
-            }, 2000);
-        }
-    }
-}
 
 function oscurecerTablero(tablero) {
     tablero.classList.add('tablero-oculto');
@@ -503,17 +395,7 @@ function habilitarTablero(tablero) {
     tablero.classList.remove('tablero-oculto');
 }
 
-function cambiarTurno(playerTurn) {
-    if (playerTurn) {
-        // Oscurecer la tabla del jugador y habilitar la tabla de la IA
-        oscurecerTablero(document.getElementById('practicePlayergameTable')); // Reemplaza con el ID real de tu tabla
-        habilitarTablero(document.getElementById('practiceEnemygameTable')); // Reemplaza con el ID real de tu tabla
-    } else {
-        // Oscurecer la tabla de la IA y habilitar la tabla del jugador
-        oscurecerTablero(document.getElementById('practiceEnemygameTable')); // Reemplaza con el ID real de tu tabla
-        habilitarTablero(document.getElementById('practicePlayergameTable')); // Reemplaza con el ID real de tu tabla
-    }
-}
+
 
 //cambiar pantalla 
 function pageWin() {
@@ -549,106 +431,436 @@ function todosBarcosDestruidos() {
     return true;
 }
 
-function changeDataCell(td, gameMode = 'IA') {
-    if (!partidaActiva) return; // Si la partida no está activa, no hacer nada
+function cambiarTurno(playerTurn) {
+    if (playerTurn) {
+        // Oscurecer la tabla del jugador y habilitar la tabla de la IA
+        oscurecerTablero(document.getElementById('practicePlayergameTable')); // Reemplaza con el ID real de tu tabla
+        habilitarTablero(document.getElementById('practiceEnemygameTable')); // Reemplaza con el ID real de tu tabla
+    } else {
+        // Oscurecer la tabla de la IA y habilitar la tabla del jugador
+        oscurecerTablero(document.getElementById('practiceEnemygameTable')); // Reemplaza con el ID real de tu tabla
+        habilitarTablero(document.getElementById('practicePlayergameTable')); // Reemplaza con el ID real de tu tabla
+    }
+}
 
+function comprobarMunicionTerminada() {
+    if (practicePlayerAmmo === 0 && practiceEnemyAmmo === 0) {
+        return true; // Ambos tienen 0 de munición
+    } else {
+        return false; // Alguno o ambos aún tienen munición
+    }
+    
+}
+
+let firstHit = { row: null, col: null };
+let secondHit = { row: null, col: null };
+let direccionEncontrada = false;
+let cambioSentido = false;
+
+// Turno de la IA
+function turnoIA() {
+
+    // Cambiar sentido de ataque
+    if (direccionEncontrada && cambioSentido) {
+        // Determinar si la dirección es horizontal o vertical
+        const direccionHorizontal = firstHit.row === secondHit.row;
+        let siguienteMovimiento;
+    
+        // Si la dirección es horizontal, cambia al lado opuesto
+        if (direccionHorizontal) {
+            if (secondHit.col > firstHit.col) {
+                // La IA estaba atacando hacia la derecha, ahora cambia a la izquierda de firstHit
+                siguienteMovimiento = { row: firstHit.row, col: firstHit.col - 1 };
+            } else {
+                // La IA estaba atacando hacia la izquierda, ahora cambia a la derecha de firstHit
+                siguienteMovimiento = { row: firstHit.row, col: firstHit.col + 1 };
+            }
+        } else {
+            // Si la dirección es vertical, cambia al lado opuesto
+            if (secondHit.row > firstHit.row) {
+                // La IA estaba atacando hacia abajo, ahora cambia a la celda arriba de firstHit
+                siguienteMovimiento = { row: firstHit.row - 1, col: firstHit.col };
+            } else {
+                // La IA estaba atacando hacia arriba, ahora cambia a la celda abajo de firstHit
+                siguienteMovimiento = { row: firstHit.row + 1, col: firstHit.col };
+            }
+        }
+    
+        // Verificar si el movimiento está dentro del tablero y no ha sido atacado
+        if (siguienteMovimiento.row >= 1 && siguienteMovimiento.row < practicePlayerBoard.length &&
+            siguienteMovimiento.col >= 1 && siguienteMovimiento.col < practicePlayerBoard[0].length &&
+            practicePlayerBoard[siguienteMovimiento.row][siguienteMovimiento.col] !== "X" &&
+            practicePlayerBoard[siguienteMovimiento.row][siguienteMovimiento.col] !== "~") {
+    
+            // Establecer el próximo ataque en la celda opuesta
+            row = siguienteMovimiento.row;
+            col = siguienteMovimiento.col;
+        } else {
+            // Si el movimiento no es válido, selecciona un movimiento aleatorio
+            do {
+                row = Math.floor(Math.random() * (practicePlayerBoard.length - 1)) + 1;
+                col = Math.floor(Math.random() * (practicePlayerBoard[0].length - 1)) + 1;
+            } while (practicePlayerBoard[row][col] === "X" || practicePlayerBoard[row][col] === "~");
+        }
+    
+        // Reiniciar cambioSentido para evitar alternar continuamente
+        cambioSentido = false;
+    } else
+    
+
+    // IA ha encontrado la direccion de un barco
+    if (direccionEncontrada && cambioSentido === false) {
+        // Determinar si la dirección es horizontal o vertical
+        const direccionHorizontal = firstHit.row === secondHit.row;
+        let posiblesMovimientos = [];
+    
+        // Si es horizontal, verifica izquierda y derecha
+        if (direccionHorizontal) {
+            if (secondHit.col > 1 && practicePlayerBoard[secondHit.row][secondHit.col - 1] !== "X" && practicePlayerBoard[secondHit.row][secondHit.col - 1] !== "~") {
+                posiblesMovimientos.push({ row: secondHit.row, col: secondHit.col - 1 }); // Izquierda
+            }
+            if (secondHit.col < practicePlayerBoard[0].length - 1 && practicePlayerBoard[secondHit.row][secondHit.col + 1] !== "X" && practicePlayerBoard[secondHit.row][secondHit.col + 1] !== "~") {
+                posiblesMovimientos.push({ row: secondHit.row, col: secondHit.col + 1 }); // Derecha
+            }
+        } else {
+            // Si es vertical, verifica arriba y abajo
+            if (secondHit.row > 1 && practicePlayerBoard[secondHit.row - 1][secondHit.col] !== "X" && practicePlayerBoard[secondHit.row - 1][secondHit.col] !== "~") {
+                posiblesMovimientos.push({ row: secondHit.row - 1, col: secondHit.col }); // Arriba
+            }
+            if (secondHit.row < practicePlayerBoard.length - 1 && practicePlayerBoard[secondHit.row + 1][secondHit.col] !== "X" && practicePlayerBoard[secondHit.row + 1][secondHit.col] !== "~") {
+                posiblesMovimientos.push({ row: secondHit.row + 1, col: secondHit.col }); // Abajo
+            }
+        }
+    
+        // Escoge la celda en línea recta si hay opciones
+        if (posiblesMovimientos.length > 0) {
+            const siguienteMovimiento = posiblesMovimientos[Math.floor(Math.random() * posiblesMovimientos.length)];
+            row = siguienteMovimiento.row;
+            col = siguienteMovimiento.col;
+        } else {
+            // Si no hay movimientos válidos en línea, seleccionar aleatorio
+            do {
+                row = Math.floor(Math.random() * (practicePlayerBoard.length - 1)) + 1;
+                col = Math.floor(Math.random() * (practicePlayerBoard[0].length - 1)) + 1;
+            } while (practicePlayerBoard[row][col] === "X" || practicePlayerBoard[row][col] === "~");
+        }
+    } else if (firstHit.row !== null && firstHit.col !== null) {
+        // IA Inteligente: intenta atacar cerca de la coordenada de firstHit
+        let posiblesMovimientos = [];
+
+        // Verificar y agregar las celdas alrededor de firstHit si están dentro del tablero y no han sido atacadas
+        if (firstHit.row > 1 && practicePlayerBoard[firstHit.row - 1][firstHit.col] !== "X" && practicePlayerBoard[firstHit.row - 1][firstHit.col] !== "~") {
+            posiblesMovimientos.push({ row: firstHit.row - 1, col: firstHit.col }); // Celda arriba
+        }
+        if (firstHit.row < practicePlayerBoard.length - 1 && practicePlayerBoard[firstHit.row + 1][firstHit.col] !== "X" && practicePlayerBoard[firstHit.row + 1][firstHit.col] !== "~") {
+            posiblesMovimientos.push({ row: firstHit.row + 1, col: firstHit.col }); // Celda abajo
+        }
+        if (firstHit.col > 1 && practicePlayerBoard[firstHit.row][firstHit.col - 1] !== "X" && practicePlayerBoard[firstHit.row][firstHit.col - 1] !== "~") {
+            posiblesMovimientos.push({ row: firstHit.row, col: firstHit.col - 1 }); // Celda izquierda
+        }
+        if (firstHit.col < practicePlayerBoard[0].length - 1 && practicePlayerBoard[firstHit.row][firstHit.col + 1] !== "X" && practicePlayerBoard[firstHit.row][firstHit.col + 1] !== "~") {
+            posiblesMovimientos.push({ row: firstHit.row, col: firstHit.col + 1 }); // Celda derecha
+        }
+
+        // Seleccionar una celda aleatoria de los posibles movimientos
+        if (posiblesMovimientos.length > 0) {
+            const siguienteMovimiento = posiblesMovimientos[Math.floor(Math.random() * posiblesMovimientos.length)];
+            row = siguienteMovimiento.row;
+            col = siguienteMovimiento.col;
+        } else {
+            // Si no hay movimientos válidos, selecciona una celda aleatoria
+            do {
+                row = Math.floor(Math.random() * (practicePlayerBoard.length - 1)) + 1;
+                col = Math.floor(Math.random() * (practicePlayerBoard[0].length - 1)) + 1;
+            } while (practicePlayerBoard[row][col] === "X" || practicePlayerBoard[row][col] === "~");
+        }
+
+    } else {
+        // Selección aleatoria de coordenadas cuando no hay un primer impacto
+        do {
+            row = Math.floor(Math.random() * (practicePlayerBoard.length - 1)) + 1;
+            col = Math.floor(Math.random() * (practicePlayerBoard[0].length - 1)) + 1;
+        } while (practicePlayerBoard[row][col] === "X" || practicePlayerBoard[row][col] === "~");
+    }
+
+
+    // Obtener el valor de la celda seleccionada
+    let targetCell = practicePlayerBoard[row][col];
+    
+    // Simular que la IA ataca la celda
+    let cellElement = document.querySelector(`#practicePlayergameTable tr:nth-child(${row + 1}) td:nth-child(${col + 1})`);
+
+
+    showNotificationIA("Torn de IA, pensant moviment...");
+
+    
+
+    // Lanzar tirada despues de 2 segundos
+    setTimeout(() => {
+
+        // Municion limitada
+        if (practiceAmmoEnabled) {
+            // Restar municion a IA
+            if (practiceEnemyAmmo > 0) {
+                practiceEnemyAmmo--;
+                console.log(practiceEnemyAmmo);
+                var ammoEnemyElement = document.getElementById('practiceEnemyAmmo');
+                ammoEnemyElement.textContent = practiceEnemyAmmo + "/40";
+                if (comprobarMunicionTerminada()) {
+                    mostrarMensaje("Ambos jugadores se han quedado sin munición", "yellow");
+                    setTimeout(() => {
+                        determinarGanadorPorAciertos();
+                    }, 3000);
+                    return;
+                }
+                
+            }
+        }
+        
+        if (targetCell === " ") {
+            // Agua
+            cellElement.innerHTML = "~"; // Marcar el agua
+            cellElement.classList.add("agua"); // Puedes añadir una clase CSS para el agua
+            cellElement.style.backgroundColor = "blue"; // Cambia el color a tu preferencia
+            practicePlayerBoard[row][col] = "~"; // Actualizar el tablero para marcar el agua
+
+            showNotificationIA("La IA ha fallado");
+            waterSoundIA();
+
+            // Cambiar el sentido si toca agua
+            if (direccionEncontrada) {
+                cambioSentido = true; 
+            }
+
+            // Pasar turno al Player
+            if (practiceAmmoEnabled && practicePlayerAmmo === 0) {
+                setTimeout(() => {
+                    playerTurn = true;
+                    cambiarTurno(playerTurn);
+                    showNotificationPlayer(`${practicePlayerName} no te tirades. IA tira de nou`);
+                }, 2000);
+                setTimeout(() => {
+                    setTimeout(() => {
+                        playerTurn = false;
+                        cambiarTurno(playerTurn);
+                        turnoIA();
+                    }, 2000);
+                }, 2000);
+            }
+            else {
+                setTimeout(() => {
+                    showNotificationPlayer(`Torn de ${practicePlayerName}`);
+                    playerTurn = true;
+                    cambiarTurno(playerTurn)
+                }, 3000);
+            }
+            
+
+
+        } else {
+            
+            // Acierto de la IA
+            iaHits++; 
+
+            // Ha tocado un barco
+            cellElement.innerHTML = "X"; // Marcar el impacto
+            cellElement.classList.add("impacto"); // Clase CSS para impacto
+            cellElement.style.backgroundColor = "red"; // Cambia el color a tu preferencia
+
+            practicePlayerBoard[row][col] = "X"; // Actualizar el tablero para marcar el impacto
+
+            showNotificationIA(`La IA ha tocado tu ${targetCell}`);
+            attackSoundIA();
+
+            // Guardar la primera coordenada de impacto
+            if (firstHit.row === null && firstHit.col === null) {
+                firstHit.row = row;
+                firstHit.col = col;
+            } else {
+                direccionEncontrada = true;
+                secondHit.row = row;
+                secondHit.col = col;
+            }
+
+            // Comprobar si hunde el barco
+            let barcoImpactado = practicePlayerBoats.find(barco => barco.tipo[0] === targetCell);
+            if (barcoImpactado) {
+                barcoImpactado.vida -= 1;
+
+                if (barcoImpactado.vida === 0) {
+                    showNotificationIA(`La IA ha destruido tu ${barcoImpactado.tipo}`);
+
+                    // Resetear coordenadas de primer impacto
+                    firstHit.row = null;
+                    firstHit.col = null;
+                    // Resetear coordenadas de primer impacto
+                    secondHit.row = null;
+                    secondHit.col = null;
+
+                    // Resetear direccion inteligente
+                    direccionEncontrada = false;
+                    cambioSentido = false;
+
+                }
+            }
+
+            // Si se habilita la munición limitada y la IA se queda sin tiradas
+            if (practiceAmmoEnabled && practiceEnemyAmmo === 0) {
+                showNotificationPlayer(`IA no te més tirades, torn de ${practicePlayerName}`);
+                setTimeout(() => {
+                    showNotificationPlayer(`Torn de ${practicePlayerName}`);
+                    playerTurn = true;
+                    cambiarTurno(playerTurn)
+                }, 3000);
+                return;
+            }
+
+            // Si ha acertado, vuelve a tirar después de un pequeño retraso
+            setTimeout(() => {
+                iaSound();
+                turnoIA();
+            }, 2000);
+        }
+    } , 3000);
+}
+
+
+
+function changeDataCell(td, gameMode = 'IA') {
+
+    // Vaciar mensaje de puntos
     if (debeVaciarMensajes) {
         vaciarMensajePuntos();
         debeVaciarMensajes = false; // Resetear la bandera
     }
 
-    let name = td.getAttribute('name'); 
-    let row = td.parentElement.rowIndex; 
-    let col = td.cellIndex; 
+    // Obtener atributos de la celda
+    let name = td.getAttribute('name');     // Tipo de barco
+    let row = td.parentElement.rowIndex;    // Fila
+    let col = td.cellIndex;                 // Columna
 
+    // Aplicar Easter Egg
     if (row === 3 && col === 4) { 
         activateEasterEgg(); 
     }
 
-    if (td.classList.contains("codeName")) {
-        td.classList.remove("codeName");
-        td.classList.add("dado");
-        
-        turnosTotales++;
-
-        if (practiceAmmoEnabled == true) {
+    // Municion limitada
+    if (practiceAmmoEnabled) {
+        // Restar municion a player
+        if (practicePlayerAmmo > 0) {
             practicePlayerAmmo--;
             var ammoPlayerElement = document.getElementById('practicePlayerAmmo');
             ammoPlayerElement.textContent = practicePlayerAmmo + "/40";
-
-            if (practicePlayerAmmo == 0 && practiceEnemyAmmo > 0) {
-                showNotificationPlayerGame("No tienes más munición. Turno de la IA.");
-                //mostrarMensaje("No tienes más munición. Turno de la IA.", "yellow");
-                cambiarTurno();
-                playerTurn = false;
-                setTimeout(turnoIA, 2000); 
+            if (comprobarMunicionTerminada()) {
+                mostrarMensaje("Ambos jugadores se han quedado sin munición", "yellow");
+                setTimeout(() => {
+                    determinarGanadorPorAciertos();
+                }, 3000);
                 return;
             }
         }
+    }
 
+    // Elimina glitch de la tabla
+    if (td.classList.contains("codeName")) {
+        td.classList.remove("codeName");
+
+        // Marcar celda como atacada
+        td.classList.add("dado");
+        
+        // Numero de turnos
+        turnosTotales++;
+
+        // Si toca agua
         if (name === " ") {
             td.innerHTML = "~"; 
             showNotificationPlayerGame("¡Has fallat!");
 
-            if (practiceAmmoEnabled === true && practiceEnemyAmmo > 0) {
-                cambiarTurno(); 
-                playerTurn = false;
-                setTimeout(turnoIA, 2000);
-            } else if (practiceAmmoEnabled === true && practiceEnemyAmmo === 0) {
-                showNotificationPlayer("La IA no tiene más munición. Sigue tu turno.");
-                //mostrarMensaje("La IA no tiene más munición. Sigue tu turno.", "yellow");
-                playerTurn = true;
-            } else if (practiceAmmoEnabled === false) {
-                cambiarTurno();
-                playerTurn = false;
-                setTimeout(turnoIA, 2000);
-            }
 
+
+            // Quitar 50 puntos por tocar agua 5 veces
             turnosAguaSeguidos++;
-            if (turnosAguaSeguidos >= 5) {
+            if (turnosAguaSeguidos == 5) {
                 puntos -= 50;
                 actualizarPuntos();
                 mostrarMensajePuntos("¡Has perdut 50 punts!");
                 turnosAguaSeguidos = 0;
             }
 
+            // Si se juega con IA
+            if (practiceAmmoEnabled && practiceEnemyAmmo === 0) {
+                setTimeout(() => {
+                    playerTurn = false;
+                    cambiarTurno();
+                    showNotificationPlayer(`IA no te tirades, ${practicePlayerName} tira de nou`);
+                    setTimeout(() => {
+                        playerTurn = true;
+                        cambiarTurno(playerTurn);
+                    }, 2000);
+                }, 2000);
+            } else 
+            // Modo normal
+            if (gameMode == 'IA') {
+
+                setTimeout(() => {
+                    playerTurn = false;
+                    cambiarTurno();
+                    iaSound();
+                    turnoIA();
+                }, 2000);
+                
+            }
+
+            
+            // Booleano si hunde un barco al primer intento
             hundidoSinFallar = false; 
 
+        // Si toca un barco
         } else {
-            hundidoSinFallar = true; 
+
+            playerHits++; // Acierto del jugador
+
+            // Recorrer los barcos de IA o de Tutorial
             for (let barco of barcos) {
+
+                // Si el barco es del mismo tipo que el tocado
                 if (barco.tipo === name) {
+                    // Coordenadas del barco iterado
                     let row = td.parentElement.rowIndex;
                     let col = td.cellIndex;
-
+                    
+                    // Recorrer las coordenadas del barco iterado
                     for (let coord of barco.coordenadas) {
+
+                        // Comprobar si el barco iterado coincide con las coordenadas tocadas
                         if (coord[0] === row && coord[1] === col) {
                             barco.vida -= 1; 
-                            td.innerHTML = "X"; 
+                            td.innerHTML = "X";
+                            puntos += 50;
+                            playerHits++;
                             showNotificationPlayerGame("Has tocat una xarxa!");
-                            //mostrarMensaje(`¡Has tocat una xarxa de ${barco.tamaño}!`);
-                            puntos += 50; 
-                            playerHits++;  // Incrementar aciertos del jugador
                             mostrarMensajePuntos("+50 punts per atacar un servidor\n");
                             actualizarPuntos();
 
+                            // Reestablece condición de turnos de agua seguidos
                             turnosAguaSeguidos = 0;
 
+                            // Si el barco se hunde en la tirada
                             if (barco.vida === 0) {
-                                barcosHundidos++; 
                                 showNotificationPlayerGame(`¡Tens el control de la xarxa amb ${barco.tamaño} servidors`);
-                                //mostrarMensaje(`¡Tens el control de la xarxa amb ${barco.tamaño} servidors`);
                                 debeVaciarMensajes = true;
 
+                                // Puntos si hunde el barco sin fallar
                                 if (hundidoSinFallar) {
                                     let multiplicador = barco.tamaño;
                                     let puntosAntesMultiplicador = puntos; 
                                     puntos += puntosAntesMultiplicador * (multiplicador - 1); 
-                                    mostrarMensajePuntos("+" + (puntos - puntosAntesMultiplicador) + " per destruir una xarxa");
                                     actualizarPuntos();
+                                    mostrarMensajePuntos("+" + (puntos - puntosAntesMultiplicador) + " per destruir una xarxa");
                                     mostrarMensajePuntos(`¡Punts multiplicats per ${multiplicador} en enfonsar de cop una xarxa de ${barco.tamaño} servidors!`);
                                 }
 
+                                // Puntos si hunde el barco mas grande en el primer intento
                                 if (barco.tamaño == "4" && turnosTotales <= 4) {
                                     puntos += 6000; 
                                     actualizarPuntos();
@@ -657,37 +869,49 @@ function changeDataCell(td, gameMode = 'IA') {
 
                                 hundidoSinFallar = true;
 
+                                // Cuando hunda todos los barcos
                                 if (todosBarcosDestruidos()) {
+
+                                    // Modo IA
                                     if (gameMode == 'IA') {
                                         calcularBonificacionPorTiempo();
                                         partidaActiva = false;
                                         pageWin();
-                                    } else{
-                                        /*calcularBonificacionPorTiempo();
-                                        partidaActiva = false;
-                                        pageWin();*/
+                                    } 
+
+                                    // Modo Tutorial
+                                    else
+                                    {
+                                        const gameTitleElement = document.getElementById("gameTitle");
+                                        gameTitleElement.innerText = "Felicitats has hackejat tots els servidors!!";
                                         getbackground();
                                         getText();
                                         changeMusic();
-                                        const gameTitleElement = document.getElementById("gameTitle");
-                                        gameTitleElement.innerText = "Felicitats has hackejat tots els servidors!!";
                                         mostrarBotones();
                                         mostrarNombre();
                                         calcularBonificacionPorTiempo();
-                                        partidaActiva = false; // Desactivar la partida
+                                        partidaActiva = false;
                                     }
                                 }
+                            }
+                            // Si se habilita la munición limitada y el jugador se queda sin tiradas
+                            if (practiceAmmoEnabled && practicePlayerAmmo < 1) {
+                                playerTurn = false;  
+                                cambiarTurno();    
+                                setTimeout(() => {
+                                    showNotificationPlayer(`${practicePlayerName} no te més tirades, torn de la IA`);
+                                }, 2000);
+                                setTimeout(() => {
+                                    turnoIA();           
+                                }, 4000);
+
+                                return;
                             }
                             return;
                         }
                     }
                 }
             }
-        }
-
-        if (practiceAmmoEnabled === true && practiceEnemyAmmo == 0 && practicePlayerAmmo == 0) {
-            determinarGanadorPorAciertos();  // Llamada para determinar el ganador
-            return;
         }
     }
 }
