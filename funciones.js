@@ -420,8 +420,9 @@ function pageLose() {
 /* ********************************** */
 
 // Función para comprobar si todos los barcos han sido destruidos
-function todosBarcosDestruidos() {
-    for (let barco of barcos) {
+function todosBarcosDestruidos(arrayBarcos) {
+
+    for (let barco of arrayBarcos) {
         if (barco.vida > 0) {
             // Si algún barco tiene vida restante, la partida no ha terminado
             return false;
@@ -769,13 +770,22 @@ function turnoIA() {
             }
 
             // Comprobar si hunde el barco
-            let barcoImpactado = practicePlayerBoats.find(barco => barco.tipo[0] === targetCell);
-            
+            let barcoImpactado = practicePlayerBoats.find(barco => 
+                barco.tipo[0] === targetCell && 
+                barco.coordenadas.some(coord => coord[0] === row && coord[1] === col)
+            );            
+            console.log(barcoImpactado);
+
             if (barcoImpactado) {
 
                 console.log("-1 de vida");
 
                 barcoImpactado.vida -= 1;
+
+                if (todosBarcosDestruidos(practicePlayerBoats)) {
+                    partidaActiva = false;
+                    pageLose();
+                }
 
 
                 if (barcoImpactado.vida === 0) {
@@ -996,7 +1006,7 @@ function changeDataCell(td, gameMode = 'IA') {
                                 hundidoSinFallar = true;
 
                                 // Cuando hunda todos los barcos
-                                if (todosBarcosDestruidos()) {
+                                if (todosBarcosDestruidos(barcos)) {
 
                                     // Modo IA
                                     if (gameMode == 'IA') {
