@@ -665,6 +665,7 @@ function turnoIA() {
             // Cambiar el sentido si toca agua
             if (direccionEncontrada) {
                 cambioSentido = true; 
+                console.log("Cambio de sentido");
             }
 
             // Pasar turno al Player
@@ -703,42 +704,59 @@ function turnoIA() {
             // Acierto de la IA
             iaHits++; 
 
-            // Modo ArmoredShips --> ?
-            if (practiceArmoredShips === true && celdaAcorazadaEncontrada === false) {
-                cellElement.innerHTML = "?"; 
-                cellElement.classList.add("playerCellArmored"); 
-                cellElement.style.backgroundColor = "orange"; 
-                showNotificationIA("La IA ha encontrado un servidor");
-                celdaAcorazada = { row: row, col: col };
-                celdaAcorazadaEncontrada = true;
-                setTimeout(() => {
-                    showNotificationPlayer(`Torn de ${practicePlayerName}`);
-                    playerTurn = true;
-                    cambiarTurno(playerTurn)
-                }, 3000);
-                return;
-            } 
+            // Modo ArmoredShips
+            if (practiceArmoredShips) {
+                // ArmoredShips --> ?
+                if (practiceArmoredShips === true && celdaAcorazadaEncontrada === false) {
+                    cellElement.innerHTML = "?"; 
+                    cellElement.classList.add("playerCellArmored"); 
+                    cellElement.style.backgroundColor = "orange"; 
+                    showNotificationIA("La IA ha encontrado un servidor");
+                    celdaAcorazada = { row: row, col: col };
+                    celdaAcorazadaEncontrada = true;
+                    setTimeout(() => {
+                        showNotificationPlayer(`Torn de ${practicePlayerName}`);
+                        playerTurn = true;
+                        cambiarTurno(playerTurn)
+                    }, 3000);
+                    return;
+                } 
+    
+                else if (practiceArmoredShips === true && celdaAcorazadaEncontrada === true) {
+    
+    
+                    // Atacar la celda marcada con "?"
+                    row = celdaAcorazada.row;
+                    col = celdaAcorazada.col;
+                
+                    // Lógica para atacar la celda y manejar el resultado
+                    cellElement.innerHTML = "X"; 
+                    cellElement.style.backgroundColor = "red"; 
+                    showNotificationIA(`La IA ha tocado tu ${targetCell}`);
+                    attackSoundIA();
+                
+                    // Reiniciar el estado de la celda acorazada
+                    celdaAcorazadaEncontrada = false;
+                    celdaAcorazada = { row: null, col: null };
+                } 
 
-            else if (practiceArmoredShips === true && celdaAcorazadaEncontrada === true) {
-
-
-                // Atacar la celda marcada con "?"
-                row = celdaAcorazada.row;
-                col = celdaAcorazada.col;
-            
-                // Lógica para atacar la celda y manejar el resultado
-                cellElement.innerHTML = "X"; 
-                cellElement.style.backgroundColor = "red"; 
-                showNotificationIA(`La IA ha tocado tu ${targetCell}`);
-                attackSoundIA();
-            
-                // Reiniciar el estado de la celda acorazada
-                celdaAcorazadaEncontrada = false;
-                celdaAcorazada = { row: null, col: null };
-            } 
+            }
+           
+            // Guardar la primera coordenada de impacto
+            if (firstHit.row === null && firstHit.col === null) {
+                firstHit.row = row;
+                firstHit.col = col;
+                console.log("Primer impacto");
+            } else {
+                direccionEncontrada = true;
+                secondHit.row = row;
+                secondHit.col = col;
+                console.log("Segundo impacto");
+                console.log("Direccion encontrada");
+            }
 
             // Modo normal
-            else {
+            if (!practiceArmoredShips) {
                 cellElement.innerHTML = "X"; 
                 cellElement.style.backgroundColor = "red"; 
                 showNotificationIA(`La IA ha tocado tu ${targetCell}`);
@@ -746,20 +764,11 @@ function turnoIA() {
                 if (firstHit.row === null && firstHit.col === null) {
                     firstHit.row = row;
                     firstHit.col = col;
+                    console.log("Primer impacto");
                 }
             }
             
-            
 
-            // Guardar la primera coordenada de impacto
-            if (firstHit.row === null && firstHit.col === null) {
-                firstHit.row = row;
-                firstHit.col = col;
-            } else {
-                direccionEncontrada = true;
-                secondHit.row = row;
-                secondHit.col = col;
-            }
 
             // Comprobar si hunde el barco
             let barcoImpactado = practicePlayerBoats.find(barco => 
@@ -793,6 +802,8 @@ function turnoIA() {
                     // Resetear el modo ArmoredShips
                     celdaAcorazadaEncontrada = false;
                     celdaAcorazada = { row: null, col: null };
+
+                    console.log("Reset")
 
                 }
             }
