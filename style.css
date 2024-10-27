@@ -599,11 +599,6 @@ input[type="text"]:focus {
 
 /* Configuracion variables */
 
-#armoredShips{
-    opacity: 0.5;
-    color: #888888;
-}
-
 .ammoTitle{
     margin-top: 1vw;
 }
