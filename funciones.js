@@ -1211,7 +1211,7 @@ function changeDataCell(td, gameMode = 'IA') {
                             
 
                             // Modo ArmoredShips primer hit
-                            if (practiceArmoredShips && !td.classList.contains("cellArmored") && !practiceSpecialAttacks)   {
+                            if (practiceArmoredShips && !td.classList.contains("cellArmored") && !specialAttackButton1 || !specialAttackButton2)   {
                                 showNotificationPlayerGame("Hi ha ping de resposta");
                                 td.classList.remove("dado");
                                 td.innerHTML = "?";
