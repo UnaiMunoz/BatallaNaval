@@ -845,6 +845,8 @@ function attackAdjacentCells(td, buttonId) {
     let row = td.parentElement.rowIndex;
     let col = td.cellIndex;
 
+    console.log("Ataque especial en celda: ", row, col);
+
     // Deshabilitar boton, excepto specialAttackButtonWannaCry
     if (buttonId !== 'specialAttackButtonWannaCry') {
         const button = document.getElementById(buttonId);
@@ -852,6 +854,14 @@ function attackAdjacentCells(td, buttonId) {
             button.disabled = true; // Deshabilitar el botón
         }
     }
+
+    
+
+    // Definir el tamaño de la cuadrícula
+    const maxRows = 10; // Cambia esto según el tamaño de tu cuadrícula
+    const maxCols = 10; // Cambia esto según el tamaño de tu cuadrícula
+    
+
 
     // Posiciones adyacentes
     let adyacentes = [
@@ -864,6 +874,53 @@ function attackAdjacentCells(td, buttonId) {
         { r: row + 1, c: col - 1 }, // Esquina abajo izquierda
         { r: row + 1, c: col + 1 }  // Esquina abajo derecha
     ];
+
+    // Filtrar posiciones adyacentes válidas
+    adyacentes = adyacentes.filter(pos => 
+        pos.r >= 1 && pos.r <= maxRows && pos.c >= 1 && pos.c <= maxCols
+    );
+
+    if (practiceAmmoEnabled) {
+        // Menos de 4 de munición
+        if (practicePlayerAmmo < 4) {
+            showNotificationPlayerGame("No tens suficient munició");
+            document.getElementById('specialAttackButtonWannaCry').classList.remove('active');
+            document.getElementById('specialAttackButtonWannaCry').classList.add('disabled');
+            specialAttackButtonWannaCry = false; // Asignación correcta
+            return; // Salimos de la función si no hay suficiente munición
+        }
+    
+        // Menos de 6 de munición y no es un borde
+        if (practicePlayerAmmo < 6) {
+            const row = td.parentElement.rowIndex; // Asegúrate de que `td` es el elemento correcto
+            const col = td.cellIndex;
+    
+            // Verificar si estamos en un borde
+            const isInBorder = (row === 1 || row === 10 || col === 1 || col === 10);
+    
+            // Solo mostrar la notificación si no es un borde
+            if (!isInBorder) {
+                showNotificationPlayerGame("No tens suficient munició");
+                return; // Salimos de la función si no hay suficiente munición
+            }
+        }
+    
+        // Menos de 9 de munición y es una celda central
+        if (practicePlayerAmmo < 9) {
+            const row = td.parentElement.rowIndex; // Asegúrate de que `td` es el elemento correcto
+            const col = td.cellIndex;
+    
+            // Verificar si estamos en una celda central (no en la primera o última fila/columna)
+            const isCentralCell = (row > 1 && row < 10 && col > 1 && col < 10);
+    
+            if (isCentralCell) {
+                showNotificationPlayerGame("No tens suficient munició");
+                return; // Salimos de la función
+            }
+        }
+    }
+    
+    
 
     // Recorre cada posición adyacente y realiza el ataque
     adyacentes.forEach(pos => {
@@ -909,7 +966,7 @@ function attackAdjacentCells(td, buttonId) {
 
                 // Realiza el ataque en la celda adyacente
                 comprobandoCeldas = true;
-                console.log("Celda: ", adjTd);
+                // console.log("Celda: ", adjTd);
                 changeDataCell(adjTd, "IA");
             }
         }
@@ -928,7 +985,7 @@ function attackAdjacentCells(td, buttonId) {
 
 
     if (practiceAmmoEnabled) {
-        if (practicePlayerAmmo < 9) {
+        if (practicePlayerAmmo < 4) {
             showNotificationPlayerGame("No tens suficient munició");
             document.getElementById('specialAttackButtonWannaCry').classList.remove('active');
             document.getElementById('specialAttackButtonWannaCry').classList.add('disabled');
@@ -981,7 +1038,7 @@ function specialAttack(buttonId) {
         }
 
     } else if (buttonId === 'specialAttackButtonWannaCry') {
-        if (!specialAttackButtonWannaCry && practicePlayerAmmo > 8) {
+        if (!specialAttackButtonWannaCry && practicePlayerAmmo > 3) {
             specialAttackButtonWannaCry = true;
             comprobandoCeldas = true;
             button.classList.add('active');
@@ -1040,15 +1097,20 @@ function changeDataCell(td, gameMode = 'IA') {
         attackAdjacentCells(td, 'specialAttackButton2');
     }
     if (specialAttackButtonWannaCry === true) {
+
             // Municion limitada
             if (practiceAmmoEnabled) {  
-                if (practicePlayerAmmo > 8) {
+                if (practicePlayerAmmo > 3) {
                     practicePlayerAmmo --;
                     specialAttackButtonWannaCry = false;
                     document.getElementById('specialAttackButtonWannaCry').classList.remove('active');
+
+                    console.log("Entro en specialAttackButtonWannaCry");
                     attackAdjacentCells(td, 'specialAttackButtonWannaCry');
+
                     specialAttackButtonWannaCry === true;
-                } else if (practicePlayerAmmo < 9) {
+
+                } else {
                     showNotificationPlayerGame("No tens suficient munició");
                     document.getElementById('specialAttackButtonWannaCry').classList.remove('active');
                     document.getElementById('specialAttackButtonWannaCry').classList.add('disabled');

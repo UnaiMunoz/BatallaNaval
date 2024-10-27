@@ -724,7 +724,7 @@ Notas:
                             echo "<p class='ammoTitle'>Munició</p>";
                             echo "<p id='practiceEnemyAmmo'>40/40</p>";
                             $enemyAmmo = 40;
-                            $playerAmmo = 40;
+                            $playerAmmo = 6;
 
                             echo "<script>
                             var practicePlayerAmmo = " . json_encode($playerAmmo) . ";
