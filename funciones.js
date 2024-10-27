@@ -466,7 +466,6 @@ function turnoIA() {
 
     // ArmoredShip encontrado
     if (celdaAcorazada.row !== null && celdaAcorazada.col !== null) {
-        console.log("Coordenadas celda acorazada");
         row = celdaAcorazada.row;
         col = celdaAcorazada.col;
 
@@ -524,7 +523,6 @@ function turnoIA() {
     // IA ha encontrado la direccion de un barco
     else if (direccionEncontrada && cambioSentido === false) {
 
-        console.log("Sigiendo direccion");
 
 
         // Determinar si la dirección es horizontal o vertical
@@ -571,7 +569,6 @@ function turnoIA() {
 
     // Calcular patrón de tirada
     else if (firstHit.row !== null && firstHit.col !== null) {
-        console.log("Buscando Celdas Adyacentes");
         // IA Inteligente: intenta atacar cerca de la coordenada de firstHit
         let posiblesMovimientos = [];
 
@@ -612,7 +609,6 @@ function turnoIA() {
 
     // Tiro aleatorio
     else {
-        console.log("Tirada aleatoria");
         // Selección aleatoria de coordenadas cuando no hay un primer impacto
         do {
             row = Math.floor(Math.random() * (practicePlayerBoard.length - 1)) + 1;
@@ -640,7 +636,6 @@ function turnoIA() {
             // Restar municion a IA
             if (practiceEnemyAmmo > 0) {
                 practiceEnemyAmmo--;
-                console.log(practiceEnemyAmmo);
                 var ammoEnemyElement = document.getElementById('practiceEnemyAmmo');
                 ammoEnemyElement.textContent = practiceEnemyAmmo + "/40";
                 if (comprobarMunicionTerminada()) {
@@ -710,7 +705,6 @@ function turnoIA() {
 
             // Modo ArmoredShips --> ?
             if (practiceArmoredShips === true && celdaAcorazadaEncontrada === false) {
-                console.log("Celda acorazada encontrada");
                 cellElement.innerHTML = "?"; 
                 cellElement.classList.add("playerCellArmored"); 
                 cellElement.style.backgroundColor = "orange"; 
@@ -727,7 +721,6 @@ function turnoIA() {
 
             else if (practiceArmoredShips === true && celdaAcorazadaEncontrada === true) {
 
-                console.log("Celda acorazada marcada");
 
                 // Atacar la celda marcada con "?"
                 row = celdaAcorazada.row;
@@ -763,7 +756,6 @@ function turnoIA() {
                 firstHit.row = row;
                 firstHit.col = col;
             } else {
-                console.log("Direccion encontrada");
                 direccionEncontrada = true;
                 secondHit.row = row;
                 secondHit.col = col;
@@ -827,9 +819,171 @@ function turnoIA() {
 }
 
 
+/* Ataques especiales */
+let specialAttackButton1 = false;
+let specialAttackButton2 = false;
+let specialAttackButtonWannaCry = false;
+let casillasComprobadas = [];
+let comprobandoCeldas = false;
+let repiteTurno = false;
+let foundShip = false;
+let barcosEncontrados = 0;
+
+
+function attackAdjacentCells(td, buttonId) {
+    let row = td.parentElement.rowIndex;
+    let col = td.cellIndex;
+
+    // Deshabilitar boton, excepto specialAttackButtonWannaCry
+    if (buttonId !== 'specialAttackButtonWannaCry') {
+        const button = document.getElementById(buttonId);
+        if (button) {
+            button.disabled = true; // Deshabilitar el botón
+        }
+    }
+
+    // Posiciones adyacentes
+    let adyacentes = [
+        { r: row - 1, c: col },     // Celda arriba
+        { r: row + 1, c: col },     // Celda abajo
+        { r: row, c: col - 1 },     // Celda izquierda
+        { r: row, c: col + 1 },     // Celda derecha
+        { r: row - 1, c: col - 1 }, // Esquina arriba izquierda
+        { r: row - 1, c: col + 1 }, // Esquina arriba derecha
+        { r: row + 1, c: col - 1 }, // Esquina abajo izquierda
+        { r: row + 1, c: col + 1 }  // Esquina abajo derecha
+    ];
+
+    // Recorre cada posición adyacente y realiza el ataque
+    adyacentes.forEach(pos => {
+        // Verifica que la celda esté dentro de los límites
+        if (pos.r >= 0 && pos.c >= 0) { // Cambiado a >= 0 para incluir la primera fila y columna
+            let adjTd = document.querySelector(`table#practiceEnemygameTable tr:nth-child(${pos.r + 1}) td:nth-child(${pos.c + 1})`);
+
+            // Verifica que la celda exista y no haya sido atacada antes
+            if (adjTd && !casillasComprobadas.some(casilla => casilla.row === pos.r && casilla.col === pos.c)) {
+                // Agrega la celda a las comprobadas para evitar ataques repetidos
+
+                // No agregar barcos si estan reforzados y no tienen la clase "cellArmored"
+                if (!practiceArmoredShips || adjTd.classList.contains("cellArmored")) {
+                    casillasComprobadas.push({ row: pos.r, col: pos.c });
+                }
+
+                // Lógica de comprobación de barcos
+                for (let barco of barcos) {
+                    // Si el barco es del mismo tipo que el tocado
+                        // Recorrer las coordenadas del barco iterado
+                        for (let coord of barco.coordenadas) {
+                            // Comprobar si el barco iterado coincide con las coordenadas tocadas
+                            if (coord[0] === pos.r && coord[1] === pos.c) {
+                                foundShip = true; // Se encontró un barco
+                                barcosEncontrados ++;
+
+                                // Verificar si la celda es "armored"
+                                if (adjTd.classList.contains("cellArmored")) {
+                                    barco.vida -= 1; 
+                                    adjTd.innerHTML = "X";
+                                    puntos += 50;
+                                    playerHits++;
+                                    showNotificationPlayerGame("Has tocat una xarxa!");
+                                    mostrarMensajePuntos("+50 punts per atacar un servidor\n");
+                                    actualizarPuntos();
+                                }
+
+                                break; // Sale del bucle si se encuentra un barco
+                            }
+                        }
+                    
+                }
+
+                // Realiza el ataque en la celda adyacente
+                comprobandoCeldas = true;
+                console.log("Celda: ", adjTd);
+                changeDataCell(adjTd, "IA");
+            }
+        }
+    });
+
+    // Pasar el turno a IA con Ataque Especial y Barco Reforzados
+    if (practiceArmoredShips && practiceSpecialAttacks)   {
+        playerTurn = false;
+        cambiarTurno();
+
+        setTimeout(() => {
+            iaSound();
+            turnoIA();
+        }, 2000);
+    }
+
+
+    if (practiceAmmoEnabled) {
+        if (practicePlayerAmmo < 9) {
+            showNotificationPlayerGame("No tens suficient munició");
+            document.getElementById('specialAttackButtonWannaCry').classList.remove('active');
+            document.getElementById('specialAttackButtonWannaCry').classList.add('disabled');
+            specialAttackButtonWannaCry === false;
+        }
+    }
+
+    // Si se encontró un barco en celdas adyacentes, se repite el turno
+    if (foundShip) {
+        repiteTurno = true;
+        if (barcosEncontrados > 1) {
+            showNotificationPlayerGame("¡Has encontrado varias redes!");
+        } else {
+            showNotificationPlayerGame("¡Has encontrado una red!");
+        }
+    } else {
+        repiteTurno = false;
+        showNotificationPlayerGame("¡No has encontrado nada!");
+    }
+    foundShip = false;
+    barcosEncontrados = 0;
+}
+
+
+
+
+function specialAttack(buttonId) {
+    const button = document.getElementById(buttonId);
+
+    if (buttonId === 'specialAttackButton1') {
+        if (specialAttackButton1) {
+            specialAttackButton1 = false;
+            button.classList.remove('active'); // Quitar la clase activa
+            comprobandoCeldas = false;
+        } else {
+            specialAttackButton1 = true;
+            button.classList.add('active');
+            comprobandoCeldas = true;
+        }
+
+    } else if (buttonId === 'specialAttackButton2') {
+        if (specialAttackButton2) {
+            specialAttackButton2 = false;
+            button.classList.remove('active'); 
+            comprobandoCeldas = false;
+        } else {
+            specialAttackButton2 = true;
+            button.classList.add('active'); 
+            comprobandoCeldas = true;
+        }
+
+    } else if (buttonId === 'specialAttackButtonWannaCry') {
+        if (!specialAttackButtonWannaCry && practicePlayerAmmo > 8) {
+            specialAttackButtonWannaCry = true;
+            comprobandoCeldas = true;
+            button.classList.add('active');
+        }
+    }
+ 
+}
+
+
+
 
 function changeDataCell(td, gameMode = 'IA') {
-
+ 
     // Vaciar mensaje de puntos
     if (debeVaciarMensajes) {
         vaciarMensajePuntos();
@@ -850,7 +1004,9 @@ function changeDataCell(td, gameMode = 'IA') {
     if (practiceAmmoEnabled) {
         // Restar municion a player
         if (practicePlayerAmmo > 0) {
-            practicePlayerAmmo--;
+            if (!specialAttackButtonWannaCry){
+                practicePlayerAmmo--;
+            }
             var ammoPlayerElement = document.getElementById('practicePlayerAmmo');
             ammoPlayerElement.textContent = practicePlayerAmmo + "/40";
             if (comprobarMunicionTerminada()) {
@@ -863,9 +1019,47 @@ function changeDataCell(td, gameMode = 'IA') {
         }
     }
 
+    // Ataque especial
+    if (specialAttackButton1 === true) {
+        specialAttackButton1 = false; 
+        attackAdjacentCells(td, 'specialAttackButton1');
+    }
+    if (specialAttackButton2 === true) {
+        specialAttackButton2 = false;
+        attackAdjacentCells(td, 'specialAttackButton2');
+    }
+    if (specialAttackButtonWannaCry === true) {
+            // Municion limitada
+            if (practiceAmmoEnabled) {  
+                if (practicePlayerAmmo > 8) {
+                    practicePlayerAmmo --;
+                    specialAttackButtonWannaCry = false;
+                    document.getElementById('specialAttackButtonWannaCry').classList.remove('active');
+                    attackAdjacentCells(td, 'specialAttackButtonWannaCry');
+                    specialAttackButtonWannaCry === true;
+                } else if (practicePlayerAmmo < 9) {
+                    showNotificationPlayerGame("No tens suficient munició");
+                    document.getElementById('specialAttackButtonWannaCry').classList.remove('active');
+                    document.getElementById('specialAttackButtonWannaCry').classList.add('disabled');
+                    practicePlayerAmmo --;
+                    var ammoPlayerElement = document.getElementById('practicePlayerAmmo');
+                    ammoPlayerElement.textContent = practicePlayerAmmo + "/40";
+                    specialAttackButtonWannaCry === false;
+                    playerTurn = false;
+                    cambiarTurno();
+            
+                    setTimeout(() => {
+                        iaSound();
+                        turnoIA();
+                    }, 2000);
+                }
+            }
+    }
+
     // Elimina glitch de la tabla
     if (td.classList.contains("codeName") || td.classList.contains("cellArmored")) {
         td.classList.remove("codeName");
+
 
         // Marcar celda como atacada
         td.classList.add("dado");
@@ -875,10 +1069,13 @@ function changeDataCell(td, gameMode = 'IA') {
 
         // Si toca agua
         if (name === " ") {
+
             td.innerHTML = "~"; 
-            showNotificationPlayerGame("¡Has fallat!");
+            if (comprobandoCeldas == false) {
+                showNotificationPlayerGame("¡Has fallat!");
+            }
 
-
+            casillasComprobadas.push({ row: row, col: col });
 
             // Quitar 50 puntos por tocar agua 5 veces
             turnosAguaSeguidos++;
@@ -901,26 +1098,27 @@ function changeDataCell(td, gameMode = 'IA') {
                     }, 2000);
                 }, 2000);
             } 
+
             // Modo normal
-            else if (gameMode == 'IA') {
+            else if (gameMode == 'IA' && comprobandoCeldas === false && repiteTurno === false) {
 
                 playerTurn = false;
                 cambiarTurno();
-
+        
                 setTimeout(() => {
                     iaSound();
                     turnoIA();
                 }, 2000);
+                
 
             }
-
+            repiteTurno = false;
             
             // Booleano si hunde un barco al primer intento
             hundidoSinFallar = false; 
 
         // Si toca un barco
         } else {
-
             playerHits++; // Acierto del jugador
 
             // Recorrer los barcos de IA o de Tutorial
@@ -940,7 +1138,7 @@ function changeDataCell(td, gameMode = 'IA') {
                             
 
                             // Modo ArmoredShips primer hit
-                            if (practiceArmoredShips && !td.classList.contains("cellArmored")) {
+                            if (practiceArmoredShips && !td.classList.contains("cellArmored") && !practiceSpecialAttacks)   {
                                 showNotificationPlayerGame("Hi ha ping de resposta");
                                 td.classList.remove("dado");
                                 td.innerHTML = "?";
@@ -953,10 +1151,21 @@ function changeDataCell(td, gameMode = 'IA') {
                                     turnoIA();
                                 }, 2000);
                             } 
+                            // Modo ArmoredShips primer hit con Special Attack
+                            else if (practiceArmoredShips && !td.classList.contains("cellArmored") && practiceSpecialAttacks)   {
+                                showNotificationPlayerGame("Hi ha ping de resposta");
+                                td.classList.remove("dado");
+                                td.innerHTML = "?";
+                                td.classList.add("cellArmored");
+
+                                // No pasa turno a IA porque se activa la Special Attack
+
+                            }
                             // Modo ArmoredShips segundo hit
                             else if (practiceArmoredShips && td.classList.contains("cellArmored")) {
                                 barco.vida -= 1; 
                                 td.innerHTML = "X";
+                                casillasComprobadas.push({ row: row, col: col });
                                 puntos += 50;
                                 playerHits++;
                                 showNotificationPlayerGame("Has tocat una xarxa!");
@@ -967,9 +1176,12 @@ function changeDataCell(td, gameMode = 'IA') {
                             else if (!practiceArmoredShips){
                                 barco.vida -= 1; 
                                 td.innerHTML = "X";
+                                casillasComprobadas.push({ row: row, col: col });
                                 puntos += 50;
                                 playerHits++;
-                                showNotificationPlayerGame("Has tocat una xarxa!");
+                                if (practiceSpecialAttacks == false){
+                                    showNotificationPlayerGame("Has tocat una xarxa!");
+                                }
                                 mostrarMensajePuntos("+50 punts per atacar un servidor\n");
                                 actualizarPuntos();
                             }
@@ -980,7 +1192,9 @@ function changeDataCell(td, gameMode = 'IA') {
 
                             // Si el barco se hunde en la tirada
                             if (barco.vida === 0) {
-                                showNotificationPlayerGame(`¡Tens el control de la xarxa amb ${barco.tamaño} servidors`);
+                                if (practiceSpecialAttacks == false){
+                                    showNotificationPlayerGame(`¡Tens el control de la xarxa amb ${barco.tamaño} servidors`);
+                                }
                                 debeVaciarMensajes = true;
 
                                 // Puntos si hunde el barco sin fallar
@@ -1026,6 +1240,7 @@ function changeDataCell(td, gameMode = 'IA') {
                                         partidaActiva = false;
                                     }
                                 }
+
                             }
                             // Si se habilita la munición limitada y el jugador se queda sin tiradas
                             if (practiceAmmoEnabled && practicePlayerAmmo < 1) {
@@ -1047,6 +1262,7 @@ function changeDataCell(td, gameMode = 'IA') {
             }
         }
     }
+    comprobandoCeldas = false;
 }
 
 /* ********************************** */

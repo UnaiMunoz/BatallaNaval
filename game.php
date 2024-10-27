@@ -718,17 +718,43 @@ Notas:
                         }
                         echo "</table>";
 
+                        echo "<div id='specialFeatures'>";
+
                         if ($limitedAmmo == 'true') {
                             echo "<p class='ammoTitle'>Munició</p>";
                             echo "<p id='practiceEnemyAmmo'>40/40</p>";
-                            $enemyAmmo = 4;
-                            $playerAmmo = 4;
+                            $enemyAmmo = 40;
+                            $playerAmmo = 40;
 
                             echo "<script>
                             var practicePlayerAmmo = " . json_encode($playerAmmo) . ";
                             var practiceEnemyAmmo = " . json_encode($enemyAmmo) . ";
                             </script>";
                         }
+
+                         // Ataque especial
+                         if ($specialAttacks == 'true') {
+                            echo "<script>
+                                var practiceSpecialAttacks = " . json_encode(true) . ";
+                            </script>";
+                            if ($limitedAmmo == 'false') {
+                                echo "<div id='specialAttackButtons'>";
+                                echo "<button id='specialAttackButton1' class='keySound' onclick='specialAttack(\"specialAttackButton1\")'>1</button>";
+                                echo "<button id='specialAttackButton2' class='keySound' onclick='specialAttack(\"specialAttackButton2\")'>2</button>";
+                                echo "</div>";
+                            } else {
+                                echo "<div id='specialAttackWannaCry'>";
+                                echo "<button id='specialAttackButtonWannaCry' class='keySound' onclick='specialAttack(\"specialAttackButtonWannaCry\")'>Use WannaCry 9 RAM</button>";
+                                echo "</div>";
+                            }
+                        } else {
+                            echo "<script>
+                                var practiceSpecialAttacks = " . json_encode(false) . ";
+                            </script>";
+                        }
+
+                        echo "</div>";
+
                         
                         // Imprimir en la consola del navegador
                         echo "<script>console.log('IA Board: ". json_encode($StringBarcos) . "');</script>";
