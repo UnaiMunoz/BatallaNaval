@@ -774,11 +774,8 @@ function turnoIA() {
                 barco.tipo[0] === targetCell && 
                 barco.coordenadas.some(coord => coord[0] === row && coord[1] === col)
             );            
-            console.log(barcoImpactado);
 
             if (barcoImpactado) {
-
-                console.log("-1 de vida");
 
                 barcoImpactado.vida -= 1;
 
