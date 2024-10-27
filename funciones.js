@@ -329,7 +329,7 @@ function calcularBonificacionPorTiempo() {
 
 function getbackground() {
     var elemento = document.getElementById('game');
-    elemento.style.backgroundImage = `url(images/calaveraTormenta.jpg)`;
+    elemento.style.backgroundImage = `url(images/calaveraTormenta.png)`;
     elemento.classList.remove('animacion-fondo'); // Remove the class to restart the animation
     void elemento.offsetWidth; // Trigger reflow to restart the animation
     elemento.classList.add('animacion-fondo');

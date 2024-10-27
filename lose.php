@@ -1,7 +1,7 @@
 <?php
     session_start();
 
-    /*if (!isset($_SERVER['HTTP_REFERER']) || strpos($_SERVER['HTTP_REFERER'], 'game.php') === false) {
+    if (!isset($_SERVER['HTTP_REFERER']) || strpos($_SERVER['HTTP_REFERER'], 'game.php') === false) {
             // Si no prové de 'game.php', retornar error 403
             header('HTTP/1.0 403 Forbidden', true, 403);
             echo "<!DOCTYPE html>
@@ -17,7 +17,7 @@
                         </body>
                 </html>";
             die;
-    }*/
+    }
 ?>
 <!DOCTYPE html>
 <html lang="ca">
