@@ -38,6 +38,9 @@ Notas:
     <audio id="specialAttackSound">
         <source src="sounds/specialAttack.mp3" type="audio/mpeg">
     </audio>
+    <audio id="hitArmoredShip">
+        <source src="sounds/hitArmoredShip.mp3" type="audio/mpeg">
+    </audio>
     <audio id="waterSoundIA">
         <source src="sounds/waterSound.mp3" type="audio/mpeg">
     </audio>

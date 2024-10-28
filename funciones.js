@@ -691,6 +691,7 @@ function turnoIA() {
                 // ArmoredShips --> ?
                 if (practiceArmoredShips === true && celdaAcorazadaEncontrada === false) {
                     cellElement.innerHTML = "?"; 
+                    hitArmoredShip();
                     cellElement.classList.add("playerCellArmored"); 
                     cellElement.style.backgroundColor = "orange"; 
                     showNotificationGame("La IA a trencat a l'antivirus","Right","yellow");
@@ -710,6 +711,7 @@ function turnoIA() {
                     // Atacar la celda marcada con "?"
                     row = celdaAcorazada.row;
                     col = celdaAcorazada.col;
+
                 
                     // Lógica para atacar la celda y manejar el resultado
                     cellElement.innerHTML = "X"; 
@@ -1249,6 +1251,9 @@ function changeDataCell(td, gameMode = 'IA') {
 
                             // Modo ArmoredShips primer hit
                             if (practiceArmoredShips && !td.classList.contains("cellArmored") && !practiceSpecialAttacks)   {
+                                
+                                hitArmoredShip();
+
                                 if (gameMode = 'IA'){
                                     showNotificationGame("Antivirus trencat","Left", "#3700ff");
                                 }else{
@@ -1296,6 +1301,7 @@ function changeDataCell(td, gameMode = 'IA') {
                             else if (practiceArmoredShips && td.classList.contains("cellArmored")) {
                                 barco.vida -= 1; 
                                 td.innerHTML = "X";
+                                attackSoundIA();
                                 casillasComprobadas.push({ row: row, col: col });
                                 puntos += 50;
                                 playerHits++;
@@ -1603,14 +1609,17 @@ document.addEventListener("DOMContentLoaded", function() {
 document.addEventListener("DOMContentLoaded", function() {
     const buttons = document.querySelectorAll('.attackSound');
     
-    buttons.forEach(button => {
-        button.addEventListener('click', function() {
-            const sound = new Audio('sounds/attackSound.mp3');
-            sound.play().catch(error => {
-                console.error('Error al reproducir el sonido:', error);
+    if (!practiceArmoredShips) {
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                const sound = new Audio('sounds/attackSound.mp3');
+                sound.play().catch(error => {
+                    console.error('Error al reproducir el sonido:', error);
+                });
             });
         });
-    });
+    }
+    
 });
 
 // Sonido cunado le da al agua
@@ -1641,9 +1650,15 @@ function attackSoundIA() {
     sonido.play();
 }
 
-// Sonido de cuando le da a un barco la IA
+// Sonido ataque especial
 function specialAttackSound() {
     var sonido = document.getElementById('specialAttackSound');
+    sonido.play();
+}
+
+// Sonido barco acorazado encontrado
+function hitArmoredShip() {
+    var sonido = document.getElementById('hitArmoredShip');
     sonido.play();
 }
 
