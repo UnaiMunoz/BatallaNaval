@@ -110,6 +110,25 @@ body{
     background-blend-mode: overlay;
 }
 
+#bodyForbidden{
+    background: url(images/bocasRedondas.jpg);
+    background-color: #000000ab;
+    background-blend-mode: overlay;
+    background-size: cover;
+    color: white;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#bodyForbidden h1{
+    font-size: 100px;
+    color: red;
+    width: unset;
+    margin: unset;
+}
+
 h1{
     font-weight: normal;
     margin: auto;
@@ -803,6 +822,25 @@ tr:hover .selecRanking::before {
 #goBackRanking:hover::after{
     content: ']';
 }
+
+.win {
+    background: linear-gradient(to right, #3700ff00 0%, green 50%, #3700ff00 100%);
+    font-weight: bold; /* Por ejemplo, hacerlo más destacado */
+}
+
+.win:hover{
+    background: linear-gradient(to right, green 0%, #3700ff00 50%, green 100%) !important;
+}
+
+.lose{
+    background: linear-gradient(to right, #3700ff00 0%, red 50%, #3700ff00 100%);
+    font-weight: bold; /* Por ejemplo, hacerlo más destacado */
+}
+
+.lose:hover{
+    background: linear-gradient(to right, red 0%, #3700ff00 50%, red 100%) !important;
+}
+
 
 /* ******************************* */
 /* MARK: Notificaciones */
