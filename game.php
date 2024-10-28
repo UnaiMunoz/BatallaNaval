@@ -283,6 +283,7 @@ Notas:
                                         var barcos = " . json_encode($barcos) . ";
                                         var practiceArmoredShips = false;
                                         var practiceSpecialAttacks = false;
+                                        var practiceEnemyAmmo = false;
                                     </script>";
             
             
