@@ -589,7 +589,6 @@ input[type="text"]:focus {
     100% { left: -280px; }
 }
 
-
 /* Oscurecer tabla en los turnos */
 
 .tablero-oculto {
@@ -599,28 +598,6 @@ input[type="text"]:focus {
 
 /*ataque especial*/
 
-.enabledHack::before {
-    width: 32vw;
-    content: '[ ]';
-}
-
-.enabledHack:hover::before {
-    content: '[#]';
-}
-
-.pointHack::before{
-    content: '[#]';
-}
-
-.disabledHack::before {
-    width: 32vw;
-    content: '[/]';
-    pointer-events: none;
-    background: none !important;
-}
-
-/* Configuracion variables */
-
 .ammoTitle{
     margin-top: 1vw;
 }
@@ -628,6 +605,71 @@ input[type="text"]:focus {
 .showName{
     margin-bottom: 1vw;
 }
+
+/* Ataque Especial No RAM */
+
+button.active {
+    color: yellow; /* Texto blanco */
+}
+
+
+
+#specialAttackButtons {
+    display: flex;
+    justify-content: space-around; 
+    gap: 10px; 
+    padding: 0.5vw 0;
+    width: 10vw;
+    font-size: 0.5vw;
+    background-color: unset;
+    border: none;
+    cursor: pointer;
+    color: #ffffff;
+}
+
+#specialAttackButton1:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    color: #ffff;
+}
+
+#specialAttackButton2:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    color: #ffff;
+}
+
+#specialAttackButtons:hover {
+    background: none;
+}
+
+/* Ataque Especial Con RAM */
+#specialAttackWannaCry {
+    display: flex;
+    justify-content: space-around; 
+    gap: 10px; 
+    padding: 0.5vw 0;
+    width: 20vw;
+    font-size: 0.5vw;
+    background-color: unset;
+    border: none;
+    cursor: pointer;
+    color: #ffffff;
+}
+
+#specialAttackWannaCry:hover {
+    background: none;
+}
+
+#specialAttackWannaCry:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    color: #ffff !important;
+}
+
+
+
+
 
 /* ******************************* */
 /* MARK: CSS for ranking.php */

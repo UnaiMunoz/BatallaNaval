@@ -49,7 +49,7 @@ El paginador se muestra si hay más de 25 registros.
             error_log("Error: No se recibieron datos JSON válidos.");
         }
     ?>
-
+    
     <header>
         <h1>Hall of Fame</h1>
     </header>

@@ -44,8 +44,11 @@
                 <a href="ranking.php">
                     <button class="indexHallOfFame keySound">Hall of Fame</button>
                 </a>
+
                 <!-- Nuevo botón para mostrar las opciones adicionales -->
                 <button id="extraOptionsBtn" class="indexGame keySound" onclick="showCheckboxAdvanced()">Opcions Avançades</button>
+
+                
                 
         </div>
 

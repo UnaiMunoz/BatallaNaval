@@ -817,6 +817,7 @@ let comprobandoCeldas = false;
 let repiteTurno = false;
 let foundShip = false;
 let barcosEncontrados = 0;
+let barcoOcultoEncontrado = false;
 
 
 function attackAdjacentCells(td, buttonId) {
@@ -943,6 +944,7 @@ function attackAdjacentCells(td, buttonId) {
                                     adjTd.innerHTML = "X";
                                     puntos += 50;
                                     playerHits++;
+                                    barcoOcultoEncontrado = true;
                                     if (gameMode = 'IA'){
                                         showNotificationGame("Has trobat un punt d'accés","Left", "#3700ff");
                                     }else{
@@ -967,7 +969,7 @@ function attackAdjacentCells(td, buttonId) {
     });
 
     // Pasar el turno a IA con Ataque Especial y Barco Reforzados
-    /*if (practiceArmoredShips && practiceSpecialAttacks)   {
+    if (practiceArmoredShips && practiceSpecialAttacks && !barcoOcultoEncontrado)   {
         playerTurn = false;
         cambiarTurno();
 
@@ -975,8 +977,9 @@ function attackAdjacentCells(td, buttonId) {
             iaSound();
             turnoIA();
         }, 2000);
-    }*/
+    }
 
+    barcoOcultoEncontrado = false;
 
     if (practiceAmmoEnabled) {
         if (practicePlayerAmmo < 4) {
@@ -1108,39 +1111,35 @@ function changeDataCell(td, gameMode = 'IA') {
     }
     if (specialAttackButtonWannaCry === true) {
 
-        // Municion limitada
-        if (practiceAmmoEnabled) {  
-            if (practicePlayerAmmo > 3) {
-                practicePlayerAmmo --;
-                specialAttackButtonWannaCry = false;
-                document.getElementById('specialAttackButtonWannaCry').classList.remove('active');
+            // Municion limitada
+            if (practiceAmmoEnabled) {  
+                if (practicePlayerAmmo > 3) {
+                    practicePlayerAmmo --;
+                    specialAttackButtonWannaCry = false;
+                    document.getElementById('specialAttackButtonWannaCry').classList.remove('active');
 
-                console.log("Entro en specialAttackButtonWannaCry");
-                attackAdjacentCells(td, 'specialAttackButtonWannaCry');
+                    console.log("Entro en specialAttackButtonWannaCry");
+                    attackAdjacentCells(td, 'specialAttackButtonWannaCry');
 
-                specialAttackButtonWannaCry === true;
+                    specialAttackButtonWannaCry === true;
 
-            } else {
-                if (gameMode = 'IA'){
-                    showNotificationGame("No tens suficient memòria RAM","Left", "#3700ff");
-                }else{
-                    showNotificationGame("No tens suficient memòria RAM","Right", "#3700ff");
+                } else {
+                    showNotificationPlayerGame("No tens suficient munició");
+                    document.getElementById('specialAttackButtonWannaCry').classList.remove('active');
+                    document.getElementById('specialAttackButtonWannaCry').classList.add('disabled');
+                    practicePlayerAmmo --;
+                    var ammoPlayerElement = document.getElementById('practicePlayerAmmo');
+                    ammoPlayerElement.textContent = practicePlayerAmmo + "/40";
+                    specialAttackButtonWannaCry === false;
+                    playerTurn = false;
+                    cambiarTurno();
+            
+                    setTimeout(() => {
+                        iaSound();
+                        turnoIA();
+                    }, 2000);
                 }
-                document.getElementById('specialAttackButtonWannaCry').classList.remove('active');
-                document.getElementById('specialAttackButtonWannaCry').classList.add('disabled');
-                practicePlayerAmmo --;
-                var ammoPlayerElement = document.getElementById('practicePlayerAmmo');
-                ammoPlayerElement.textContent = practicePlayerAmmo + "/40";
-                specialAttackButtonWannaCry === false;
-                playerTurn = false;
-                cambiarTurno();
-        
-                /*setTimeout(() => {
-                    iaSound();
-                    turnoIA();
-                }, 2000);*/
             }
-        }
     }
 
     // Elimina glitch de la tabla
@@ -1231,8 +1230,10 @@ function changeDataCell(td, gameMode = 'IA') {
 
                         // Comprobar si el barco iterado coincide con las coordenadas tocadas
                         if (coord[0] === row && coord[1] === col) {
+                            
+
                             // Modo ArmoredShips primer hit
-                            if (practiceArmoredShips && !td.classList.contains("cellArmored") && (!specialAttackButton1 || !specialAttackButton2))  {
+                            if (practiceArmoredShips && !td.classList.contains("cellArmored") && !practiceSpecialAttacks)   {
                                 if (gameMode = 'IA'){
                                     showNotificationGame("Antivirus trencat","Left", "#3700ff");
                                 }else{
