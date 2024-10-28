@@ -617,7 +617,7 @@ Notas:
                         // Array de barcos [nombre, tamaño]
                         $practiceEnemyBoats = [
                             new Barco("Barca", 1),
-                            /*new Barco("Barca", 1),
+                            new Barco("Barca", 1),
                             new Barco("Barca", 1),
                             new Barco("Barca", 1),
                             new Barco("Fragata", 2),
@@ -625,7 +625,7 @@ Notas:
                             new Barco("Fragata", 2),
                             new Barco("Submarino", 3),
                             new Barco("Submarino", 3),
-                            new Barco("Destructor", 4)*/
+                            new Barco("Destructor", 4)
                         ];
         
                         // String para saber las coordenadas de cada barcos

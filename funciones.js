@@ -833,7 +833,7 @@ function attackAdjacentCells(td, buttonId) {
 
     specialAttackSound();
 
-    console.log("Ataque especial en celda: ", row, col);
+    // console.log("Ataque especial en celda: ", row, col);
 
     // Deshabilitar boton, excepto specialAttackButtonWannaCry
     if (buttonId !== 'specialAttackButtonWannaCry') {
@@ -1304,7 +1304,6 @@ function changeDataCell(td, gameMode = 'IA') {
                                 if (ataqueBasicoArmoredSpecialAttack){
                                     playerTurn = false;
                                     cambiarTurno();
-                                    console.log("Cambio de turno 222");
                                     setTimeout(() => {
                                         turnoIA();           
                                     }, 2000);
