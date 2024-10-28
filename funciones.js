@@ -1389,27 +1389,19 @@ function changeDataCell(td, gameMode = 'IA') {
 /* ********************************** */
 
 // Guardar Nombre, Puntos y Fecha en ranking.txt
-function saveScore() {
+function saveScore(result) { // 'result' será 'W' o 'L'
     var playerName = document.getElementById("inputNameWinLose").value; // Obtener el nombre del jugador
     var points = document.querySelector(".points").textContent.split(": ")[1];  // Obtener puntos
 
-    // Formatear la fecha y la hora
-    var options = { 
-        timeZone: "Europe/Madrid", 
-        year: 'numeric', 
-        month: '2-digit', 
-        day: '2-digit', 
-        hour: '2-digit', 
-        minute: '2-digit', 
-        hour12: false 
-    };
+    // Obtener la fecha y la hora actuales en el formato deseado
     var now = new Date();
-    var dateTimeFormat = new Intl.DateTimeFormat('es-ES', options);
-    var formattedDate = dateTimeFormat.format(now).replace(/\//g, '-').replace(',', '');
+    var year = now.getFullYear();
+    var month = String(now.getMonth() + 1).padStart(2, '0'); // Mes en formato MM
+    var day = String(now.getDate()).padStart(2, '0'); // Día en formato DD
+    var hours = String(now.getHours()).padStart(2, '0'); // Hora en formato HH
+    var minutes = String(now.getMinutes()).padStart(2, '0'); // Minutos en formato mm
 
-    // Separar fecha y hora
-    var [date, time] = formattedDate.split(' ');
-    formattedDate = date + ' ' + time.split(':').join(':');
+    var formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`;
 
     const errorMessage = document.getElementById('errorMessage');
     const successMessageContainer = document.getElementById('successMessageContainer'); // Contenedor para el mensaje de éxito
@@ -1425,21 +1417,21 @@ function saveScore() {
     // Crear un objeto con los datos del jugador
     var playerData = {
         name: playerName,
-        score: points,
-        date: formattedDate // Usar la fecha formateada
+        score: points, // Mantener solo el puntaje
+        date: formattedDate, // Usar la fecha en formato YYYY-MM-DD HH:mm
+        status: result // Agregar el estado (W o L)
     };  
 
-                        // Ocultar el botón
-                        document.getElementById("nameButton").style.display = 'none'; 
+    // Ocultar el botón
+    document.getElementById("nameButton").style.display = 'none'; 
 
-                        // Crear un nuevo párrafo para el mensaje de éxito
-                        var successMessage = document.createElement("p");
-                        successMessage.textContent = "La teva puntuació ha estat guardada!";
-                        successMessage.className = "successMessage"; // Puedes añadir una clase para estilizarlo
-                        successMessageContainer.appendChild(successMessage); // Añadir el mensaje al contenedor
-                        
-                        ocultarNombre(); // Llama a la función para ocultar el nombre si es necesario
-                    
+    // Crear un nuevo párrafo para el mensaje de éxito
+    var successMessage = document.createElement("p");
+    successMessage.textContent = "La teva puntuació ha estat guardada!";
+    successMessage.className = "successMessage"; // Puedes añadir una clase para estilizarlo
+    successMessageContainer.appendChild(successMessage); // Añadir el mensaje al contenedor
+    
+    ocultarNombre(); // Llama a la función para ocultar el nombre si es necesario
 
     // Enviar los datos al archivo PHP mediante POST
     var xhr = new XMLHttpRequest();
@@ -1451,16 +1443,7 @@ function saveScore() {
             if (xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
                 if (response.success) {
-                    // Ocultar el botón
-                    document.getElementById("nameButton").style.display = 'none'; 
-
-                    // Crear un nuevo párrafo para el mensaje de éxito
-                    var successMessage = document.createElement("p");
-                    successMessage.textContent = "La teva puntuació ha estat guardada!";
-                    successMessage.className = "successMessage"; // Puedes añadir una clase para estilizarlo
-                    successMessageContainer.appendChild(successMessage); // Añadir el mensaje al contenedor
-                    
-                    ocultarNombre(); // Llama a la función para ocultar el nombre si es necesario
+                    console.log("Puntuación guardada correctamente.");
                 } else {
                     console.error("Error al guardar el registro: " + response.message);
                 }
@@ -1470,11 +1453,8 @@ function saveScore() {
         }
     };
 
-    // Ocultar el botón antes de enviar la solicitud
-    document.getElementById("nameButton").style.display = 'none'; 
     xhr.send(JSON.stringify(playerData));
 }
-
 
 
 
