@@ -400,7 +400,23 @@ main {
     text-align: center;
     border-collapse: collapse;
     table-layout: fixed;
+
 }
+
+/* Primera fila y columna en amarillo */
+
+/* Para la primera fila */
+.gameTable tr:first-child td {
+    color: #9dff00;
+
+}
+
+/* Para la primera columna */
+.gameTable tr td:first-child {
+    color: #9dff00;
+
+}
+
 
 .gameTable td{
     padding: 7px;

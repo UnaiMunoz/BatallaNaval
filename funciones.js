@@ -829,6 +829,8 @@ function attackAdjacentCells(td, buttonId) {
     let row = td.parentElement.rowIndex;
     let col = td.cellIndex;
 
+    specialAttackSound();
+
     console.log("Ataque especial en celda: ", row, col);
 
     // Deshabilitar boton, excepto specialAttackButtonWannaCry
@@ -1636,6 +1638,12 @@ function iaSound() {
 // Sonido de cuando le da a un barco la IA
 function attackSoundIA() {
     var sonido = document.getElementById('attackSoundIA');
+    sonido.play();
+}
+
+// Sonido de cuando le da a un barco la IA
+function specialAttackSound() {
+    var sonido = document.getElementById('specialAttackSound');
     sonido.play();
 }
 

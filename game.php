@@ -35,6 +35,9 @@ Notas:
     <audio id="attackSoundIA">
         <source src="sounds/attackSound.mp3" type="audio/mpeg">
     </audio>
+    <audio id="specialAttackSound">
+        <source src="sounds/specialAttack.mp3" type="audio/mpeg">
+    </audio>
     <audio id="waterSoundIA">
         <source src="sounds/waterSound.mp3" type="audio/mpeg">
     </audio>
@@ -737,8 +740,8 @@ Notas:
                             </script>";
                             if ($limitedAmmo == 'false') {
                                 echo "<div id='specialAttackButtons'>";
-                                echo "<button id='specialAttackButton1' class='keySound' onclick='specialAttack(\"specialAttackButton1\")'>1 Executable WannaCry</button>";
-                                echo "<button id='specialAttackButton2' class='keySound' onclick='specialAttack(\"specialAttackButton2\")'>2 Executable WannaCry</button>";
+                                echo "<button id='specialAttackButton1' class='keySound' onclick='specialAttack(\"specialAttackButton1\")'>1 WannaCry</button>";
+                                echo "<button id='specialAttackButton2' class='keySound' onclick='specialAttack(\"specialAttackButton2\")'>2 WannaCry</button>";
                                 echo "</div>";
                             } else {
                                 echo "<div id='specialAttackWannaCry'>";
