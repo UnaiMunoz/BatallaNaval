@@ -735,11 +735,22 @@ Notas:
                             echo "<script>
                                 var practiceSpecialAttacks = " . json_encode(true) . ";
                             </script>";
-
-                            echo "<div id='specialAttackButtons'>";
-                            echo "<button id='specialAttackButton1' class='keySound' onclick='specialAttack(\"specialAttackButton1\")'>1 Executable WannaCry</button>";
-                            echo "<button id='specialAttackButton2' class='keySound' onclick='specialAttack(\"specialAttackButton2\")'>2 Executable WannaCry</button>";
-                            echo "</div>";
+                            
+                            // Ataque especial
+                         if ($specialAttacks == 'true') {
+                            echo "<script>
+                                var practiceSpecialAttacks = " . json_encode(true) . ";
+                            </script>";
+                            if ($limitedAmmo == 'false') {
+                                echo "<div id='specialAttackButtons'>";
+                                echo "<button id='specialAttackButton1' class='keySound' onclick='specialAttack(\"specialAttackButton1\")'>1 Executable WannaCry</button>";
+                                echo "<button id='specialAttackButton2' class='keySound' onclick='specialAttack(\"specialAttackButton2\")'>2 Executable WannaCry</button>";
+                                echo "</div>";
+                            } else {
+                                echo "<div id='specialAttackWannaCry'>";
+                                echo "<button id='specialAttackButtonWannaCry' class='keySound' onclick='specialAttack(\"specialAttackButtonWannaCry\")'>Use WannaCry 9 RAM</button>";
+                                echo "</div>";
+                            }
                             }
                         } else {
                             echo "<script>
@@ -763,6 +774,7 @@ Notas:
             echo '</div>';
             } else {
             echo "No se ha seleccionado ningún modo de juego.";
+            }
         }
     ?>
 
