@@ -839,6 +839,7 @@ let comprobandoCeldas = false;
 let repiteTurno = false;
 let foundShip = false;
 let barcosEncontrados = 0;
+let barcoOcultoEncontrado = false;
 
 
 function attackAdjacentCells(td, buttonId) {
@@ -953,6 +954,7 @@ function attackAdjacentCells(td, buttonId) {
                                     adjTd.innerHTML = "X";
                                     puntos += 50;
                                     playerHits++;
+                                    barcoOcultoEncontrado = true;
                                     showNotificationPlayerGame("Has tocat una xarxa!");
                                     mostrarMensajePuntos("+50 punts per atacar un servidor\n");
                                     actualizarPuntos();
@@ -973,7 +975,7 @@ function attackAdjacentCells(td, buttonId) {
     });
 
     // Pasar el turno a IA con Ataque Especial y Barco Reforzados
-    if (practiceArmoredShips && practiceSpecialAttacks)   {
+    if (practiceArmoredShips && practiceSpecialAttacks && !barcoOcultoEncontrado)   {
         playerTurn = false;
         cambiarTurno();
 
@@ -983,6 +985,7 @@ function attackAdjacentCells(td, buttonId) {
         }, 2000);
     }
 
+    barcoOcultoEncontrado = false;
 
     if (practiceAmmoEnabled) {
         if (practicePlayerAmmo < 4) {
@@ -1211,7 +1214,7 @@ function changeDataCell(td, gameMode = 'IA') {
                             
 
                             // Modo ArmoredShips primer hit
-                            if (practiceArmoredShips && !td.classList.contains("cellArmored") && !specialAttackButton1 || !specialAttackButton2)   {
+                            if (practiceArmoredShips && !td.classList.contains("cellArmored") && !practiceSpecialAttacks)   {
                                 showNotificationPlayerGame("Hi ha ping de resposta");
                                 td.classList.remove("dado");
                                 td.innerHTML = "?";
