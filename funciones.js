@@ -1174,6 +1174,8 @@ function changeDataCell(td, gameMode = 'IA') {
         if (name === " ") {
 
             td.innerHTML = "~"; 
+
+            waterSoundIA();
             
             if (comprobandoCeldas == false) {
                 if (gameMode = 'IA'){
@@ -1231,6 +1233,11 @@ function changeDataCell(td, gameMode = 'IA') {
 
         // Si toca un barco
         } else {
+
+            
+
+            td.classList.remove("attackSound");
+
             playerHits++; // Acierto del jugador
 
             // Recorrer los barcos de IA o de Tutorial
@@ -1305,6 +1312,7 @@ function changeDataCell(td, gameMode = 'IA') {
                                 casillasComprobadas.push({ row: row, col: col });
                                 puntos += 50;
                                 playerHits++;
+                                
                                 if (gameMode = 'IA'){
                                     showNotificationGame("Infiltració completada","Left", "#3700ff");
                                 }else{
@@ -1320,6 +1328,7 @@ function changeDataCell(td, gameMode = 'IA') {
                                 casillasComprobadas.push({ row: row, col: col });
                                 puntos += 50;
                                 playerHits++;
+                                attackSoundIA();
                                 if (practiceSpecialAttacks == false){
                                     if (gameMode = 'IA'){
                                         showNotificationGame("Infiltració completada!","Left", "#3700ff");
@@ -1606,21 +1615,21 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // Sonido de cuando le da a un barco 
-document.addEventListener("DOMContentLoaded", function() {
-    const buttons = document.querySelectorAll('.attackSound');
+// document.addEventListener("DOMContentLoaded", function() {
+//     const buttons = document.querySelectorAll('.attackSound');
     
-    if (!practiceArmoredShips) {
-        buttons.forEach(button => {
-            button.addEventListener('click', function() {
-                const sound = new Audio('sounds/attackSound.mp3');
-                sound.play().catch(error => {
-                    console.error('Error al reproducir el sonido:', error);
-                });
-            });
-        });
-    }
+//     if (!practiceArmoredShips) {
+//         buttons.forEach(button => {
+//             button.addEventListener('click', function() {
+//                 const sound = new Audio('sounds/attackSound.mp3');
+//                 sound.play().catch(error => {
+//                     console.error('Error al reproducir el sonido:', error);
+//                 });
+//             });
+//         });
+//     }
     
-});
+// });
 
 // Sonido cunado le da al agua
 document.addEventListener("DOMContentLoaded", function() {
