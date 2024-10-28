@@ -457,8 +457,15 @@ main {
     text-align: center;
 }
 
-/* Notificaciones del juego */
+.gameTable td img{
+    display: flex;
+    width: 65%;
+    margin: auto;
+}
 
+.gameTable td:has(img){
+    padding: 0;
+}
 
 /* Timer */
 .timer {
