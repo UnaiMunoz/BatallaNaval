@@ -281,6 +281,8 @@ Notas:
 
                             echo    "<script>
                                         var barcos = " . json_encode($barcos) . ";
+                                        var practiceArmoredShips = false;
+                                        var practiceSpecialAttacks = false;
                                     </script>";
             
             
