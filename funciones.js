@@ -1120,13 +1120,20 @@ function changeDataCell(td, gameMode = 'IA') {
     // Ataque especial
     if (specialAttackButton1 === true) {
         specialAttackButton1 = false; 
+        ataqueBasicoArmoredSpecialAttack = false;
         attackAdjacentCells(td, 'specialAttackButton1');
+        ataqueBasicoArmoredSpecialAttack = true;
     }
     if (specialAttackButton2 === true) {
         specialAttackButton2 = false;
+        ataqueBasicoArmoredSpecialAttack = false;
         attackAdjacentCells(td, 'specialAttackButton2');
+        ataqueBasicoArmoredSpecialAttack = true;
+
     }
     if (specialAttackButtonWannaCry === true) {
+
+        ataqueBasicoArmoredSpecialAttack = false;
 
             // Municion limitada
             if (practiceAmmoEnabled) {  
@@ -1157,6 +1164,7 @@ function changeDataCell(td, gameMode = 'IA') {
                     }, 2000);
                 }
             }
+        ataqueBasicoArmoredSpecialAttack = true;
     }
 
     // Elimina glitch de la tabla
@@ -1260,6 +1268,7 @@ function changeDataCell(td, gameMode = 'IA') {
                             if (practiceArmoredShips && !td.classList.contains("cellArmored") && !practiceSpecialAttacks)   {
                                 
                                 hitArmoredShip();
+                                
 
                                 if (gameMode = 'IA'){
                                     showNotificationGame("Antivirus trencat","Left", "#3700ff");
@@ -1271,6 +1280,8 @@ function changeDataCell(td, gameMode = 'IA') {
                                 td.classList.add("cellArmored");
                                 playerTurn = false;
                                 cambiarTurno();
+
+                                console.log("Cambio de turno 111");
 
                                 setTimeout(() => {
                                     iaSound();
@@ -1293,6 +1304,7 @@ function changeDataCell(td, gameMode = 'IA') {
                                 if (ataqueBasicoArmoredSpecialAttack){
                                     playerTurn = false;
                                     cambiarTurno();
+                                    console.log("Cambio de turno 222");
                                     setTimeout(() => {
                                         turnoIA();           
                                     }, 2000);
