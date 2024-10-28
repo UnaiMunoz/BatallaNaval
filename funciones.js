@@ -70,21 +70,21 @@ function getRandomCodeNumber(element) {
 }
 
 // Asegura que el DOM esté cargado antes de ejecutar el script
-// document.addEventListener("DOMContentLoaded", function() {
-//      // Seleccionar todos los elementos td con la clase "codeName"
-//      const nameElements = document.querySelectorAll("td.codeName");
+document.addEventListener("DOMContentLoaded", function() {
+     // Seleccionar todos los elementos td con la clase "codeName"
+     const nameElements = document.querySelectorAll("td.codeName");
 
-//      // Establecer un intervalo para actualizar solo los elementos que no tienen "codeName"
-//      setInterval(() => {
-//          if (partidaActiva) { // Solo actualizar si la partida está activa
-//              nameElements.forEach(element => {
-//                  if (element.classList.contains("codeName")) {
-//                      getRandomCodeNumber(element);
-//                  }
-//              });
-//          }
-//      }, 100);
-// });
+     // Establecer un intervalo para actualizar solo los elementos que no tienen "codeName"
+     setInterval(() => {
+         if (partidaActiva) { // Solo actualizar si la partida está activa
+             nameElements.forEach(element => {
+                 if (element.classList.contains("codeName")) {
+                     getRandomCodeNumber(element);
+                 }
+             });
+         }
+     }, 100);
+});
 
 /* ****************** */
 /* MARK: Timer        */
