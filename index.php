@@ -9,6 +9,7 @@
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
 </head>
 <body id="index">
+
     <header>
         <h1>Binary Battleship</h1>
     </header>
