@@ -111,7 +111,7 @@
                 // Botones
                 echo '<div id="buttonWin">';
                 echo '<a href="index.php"><button id="buttonsWin" class="keySound">Inici</button></a>';
-                echo '<a href="ranking.php?pagina=' . $paginaUltimoRegistro . '"><button id="buttonsWin" class="keySound">Hall of Fame</button></a>';
+                echo '<a href="ranking.php?pagina=' . $paginaUltimoRegistro . '&source=lose"><button id="buttonsWin" class="keySound">Hall of Fame</button></a>';
                 echo '</div>';
 
                 echo '</div>';

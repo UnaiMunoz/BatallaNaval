@@ -131,14 +131,19 @@ El paginador se muestra si hay más de 25 registros.
                 $points = $registros[$i]['points'];
                 $date = $registros[$i]['date'];
 
-                // Determinar si este registro es el último de ranking.txt
+                // Definir si se aplica un estilo especial al último registro basado en el parámetro 'source'
+                $source = isset($_GET['source']) ? $_GET['source'] : '';
+
+                // Verificar si el registro es el último de ranking.txt
                 $isLastRecord = ($name === $ultimoRegistro['name'] && 
                                 $points === $ultimoRegistro['points'] && 
                                 $date === $ultimoRegistro['date']);
 
                 // Mostrar fila con una clase adicional si es el último registro
                 if ($isLastRecord) {
-                    echo "<tr class='keySound lastRecord'>"; // Añadimos 'lastRecord' a la clase
+                    // Asigna una clase especial basada en el valor de 'source'
+                    $extraClass = $source === 'lose' ? 'lose-last-record' : ($source === 'win' ? 'win-last-record' : '');
+                    echo "<tr class='keySound $extraClass'>"; // Aplica la clase 'lose-last-record' o 'win-last-record'
                 } else {
                     echo "<tr class='keySound'>";
                 }

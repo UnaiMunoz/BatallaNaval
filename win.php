@@ -85,7 +85,7 @@
         $posicionNuevoRegistro = array_search($nuevoRegistro, $registros);
 
         // Calcular en qué página se encuentra
-        $paginaUltimoRegistro = ceil(($posicionNuevoRegistro + 1) / $registrosPorPagina); // +1 porque las posiciones son 0-indexadas
+        $paginaUltimoRegistro = ceil(($posicionNuevoRegistro + 1) / 25); // +1 porque las posiciones son 0-indexadas
 
         echo '<div class="section">';
 
@@ -106,7 +106,7 @@
         // Botones
         echo '<div id="buttonWin">';
         echo '<a href="index.php"><button id="buttonsWin" class="keySound">Inici</button></a>';
-        echo '<a href="ranking.php?pagina=' . $paginaUltimoRegistro . '"><button id="buttonsWin" class="keySound">Hall of Fame</button></a>';
+        echo '<a href="ranking.php?pagina=' . $paginaUltimoRegistro . '&source=win"><button id="buttonsWin" class="keySound">Hall of Fame</button></a>';
         echo '</div>';
 
         echo '</div>';

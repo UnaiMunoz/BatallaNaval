@@ -110,6 +110,25 @@ body{
     background-blend-mode: overlay;
 }
 
+#bodyForbidden{
+    background: url(images/bocasRedondas.jpg);
+    background-color: #000000ab;
+    background-blend-mode: overlay;
+    background-size: cover;
+    color: white;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#bodyForbidden h1{
+    font-size: 100px;
+    color: red;
+    width: unset;
+    margin: unset;
+}
+
 h1{
     font-weight: normal;
     margin: auto;
@@ -540,17 +559,36 @@ input[type="text"]:focus {
 }
 
 #extraOptions {
-    width: 19% !important;
-    position: absolute;
-    top: 225px;
-    left: 358px;
+    width: 18% !important;
+    position: fixed;
+    top: 30px;
+    left: -280px;
     background-color: black;
     border: solid #3700ff;
     padding: 10px;
     z-index: 100;
-    border-radius: 20px 20px 20px 0px;
+    border-radius: 0px 20px 20px 20px;
     display: none;
 }
+
+.extraOptionsEntryMove {
+    animation: moveEntryOptions 1s forwards;
+}
+
+.extraOptionsOutputMove {
+    animation: moveOutputOptions 1s forwards;
+}
+
+@keyframes moveEntryOptions {
+    0% { left: -280px; }
+    100% { left: 30px; }
+}
+
+@keyframes moveOutputOptions {
+    0% { left: 30px; }
+    100% { left: -280px; }
+}
+
 
 /* Oscurecer tabla en los turnos */
 
@@ -559,20 +597,29 @@ input[type="text"]:focus {
     opacity: 0.5; /* Reduce la opacidad para oscurecer */
 }
 
-/* Configuracion variables */
+/*ataque especial*/
 
-/* #limitedAmmo{
-    opacity: 0.5;
-    color: #888888;
-} */
-#armoredShips{
-    opacity: 0.5;
-    color: #888888;
+.enabledHack::before {
+    width: 32vw;
+    content: '[ ]';
 }
-#specialAttacks{
-    opacity: 0.5;
-    color: #888888;
+
+.enabledHack:hover::before {
+    content: '[#]';
 }
+
+.pointHack::before{
+    content: '[#]';
+}
+
+.disabledHack::before {
+    width: 32vw;
+    content: '[/]';
+    pointer-events: none;
+    background: none !important;
+}
+
+/* Configuracion variables */
 
 .ammoTitle{
     margin-top: 1vw;
@@ -633,17 +680,6 @@ input[type="text"]:focus {
     background: linear-gradient(to right, #3700ff00 0%, #3700ff 50%, #3700ff00 100%);
     position: relative;
 }
-
-.lastRecord {
-    background: linear-gradient(to right, #3700ff00 0%, yellow 50%, #3700ff00 100%);
-    font-weight: bold; /* Por ejemplo, hacerlo más destacado */
-}
-
-.lastRecord:hover{
-    background: linear-gradient(to right, yellow 0%, #3700ff00 50%, yellow 100%) !important;
-}
-
-
 .selecRanking{
     display: flex;
     justify-content: space-evenly;
@@ -729,6 +765,25 @@ tr:hover .selecRanking::before {
     content: ']';
 }
 
+.win-last-record {
+    background: linear-gradient(to right, #3700ff00 0%, green 50%, #3700ff00 100%);
+    font-weight: bold; /* Por ejemplo, hacerlo más destacado */
+}
+
+.win-last-record:hover{
+    background: linear-gradient(to right, green 0%, #3700ff00 50%, green 100%) !important;
+}
+
+.lose-last-record{
+    background: linear-gradient(to right, #3700ff00 0%, red 50%, #3700ff00 100%);
+    font-weight: bold; /* Por ejemplo, hacerlo más destacado */
+}
+
+.lose-last-record:hover{
+    background: linear-gradient(to right, red 0%, #3700ff00 50%, red 100%) !important;
+}
+
+
 /* ******************************* */
 /* MARK: Notificaciones */
 /* ******************************* */
@@ -745,50 +800,54 @@ tr:hover .selecRanking::before {
     background-color: #000000 !important;
 }
 
-.notificationPlayer {
+.notificationLeft {
     border-radius: 0px 20px 20px 20px;
     background-color: #000000 !important;
-    border: 2px solid #3700ff;
+    border: 2px;
+    border-style: solid;
     left: -50%;
     margin-top: 15%;
-    animation: movimentPlayer 3s forwards;
+    animation: movimentLeft 3s forwards;
 }
 
-.notificationIA {
-    border-radius: 20px 0px 20px 20px;
-    background-color: #000000 !important;
-    border: 2px solid yellow;
-    right: -50%;
-    margin-top: 15%;
-    animation: movimentIA 3s forwards;
-}
-
-.notificationPlayerGame {
+.notificationLeftGame {
     border-radius: 0px 20px 20px 20px;
     background-color: #000000 !important;
-    border: 2px solid #3700ff;
+    border: 2px;
+    border-style: solid;
     left: -50%;
     margin-top: 20%;
-    animation: movimentPlayer 3s forwards;
+    animation: movimentLeft 3s forwards;
 }
 
-.notificationIAGame {
+.notificationRight {
     border-radius: 20px 0px 20px 20px;
     background-color: #000000 !important;
-    border: 2px solid yellow;
+    border: 2px;
+    border-style: solid;
     right: -50%;
-    margin-top: 20%;
-    animation: movimentIA 3s forwards;
+    margin-top: 15%;
+    animation: movimenRight 3s forwards;
 }
 
-@keyframes movimentPlayer {
+.notificationRightGame {
+    border-radius: 20px 0px 20px 20px;
+    background-color: #000000 !important;
+    border: 2px;
+    border-style: solid;
+    right: -50%;
+    margin-top: 20%;
+    animation: movimenRight 3s forwards;
+}
+
+@keyframes movimentLeft {
     0% { left : -50%; }
     25% { left: 5%;}
     75% { left: 5%;}
     0% { left : -50%; }
 }
 
-@keyframes movimentIA {
+@keyframes movimenRight {
     0% { right : -50%; }
     25% { right: 5%;}
     75% { right: 5%;}
@@ -804,7 +863,7 @@ tr:hover .selecRanking::before {
 /* ******************************* */
 
 #bodyWin{
-    background: url(images/calaveraTormenta.png);
+    background: url(images/calaveraTormenta.jpg);
     background-size: cover;
     background-color: #0c0c0c93;
     background-blend-mode: overlay;
@@ -906,7 +965,7 @@ tr:hover .selecRanking::before {
 /* ******************************* */
 
 #bodyLose {
-    background-image: url('images/calaveraCerrada.png');
+    background-image: url('images/calaveraCerrada.jpg');
     background-color: #6b5f5fab;
     background-blend-mode: overlay;
     background-size: cover;
@@ -1020,13 +1079,13 @@ tr:hover .selecRanking::before {
 
 @keyframes cambiarFondo {
     0% {
-      background-image: url('images/calaberaAbierta.png');
+      background-image: url('images/calaberaAbierta.jpg');
     }
     50% {
-      background-image: url('images/calaveraCerrada.png');
+      background-image: url('images/calaveraCerrada.jpg');
     }
     100% {
-      background-image: url('images/calaberaAbierta.png');
+      background-image: url('images/calaberaAbierta.jpg');
     }
   }
 
