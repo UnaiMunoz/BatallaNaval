@@ -729,14 +729,8 @@ Notas:
                             var practiceEnemyAmmo = " . json_encode($enemyAmmo) . ";
                             </script>";
                         }
-                        
-                        // Ataque especial
-                        if ($specialAttacks == 'true') {
-                            echo "<script>
-                                var practiceSpecialAttacks = " . json_encode(true) . ";
-                            </script>";
                             
-                            // Ataque especial
+                        // Ataque especial
                          if ($specialAttacks == 'true') {
                             echo "<script>
                                 var practiceSpecialAttacks = " . json_encode(true) . ";
@@ -757,8 +751,6 @@ Notas:
                                 var practiceSpecialAttacks = " . json_encode(false) . ";
                             </script>";
                         }
-                        
-
                         echo "</div>";
 
                         
@@ -775,7 +767,6 @@ Notas:
             } else {
             echo "No se ha seleccionado ningún modo de juego.";
             }
-        }
     ?>
 
     </div>
