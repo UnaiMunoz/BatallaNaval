@@ -560,7 +560,7 @@ input[type="text"]:focus {
 
 #extraOptions {
     width: 18% !important;
-    position: absolute;
+    position: fixed;
     top: 30px;
     left: -280px;
     background-color: black;
@@ -595,6 +595,28 @@ input[type="text"]:focus {
 .tablero-oculto {
     pointer-events: none; /* Desactiva los clics en la tabla */
     opacity: 0.5; /* Reduce la opacidad para oscurecer */
+}
+
+/*ataque especial*/
+
+.enabledHack::before {
+    width: 32vw;
+    content: '[ ]';
+}
+
+.enabledHack:hover::before {
+    content: '[#]';
+}
+
+.pointHack::before{
+    content: '[#]';
+}
+
+.disabledHack::before {
+    width: 32vw;
+    content: '[/]';
+    pointer-events: none;
+    background: none !important;
 }
 
 /* Configuracion variables */

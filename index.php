@@ -10,15 +10,6 @@
 </head>
 <body id="index">
 
-    <!-- Formulario para las opciones avanzadas -->
-    <form id="gameForm" method="POST" autocomplete="off">
-        <div id="extraOptions">
-            <label><input type="checkbox" id="limitedAmmo" name="limitedAmmo"> Munició limitada</label><br>
-            <label><input type="checkbox" id="armoredShips" name="armoredShips"> Vaixells acorassats</label><br>
-            <label><input type="checkbox" id="specialAttacks" name="specialAttacks"> Atacs especials</label>
-        </div>
-    </form>
-
     <header>
         <h1>Binary Battleship</h1>
     </header>
@@ -44,6 +35,11 @@
                 <button type="button" id="classicGameBtn" class="indexGame keySound disabled" disabled>Tutorial</button>
                 <button type="button" id="practiceGameBtn" class="indexGame keySound disabled" disabled>Partida Clàssica</button>
                 <input type="hidden" name="mode" id="modeInput" value="">
+                <div id="extraOptions">
+                    <label><input type="checkbox" id="limitedAmmo" name="limitedAmmo"> Màxim 40GB RAM</label><br>
+                    <label><input type="checkbox" id="armoredShips" name="armoredShips"> Activar AntiVirus</label><br>
+                    <label><input type="checkbox" id="specialAttacks" name="specialAttacks"> Descarregar WannaCry </label>
+                </div>
             </form>
                 <a href="ranking.php">
                     <button class="indexHallOfFame keySound">Hall of Fame</button>

@@ -61,10 +61,8 @@ Notas:
 
         // Variables de configuración
         $limitedAmmo = isset($_POST['limitedAmmo']) ? 'true' : 'false';
-        $armoredShips = isset($_POST['armoredShips']) ? 'true' : 'false';
         $specialAttacks = isset($_POST['specialAttacks']) ? 'true' : 'false';
-
-        // echo "Limited Ammo: " . $limitedAmmo . "<br>";
+        $armoredShips = isset($_POST['armoredShips']) ? 'true' : 'false';
 
         if (isset($_GET['mode'])) {
             $mode = $_GET['mode'];
@@ -509,6 +507,7 @@ Notas:
                         }
                         echo "</table>";
 
+                        // Municio limitada
                         if ($limitedAmmo == 'true') {
                             echo "<p class='ammoTitle'>Munició</p>";
                             echo "<p id='practicePlayerAmmo'>40/40</p>";                            
@@ -521,6 +520,17 @@ Notas:
                             echo "<script>
                                 var practiceAmmoEnabled = " . json_encode(false) . ";
                                 var practicePlayerName = " . json_encode($playerName) . ";
+                            </script>";
+                        }
+
+                        // Vaixelles acorassats
+                        if ($armoredShips == 'true') {
+                            echo "<script>
+                                var practiceArmoredShips = " . json_encode(true) . ";
+                            </script>";
+                        } else {
+                            echo "<script>
+                                var practiceArmoredShips = " . json_encode(false) . ";
                             </script>";
                         }
 
@@ -706,17 +716,40 @@ Notas:
                         }
                         echo "</table>";
 
+                        echo "<div id='specialFeatures'>";
+
                         if ($limitedAmmo == 'true') {
                             echo "<p class='ammoTitle'>Munició</p>";
                             echo "<p id='practiceEnemyAmmo'>40/40</p>";
                             $enemyAmmo = 40;
                             $playerAmmo = 40;
-
+                        
                             echo "<script>
                             var practicePlayerAmmo = " . json_encode($playerAmmo) . ";
                             var practiceEnemyAmmo = " . json_encode($enemyAmmo) . ";
                             </script>";
                         }
+                        
+                        // Ataque especial
+                        if ($specialAttacks == 'true') {
+                            echo "<script>
+                                var practiceSpecialAttacks = " . json_encode(true) . ";
+                            </script>";
+
+                            echo "<div id='specialAttackButtons'>";
+                            echo "<button id='specialAttackButton1' class='keySound' onclick='specialAttack(\"specialAttackButton1\")'>1 Executable WannaCry</button>";
+                            echo "<button id='specialAttackButton2' class='keySound' onclick='specialAttack(\"specialAttackButton2\")'>2 Executable WannaCry</button>";
+                            echo "</div>";
+                            }
+                        } else {
+                            echo "<script>
+                                var practiceSpecialAttacks = " . json_encode(false) . ";
+                            </script>";
+                        }
+                        
+
+                        echo "</div>";
+
                         
                         // Imprimir en la consola del navegador
                         echo "<script>console.log('IA Board: ". json_encode($StringBarcos) . "');</script>";
@@ -728,9 +761,7 @@ Notas:
 
                 echo '</div>';
             echo '</div>';
-            }
-
-        } else {
+            } else {
             echo "No se ha seleccionado ningún modo de juego.";
         }
     ?>
