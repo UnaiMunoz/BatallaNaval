@@ -60,6 +60,7 @@ El paginador se muestra si hay más de 25 registros.
 
     <div id="table-container">
     <?php
+        $source2 = null;
         $registrosPorPagina = 25;
 
         // Verificar el número de página actual. Si no está definido, empieza por la página 1
@@ -133,6 +134,7 @@ El paginador se muestra si hay más de 25 registros.
 
                 // Definir si se aplica un estilo especial al último registro basado en el parámetro 'source'
                 $source = isset($_GET['source']) ? $_GET['source'] : '';
+                $source2 = $source;
 
                 // Verificar si el registro es el último de ranking.txt
                 $isLastRecord = ($name === $ultimoRegistro['name'] && 
@@ -142,7 +144,7 @@ El paginador se muestra si hay más de 25 registros.
                 // Mostrar fila con una clase adicional si es el último registro
                 if ($isLastRecord) {
                     // Asigna una clase especial basada en el valor de 'source'
-                    $extraClass = $source === 'lose' ? 'lose-last-record' : ($source === 'win' ? 'win-last-record' : '');
+                    $extraClass = $source2 === 'lose' ? 'lose-last-record' : ($source2 === 'win' ? 'win-last-record' : '');
                     echo "<tr class='keySound $extraClass'>"; // Aplica la clase 'lose-last-record' o 'win-last-record'
                 } else {
                     echo "<tr class='keySound'>";

@@ -398,6 +398,7 @@ main {
 /* Divisores */
 #game_Container {
     display: flex;
+    margin-bottom: 2%;
 }
 
 .board {
@@ -608,68 +609,44 @@ input[type="text"]:focus {
 
 /* Ataque Especial No RAM */
 
-button.active {
-    color: yellow; /* Texto blanco */
-}
-
-
-
 #specialAttackButtons {
+    margin: 4% 0;
     display: flex;
-    justify-content: space-around; 
-    gap: 10px; 
-    padding: 0.5vw 0;
-    width: 10vw;
-    font-size: 0.5vw;
-    background-color: unset;
-    border: none;
     cursor: pointer;
-    color: #ffffff;
+    flex-direction: column;
+    font-size: 2rem;
 }
 
-#specialAttackButton1:disabled {
+#specialAttackButtons button::before{
+    margin: 2% 0;
+    content: "[ ] ";
+}
+
+#specialAttackButtons button:hover::before{
+    content: "[#] ";
+}
+
+
+#specialAttackButtons button:focus::before{
+    color: yellow !important;
+    content: "[#] ";
+}
+
+#specialAttackButtons button:focus{
+    color: yellow !important;
+}
+
+#specialAttackButtons button:disabled::before {
+    content: "[/] ";
     cursor: not-allowed;
     opacity: 0.5;
-    color: #ffff;
 }
 
-#specialAttackButton2:disabled {
+#specialAttackButtons button:disabled {
+    content: "[/] ";
     cursor: not-allowed;
     opacity: 0.5;
-    color: #ffff;
 }
-
-#specialAttackButtons:hover {
-    background: none;
-}
-
-/* Ataque Especial Con RAM */
-#specialAttackWannaCry {
-    display: flex;
-    justify-content: space-around; 
-    gap: 10px; 
-    padding: 0.5vw 0;
-    width: 20vw;
-    font-size: 0.5vw;
-    background-color: unset;
-    border: none;
-    cursor: pointer;
-    color: #ffffff;
-}
-
-#specialAttackWannaCry:hover {
-    background: none;
-}
-
-#specialAttackWannaCry:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-    color: #ffff !important;
-}
-
-
-
-
 
 /* ******************************* */
 /* MARK: CSS for ranking.php */
@@ -825,6 +802,14 @@ tr:hover .selecRanking::before {
     background: linear-gradient(to right, red 0%, #3700ff00 50%, red 100%) !important;
 }
 
+.last{
+    background: linear-gradient(to right, #3700ff00 0%, yellow 50%, #3700ff00 100%);
+    font-weight: bold; /* Por ejemplo, hacerlo más destacado */
+}
+
+.last:hover{
+    background: linear-gradient(to right, yellow 0%, #3700ff00 50%, yellow 100%);
+}
 
 /* ******************************* */
 /* MARK: Notificaciones */

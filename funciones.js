@@ -121,7 +121,11 @@ function actualizarCronometro() {
 }
 
 // Iniciar el cronómetro cuando se carga la página
-window.onload = iniciarCronometro;
+window.onload = function() {
+    if (window.location.pathname.endsWith("game.php")) {
+        iniciarCronometro();
+    }
+};
 
 // Funciones actualización puntos
 
@@ -1031,7 +1035,8 @@ function specialAttack(buttonId) {
     if (buttonId === 'specialAttackButton1') {
         if (specialAttackButton1) {
             specialAttackButton1 = false;
-            button.classList.remove('active'); // Quitar la clase activa
+            button.classList.remove('active');
+            button.blur(); // Quitar el focus del botón
             comprobandoCeldas = false;
         } else {
             specialAttackButton1 = true;
@@ -1042,11 +1047,12 @@ function specialAttack(buttonId) {
     } else if (buttonId === 'specialAttackButton2') {
         if (specialAttackButton2) {
             specialAttackButton2 = false;
-            button.classList.remove('active'); 
+            button.classList.remove('active');
+            button.blur(); // Quitar el focus del botón
             comprobandoCeldas = false;
         } else {
             specialAttackButton2 = true;
-            button.classList.add('active'); 
+            button.classList.add('active');
             comprobandoCeldas = true;
         }
 
@@ -1057,8 +1063,8 @@ function specialAttack(buttonId) {
             button.classList.add('active');
         }
     }
- 
 }
+
 
 
 

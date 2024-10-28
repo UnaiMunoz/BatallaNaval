@@ -258,7 +258,7 @@ Notas:
                             echo "<script>console.log('Secret Locations: ". json_encode($StringBarcos) . "');</script>";
             
                             if ($limitedAmmo == 'true') {
-                                echo "<p class='ammoTitle'>Munició</p>";
+                                echo "<p class='ammoTitle'>RAM:</p>";
                                 echo "<p id='practicePlayerAmmo'>40/40</p>";
                                 $playerAmmo = 40;
 
@@ -509,7 +509,7 @@ Notas:
 
                         // Municio limitada
                         if ($limitedAmmo == 'true') {
-                            echo "<p class='ammoTitle'>Munició</p>";
+                            echo "<p class='ammoTitle'>RAM:</p>";
                             echo "<p id='practicePlayerAmmo'>40/40</p>";                            
 
                             echo "<script>
@@ -607,7 +607,7 @@ Notas:
 
                         // Array de barcos [nombre, tamaño]
                         $practiceEnemyBoats = [
-                            new Barco("Barca", 1),
+                            new Barco("Barca", 1)/*,
                             new Barco("Barca", 1),
                             new Barco("Barca", 1),
                             new Barco("Barca", 1),
@@ -616,7 +616,7 @@ Notas:
                             new Barco("Fragata", 2),
                             new Barco("Submarino", 3),
                             new Barco("Submarino", 3),
-                            new Barco("Destructor", 4)
+                            new Barco("Destructor", 4)*/
                         ];
         
                         // String para saber las coordenadas de cada barcos
@@ -719,7 +719,7 @@ Notas:
                         echo "<div id='specialFeatures'>";
 
                         if ($limitedAmmo == 'true') {
-                            echo "<p class='ammoTitle'>Munició</p>";
+                            echo "<p class='ammoTitle'>RAM:</p>";
                             echo "<p id='practiceEnemyAmmo'>40/40</p>";
                             $enemyAmmo = 40;
                             $playerAmmo = 40;
@@ -737,14 +737,13 @@ Notas:
                             </script>";
                             if ($limitedAmmo == 'false') {
                                 echo "<div id='specialAttackButtons'>";
-                                echo "<button id='specialAttackButton1' class='keySound' onclick='specialAttack(\"specialAttackButton1\")'>1 Executable WannaCry</button>";
-                                echo "<button id='specialAttackButton2' class='keySound' onclick='specialAttack(\"specialAttackButton2\")'>2 Executable WannaCry</button>";
+                                echo "<button id='specialAttackButton1' class='keySound' onclick='specialAttack(\"specialAttackButton1\")'>Llençar WannaCry</button>";
+                                echo "<button id='specialAttackButton2' class='keySound' onclick='specialAttack(\"specialAttackButton2\")'>Llençar WannaCry</button>";
                                 echo "</div>";
                             } else {
-                                echo "<div id='specialAttackWannaCry'>";
-                                echo "<button id='specialAttackButtonWannaCry' class='keySound' onclick='specialAttack(\"specialAttackButtonWannaCry\")'>Use WannaCry 9 RAM</button>";
+                                echo "<div id='specialAttackButtons'>";
+                                echo "<button id='specialAttackButton1' class='keySound' onclick='specialAttack(\"specialAttackButton1\")'>Llençar WannaCry</button>";
                                 echo "</div>";
-                            }
                             }
                         } else {
                             echo "<script>
@@ -767,6 +766,7 @@ Notas:
             } else {
             echo "No se ha seleccionado ningún modo de juego.";
             }
+        }
     ?>
 
     </div>
