@@ -745,8 +745,8 @@ Notas:
                                 echo "<button id='specialAttackButtonWannaCry' class='keySound' onclick='specialAttack(\"specialAttackButtonWannaCry\")'>Use WannaCry 9 RAM</button>";
                                 echo "</div>";
                             }
-                            }
-                        } else {
+                        }
+                         else {
                             echo "<script>
                                 var practiceSpecialAttacks = " . json_encode(false) . ";
                             </script>";
@@ -767,6 +767,7 @@ Notas:
             } else {
             echo "No se ha seleccionado ningún modo de juego.";
             }
+        }
     ?>
 
     </div>

@@ -70,21 +70,21 @@ function getRandomCodeNumber(element) {
 }
 
 // Asegura que el DOM esté cargado antes de ejecutar el script
-document.addEventListener("DOMContentLoaded", function() {
-     // Seleccionar todos los elementos td con la clase "codeName"
-     const nameElements = document.querySelectorAll("td.codeName");
+// document.addEventListener("DOMContentLoaded", function() {
+//      // Seleccionar todos los elementos td con la clase "codeName"
+//      const nameElements = document.querySelectorAll("td.codeName");
 
-     // Establecer un intervalo para actualizar solo los elementos que no tienen "codeName"
-     setInterval(() => {
-         if (partidaActiva) { // Solo actualizar si la partida está activa
-             nameElements.forEach(element => {
-                 if (element.classList.contains("codeName")) {
-                     getRandomCodeNumber(element);
-                 }
-             });
-         }
-     }, 100);
-});
+//      // Establecer un intervalo para actualizar solo los elementos que no tienen "codeName"
+//      setInterval(() => {
+//          if (partidaActiva) { // Solo actualizar si la partida está activa
+//              nameElements.forEach(element => {
+//                  if (element.classList.contains("codeName")) {
+//                      getRandomCodeNumber(element);
+//                  }
+//              });
+//          }
+//      }, 100);
+// });
 
 /* ****************** */
 /* MARK: Timer        */
@@ -121,7 +121,11 @@ function actualizarCronometro() {
 }
 
 // Iniciar el cronómetro cuando se carga la página
-window.onload = iniciarCronometro;
+window.onload = function() {
+    if (window.location.pathname.endsWith("game.php")) {
+        iniciarCronometro();
+    }
+};
 
 // Funciones actualización puntos
 
@@ -652,11 +656,11 @@ function turnoIA() {
                     playerTurn = true;
                     cambiarTurno(playerTurn);
                     showNotification(`${practicePlayerName} no te RAM. IA ataca de nou`,"Left","#3700ff");
+                    playerTurn = false;
+                    cambiarTurno(playerTurn);
                 }, 2000);
                 setTimeout(() => {
                     setTimeout(() => {
-                        playerTurn = false;
-                        cambiarTurno(playerTurn);
                         turnoIA();
                     }, 2000);
                 }, 2000);
@@ -818,6 +822,7 @@ let repiteTurno = false;
 let foundShip = false;
 let barcosEncontrados = 0;
 let barcoOcultoEncontrado = false;
+let ataqueBasicoArmoredSpecialAttack = true;
 
 
 function attackAdjacentCells(td, buttonId) {
@@ -1033,10 +1038,13 @@ function specialAttack(buttonId) {
             specialAttackButton1 = false;
             button.classList.remove('active'); // Quitar la clase activa
             comprobandoCeldas = false;
+            ataqueBasicoArmoredSpecialAttack = false;
         } else {
             specialAttackButton1 = true;
             button.classList.add('active');
             comprobandoCeldas = true;
+            ataqueBasicoArmoredSpecialAttack = true;
+
         }
 
     } else if (buttonId === 'specialAttackButton2') {
@@ -1044,10 +1052,14 @@ function specialAttack(buttonId) {
             specialAttackButton2 = false;
             button.classList.remove('active'); 
             comprobandoCeldas = false;
+            ataqueBasicoArmoredSpecialAttack = false;
+
         } else {
             specialAttackButton2 = true;
             button.classList.add('active'); 
             comprobandoCeldas = true;
+            ataqueBasicoArmoredSpecialAttack = true;
+
         }
 
     } else if (buttonId === 'specialAttackButtonWannaCry') {
@@ -1055,7 +1067,8 @@ function specialAttack(buttonId) {
             specialAttackButtonWannaCry = true;
             comprobandoCeldas = true;
             button.classList.add('active');
-        }
+            ataqueBasicoArmoredSpecialAttack = false;
+        } 
     }
  
 }
@@ -1262,6 +1275,19 @@ function changeDataCell(td, gameMode = 'IA') {
                                 td.classList.add("cellArmored");
 
                                 // No pasa turno a IA porque se activa la Special Attack
+
+                                if (ataqueBasicoArmoredSpecialAttack){
+                                    playerTurn = false;
+                                    cambiarTurno();
+                                    setTimeout(() => {
+                                        turnoIA();           
+                                    }, 2000);
+
+                                }
+
+
+
+
 
                             }
                             // Modo ArmoredShips segundo hit
