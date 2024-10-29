@@ -84,7 +84,12 @@ if (!isset($_SERVER['HTTP_REFERER']) || strpos($_SERVER['HTTP_REFERER'], 'game.p
         });
 
         // Encontrar la posición del nuevo registro
-        $posicionNuevoRegistro = count($registros) - 1; // Último registro es el nuevo
+        $posicionNuevoRegistro = array_search($nuevoRegistro, $registros);
+
+        // Verificar si el registro fue encontrado
+        if ($posicionNuevoRegistro === false) {
+            $posicionNuevoRegistro = count($registros) - 1; // En caso de no encontrarlo, asumir último
+        }
 
         // Calcular en qué página se encuentra
         $paginaUltimoRegistro = ceil(($posicionNuevoRegistro + 1) / $registrosPorPagina); // +1 porque las posiciones son 0-indexadas
