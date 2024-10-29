@@ -420,7 +420,23 @@ main {
     text-align: center;
     border-collapse: collapse;
     table-layout: fixed;
+
 }
+
+/* Primera fila y columna en amarillo */
+
+/* Para la primera fila */
+.gameTable tr:first-child td {
+    color: #9dff00;
+
+}
+
+/* Para la primera columna */
+.gameTable tr td:first-child {
+    color: #9dff00;
+
+}
+
 
 .gameTable td{
     padding: 7px;
@@ -810,21 +826,21 @@ tr:hover .selecRanking::before {
     content: ']';
 }
 
-.win-last-record {
+.win {
     background: linear-gradient(to right, #3700ff00 0%, green 50%, #3700ff00 100%);
     font-weight: bold; /* Por ejemplo, hacerlo más destacado */
 }
 
-.win-last-record:hover{
+.win:hover{
     background: linear-gradient(to right, green 0%, #3700ff00 50%, green 100%) !important;
 }
 
-.lose-last-record{
+.lose{
     background: linear-gradient(to right, #3700ff00 0%, red 50%, #3700ff00 100%);
     font-weight: bold; /* Por ejemplo, hacerlo más destacado */
 }
 
-.lose-last-record:hover{
+.lose:hover{
     background: linear-gradient(to right, red 0%, #3700ff00 50%, red 100%) !important;
 }
 

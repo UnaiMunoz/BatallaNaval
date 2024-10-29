@@ -656,11 +656,11 @@ function turnoIA() {
                     playerTurn = true;
                     cambiarTurno(playerTurn);
                     showNotification(`${practicePlayerName} no te RAM. IA ataca de nou`,"Left","#3700ff");
+                    playerTurn = false;
+                    cambiarTurno(playerTurn);
                 }, 2000);
                 setTimeout(() => {
                     setTimeout(() => {
-                        playerTurn = false;
-                        cambiarTurno(playerTurn);
                         turnoIA();
                     }, 2000);
                 }, 2000);
@@ -691,6 +691,7 @@ function turnoIA() {
                 // ArmoredShips --> ?
                 if (practiceArmoredShips === true && celdaAcorazadaEncontrada === false) {
                     cellElement.innerHTML = '<img src="images/abiertoIA.png" alt="alerta" />'; 
+                    hitArmoredShip();
                     cellElement.classList.add("playerCellArmored"); 
                     //cellElement.style.backgroundColor = "orange"; 
                     showNotificationGame("La IA a trencat a l'antivirus","Right","yellow");
@@ -710,6 +711,7 @@ function turnoIA() {
                     // Atacar la celda marcada con "?"
                     row = celdaAcorazada.row;
                     col = celdaAcorazada.col;
+
                 
                     // Lógica para atacar la celda y manejar el resultado
                     cellElement.innerHTML = '<img src="images/servidorIA.png" alt="servidor" />';
@@ -822,13 +824,16 @@ let repiteTurno = false;
 let foundShip = false;
 let barcosEncontrados = 0;
 let barcoOcultoEncontrado = false;
+let ataqueBasicoArmoredSpecialAttack = true;
 
 
 function attackAdjacentCells(td, buttonId) {
     let row = td.parentElement.rowIndex;
     let col = td.cellIndex;
 
-    console.log("Ataque especial en celda: ", row, col);
+    specialAttackSound();
+
+    // console.log("Ataque especial en celda: ", row, col);
 
     // Deshabilitar boton, excepto specialAttackButtonWannaCry
     if (buttonId !== 'specialAttackButtonWannaCry') {
@@ -1038,10 +1043,13 @@ function specialAttack(buttonId) {
             button.classList.remove('active');
             button.blur(); // Quitar el focus del botón
             comprobandoCeldas = false;
+            ataqueBasicoArmoredSpecialAttack = false;
         } else {
             specialAttackButton1 = true;
             button.classList.add('active');
             comprobandoCeldas = true;
+            ataqueBasicoArmoredSpecialAttack = true;
+
         }
 
     } else if (buttonId === 'specialAttackButton2') {
@@ -1050,10 +1058,14 @@ function specialAttack(buttonId) {
             button.classList.remove('active');
             button.blur(); // Quitar el focus del botón
             comprobandoCeldas = false;
+            ataqueBasicoArmoredSpecialAttack = false;
+
         } else {
             specialAttackButton2 = true;
             button.classList.add('active');
             comprobandoCeldas = true;
+            ataqueBasicoArmoredSpecialAttack = true;
+
         }
 
     } else if (buttonId === 'specialAttackButtonWannaCry') {
@@ -1061,7 +1073,8 @@ function specialAttack(buttonId) {
             specialAttackButtonWannaCry = true;
             comprobandoCeldas = true;
             button.classList.add('active');
-        }
+            ataqueBasicoArmoredSpecialAttack = false;
+        } 
     }
 }
 
@@ -1109,13 +1122,20 @@ function changeDataCell(td, gameMode = 'IA') {
     // Ataque especial
     if (specialAttackButton1 === true) {
         specialAttackButton1 = false; 
+        ataqueBasicoArmoredSpecialAttack = false;
         attackAdjacentCells(td, 'specialAttackButton1');
+        ataqueBasicoArmoredSpecialAttack = true;
     }
     if (specialAttackButton2 === true) {
         specialAttackButton2 = false;
+        ataqueBasicoArmoredSpecialAttack = false;
         attackAdjacentCells(td, 'specialAttackButton2');
+        ataqueBasicoArmoredSpecialAttack = true;
+
     }
     if (specialAttackButtonWannaCry === true) {
+
+        ataqueBasicoArmoredSpecialAttack = false;
 
             // Municion limitada
             if (practiceAmmoEnabled) {  
@@ -1146,6 +1166,7 @@ function changeDataCell(td, gameMode = 'IA') {
                     }, 2000);
                 }
             }
+        ataqueBasicoArmoredSpecialAttack = true;
     }
 
     // Elimina glitch de la tabla
@@ -1163,6 +1184,7 @@ function changeDataCell(td, gameMode = 'IA') {
         if (name === " ") {
 
             td.innerHTML = '<img src="images/alerta.png" alt="alerta" />';
+            waterSoundIA();
             
             if (comprobandoCeldas == false) {
                 if (gameMode = 'IA'){
@@ -1220,6 +1242,11 @@ function changeDataCell(td, gameMode = 'IA') {
 
         // Si toca un barco
         } else {
+
+            
+
+            td.classList.remove("attackSound");
+
             playerHits++; // Acierto del jugador
 
             // Recorrer los barcos de IA o de Tutorial
@@ -1240,6 +1267,10 @@ function changeDataCell(td, gameMode = 'IA') {
 
                             // Modo ArmoredShips primer hit
                             if (practiceArmoredShips && !td.classList.contains("cellArmored") && !practiceSpecialAttacks)   {
+                                
+                                hitArmoredShip();
+                                
+
                                 if (gameMode = 'IA'){
                                     showNotificationGame("Antivirus trencat","Left", "#3700ff");
                                 }else{
@@ -1250,6 +1281,8 @@ function changeDataCell(td, gameMode = 'IA') {
                                 td.classList.add("cellArmored");
                                 playerTurn = false;
                                 cambiarTurno();
+
+                                console.log("Cambio de turno 111");
 
                                 setTimeout(() => {
                                     iaSound();
@@ -1269,14 +1302,29 @@ function changeDataCell(td, gameMode = 'IA') {
 
                                 // No pasa turno a IA porque se activa la Special Attack
 
+                                if (ataqueBasicoArmoredSpecialAttack){
+                                    playerTurn = false;
+                                    cambiarTurno();
+                                    setTimeout(() => {
+                                        turnoIA();           
+                                    }, 2000);
+
+                                }
+
+
+
+
+
                             }
                             // Modo ArmoredShips segundo hit
                             else if (practiceArmoredShips && td.classList.contains("cellArmored")) {
                                 barco.vida -= 1; 
                                 td.innerHTML = '<img src="images/servidor.png" alt="servidor" />';
+                                attackSoundIA();
                                 casillasComprobadas.push({ row: row, col: col });
                                 puntos += 50;
                                 playerHits++;
+                                
                                 if (gameMode = 'IA'){
                                     showNotificationGame("Infiltració completada","Left", "#3700ff");
                                 }else{
@@ -1292,6 +1340,7 @@ function changeDataCell(td, gameMode = 'IA') {
                                 casillasComprobadas.push({ row: row, col: col });
                                 puntos += 50;
                                 playerHits++;
+                                attackSoundIA();
                                 if (practiceSpecialAttacks == false){
                                     if (gameMode = 'IA'){
                                         showNotificationGame("Infiltració completada!","Left", "#3700ff");
@@ -1395,27 +1444,19 @@ function changeDataCell(td, gameMode = 'IA') {
 /* ********************************** */
 
 // Guardar Nombre, Puntos y Fecha en ranking.txt
-function saveScore() {
+function saveScore(result) { // 'result' será 'W' o 'L'
     var playerName = document.getElementById("inputNameWinLose").value; // Obtener el nombre del jugador
     var points = document.querySelector(".points").textContent.split(": ")[1];  // Obtener puntos
 
-    // Formatear la fecha y la hora
-    var options = { 
-        timeZone: "Europe/Madrid", 
-        year: 'numeric', 
-        month: '2-digit', 
-        day: '2-digit', 
-        hour: '2-digit', 
-        minute: '2-digit', 
-        hour12: false 
-    };
+    // Obtener la fecha y la hora actuales en el formato deseado
     var now = new Date();
-    var dateTimeFormat = new Intl.DateTimeFormat('es-ES', options);
-    var formattedDate = dateTimeFormat.format(now).replace(/\//g, '-').replace(',', '');
+    var year = now.getFullYear();
+    var month = String(now.getMonth() + 1).padStart(2, '0'); // Mes en formato MM
+    var day = String(now.getDate()).padStart(2, '0'); // Día en formato DD
+    var hours = String(now.getHours()).padStart(2, '0'); // Hora en formato HH
+    var minutes = String(now.getMinutes()).padStart(2, '0'); // Minutos en formato mm
 
-    // Separar fecha y hora
-    var [date, time] = formattedDate.split(' ');
-    formattedDate = date + ' ' + time.split(':').join(':');
+    var formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`;
 
     const errorMessage = document.getElementById('errorMessage');
     const successMessageContainer = document.getElementById('successMessageContainer'); // Contenedor para el mensaje de éxito
@@ -1431,21 +1472,21 @@ function saveScore() {
     // Crear un objeto con los datos del jugador
     var playerData = {
         name: playerName,
-        score: points,
-        date: formattedDate // Usar la fecha formateada
+        score: points, // Mantener solo el puntaje
+        date: formattedDate, // Usar la fecha en formato YYYY-MM-DD HH:mm
+        status: result // Agregar el estado (W o L)
     };  
 
-                        // Ocultar el botón
-                        document.getElementById("nameButton").style.display = 'none'; 
+    // Ocultar el botón
+    document.getElementById("nameButton").style.display = 'none'; 
 
-                        // Crear un nuevo párrafo para el mensaje de éxito
-                        var successMessage = document.createElement("p");
-                        successMessage.textContent = "La teva puntuació ha estat guardada!";
-                        successMessage.className = "successMessage"; // Puedes añadir una clase para estilizarlo
-                        successMessageContainer.appendChild(successMessage); // Añadir el mensaje al contenedor
-                        
-                        ocultarNombre(); // Llama a la función para ocultar el nombre si es necesario
-                    
+    // Crear un nuevo párrafo para el mensaje de éxito
+    var successMessage = document.createElement("p");
+    successMessage.textContent = "La teva puntuació ha estat guardada!";
+    successMessage.className = "successMessage"; // Puedes añadir una clase para estilizarlo
+    successMessageContainer.appendChild(successMessage); // Añadir el mensaje al contenedor
+    
+    ocultarNombre(); // Llama a la función para ocultar el nombre si es necesario
 
     // Enviar los datos al archivo PHP mediante POST
     var xhr = new XMLHttpRequest();
@@ -1457,16 +1498,7 @@ function saveScore() {
             if (xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
                 if (response.success) {
-                    // Ocultar el botón
-                    document.getElementById("nameButton").style.display = 'none'; 
-
-                    // Crear un nuevo párrafo para el mensaje de éxito
-                    var successMessage = document.createElement("p");
-                    successMessage.textContent = "La teva puntuació ha estat guardada!";
-                    successMessage.className = "successMessage"; // Puedes añadir una clase para estilizarlo
-                    successMessageContainer.appendChild(successMessage); // Añadir el mensaje al contenedor
-                    
-                    ocultarNombre(); // Llama a la función para ocultar el nombre si es necesario
+                    console.log("Puntuación guardada correctamente.");
                 } else {
                     console.error("Error al guardar el registro: " + response.message);
                 }
@@ -1476,11 +1508,8 @@ function saveScore() {
         }
     };
 
-    // Ocultar el botón antes de enviar la solicitud
-    document.getElementById("nameButton").style.display = 'none'; 
     xhr.send(JSON.stringify(playerData));
 }
-
 
 
 
@@ -1578,18 +1607,21 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // Sonido de cuando le da a un barco 
-document.addEventListener("DOMContentLoaded", function() {
-    const buttons = document.querySelectorAll('.attackSound');
+// document.addEventListener("DOMContentLoaded", function() {
+//     const buttons = document.querySelectorAll('.attackSound');
     
-    buttons.forEach(button => {
-        button.addEventListener('click', function() {
-            const sound = new Audio('sounds/attackSound.mp3');
-            sound.play().catch(error => {
-                console.error('Error al reproducir el sonido:', error);
-            });
-        });
-    });
-});
+//     if (!practiceArmoredShips) {
+//         buttons.forEach(button => {
+//             button.addEventListener('click', function() {
+//                 const sound = new Audio('sounds/attackSound.mp3');
+//                 sound.play().catch(error => {
+//                     console.error('Error al reproducir el sonido:', error);
+//                 });
+//             });
+//         });
+//     }
+    
+// });
 
 // Sonido cunado le da al agua
 document.addEventListener("DOMContentLoaded", function() {
@@ -1616,6 +1648,18 @@ function iaSound() {
 // Sonido de cuando le da a un barco la IA
 function attackSoundIA() {
     var sonido = document.getElementById('attackSoundIA');
+    sonido.play();
+}
+
+// Sonido ataque especial
+function specialAttackSound() {
+    var sonido = document.getElementById('specialAttackSound');
+    sonido.play();
+}
+
+// Sonido barco acorazado encontrado
+function hitArmoredShip() {
+    var sonido = document.getElementById('hitArmoredShip');
     sonido.play();
 }
 

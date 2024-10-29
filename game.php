@@ -35,6 +35,12 @@ Notas:
     <audio id="attackSoundIA">
         <source src="sounds/attackSound.mp3" type="audio/mpeg">
     </audio>
+    <audio id="specialAttackSound">
+        <source src="sounds/specialAttack.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="hitArmoredShip">
+        <source src="sounds/hitArmoredShip.mp3" type="audio/mpeg">
+    </audio>
     <audio id="waterSoundIA">
         <source src="sounds/waterSound.mp3" type="audio/mpeg">
     </audio>
@@ -275,6 +281,9 @@ Notas:
 
                             echo    "<script>
                                         var barcos = " . json_encode($barcos) . ";
+                                        var practiceArmoredShips = false;
+                                        var practiceSpecialAttacks = false;
+                                        var practiceEnemyAmmo = false;
                                     </script>";
             
             

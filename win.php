@@ -1,22 +1,22 @@
 <?php
-        session_start();
+session_start();
 
-        if (!isset($_SERVER['HTTP_REFERER']) || strpos($_SERVER['HTTP_REFERER'], 'game.php') === false) {
-        // Si no prové de 'game.php', retornar error 403
-        header('HTTP/1.0 403 Forbidden', true, 403);
-        echo "<!DOCTYPE html>
-                <html lang='ca'>
-                <head>
+if (!isset($_SERVER['HTTP_REFERER']) || strpos($_SERVER['HTTP_REFERER'], 'game.php') === false) {
+    // Si no prové de 'game.php', retornar error 403
+    header('HTTP/1.0 403 Forbidden', true, 403);
+    echo "<!DOCTYPE html>
+            <html lang='ca'>
+            <head>
                 <meta charset='utf-8'>
-                <title>Win</title>
-                </head>
-                <body>
+                <title>Lose</title>
+            </head>
+            <body>
                 <h1>403 Forbidden</h1>
                 <p>No tens permisos per accedir a aquesta pàgina</p>
-                </body>
-                </html>";
-        die;
-        }
+            </body>
+        </html>";
+    die;
+}
 ?>
 <!DOCTYPE html>
 <html lang="ca">
@@ -54,11 +54,12 @@
             while (($linea = fgets($file)) !== false) {
                 // Separa los datos por el delimitador ";"
                 $datos = explode(';', trim($linea));
-                if (count($datos) == 3) {
+                if (count($datos) == 4) { // Asegúrate de que tenga 4 elementos
                     $registros[] = [
                         'name' => trim($datos[0]),
                         'points' => (int) trim($datos[1]),
                         'date' => trim($datos[2]),
+                        'status' => trim($datos[3]), // Agregamos el estado
                     ];
                 }
             }
@@ -70,6 +71,7 @@
             'name' => $playerName,
             'points' => (int) $puntos,
             'date' => date('Y-m-d H:i:s'), // O la fecha que quieras
+            'status' => 'W', // Establecer estado como Win
         ];
         $registros[] = $nuevoRegistro;
 
@@ -82,10 +84,10 @@
         });
 
         // Encontrar la posición del nuevo registro
-        $posicionNuevoRegistro = array_search($nuevoRegistro, $registros);
+        $posicionNuevoRegistro = count($registros) - 1; // Último registro es el nuevo
 
         // Calcular en qué página se encuentra
-        $paginaUltimoRegistro = ceil(($posicionNuevoRegistro + 1) / 25); // +1 porque las posiciones son 0-indexadas
+        $paginaUltimoRegistro = ceil(($posicionNuevoRegistro + 1) / $registrosPorPagina); // +1 porque las posiciones son 0-indexadas
 
         echo '<div class="section">';
 
@@ -97,7 +99,7 @@
         echo '<div id="nombreWin">';
         echo "<input type='text' id='inputNameWinLose' placeholder='Escriu el teu nom' required maxlength='30' value='$playerName'>";
         echo '</div>';
-        echo '<button id="nameButton" class="keySound" onclick="saveScore()">Envia</button>';
+        echo '<button id="nameButton" class="keySound" onclick="saveScore(\'W\')">Envia</button>';
         echo '</div>';
         echo '<div id="successMessageContainer"></div>'; // Contenedor para el mensaje de éxito
 
@@ -106,7 +108,7 @@
         // Botones
         echo '<div id="buttonWin">';
         echo '<a href="index.php"><button id="buttonsWin" class="keySound">Inici</button></a>';
-        echo '<a href="ranking.php?pagina=' . $paginaUltimoRegistro . '&source=win"><button id="buttonsWin" class="keySound">Hall of Fame</button></a>';
+        echo '<a href="ranking.php?pagina=' . $paginaUltimoRegistro . '"><button id="buttonsWin" class="keySound">Hall of Fame</button></a>'; // Corregido el enlace
         echo '</div>';
 
         echo '</div>';
