@@ -70,21 +70,21 @@ function getRandomCodeNumber(element) {
 }
 
 // Asegura que el DOM esté cargado antes de ejecutar el script
-document.addEventListener("DOMContentLoaded", function() {
-     // Seleccionar todos los elementos td con la clase "codeName"
-     const nameElements = document.querySelectorAll("td.codeName");
+// document.addEventListener("DOMContentLoaded", function() {
+//      // Seleccionar todos los elementos td con la clase "codeName"
+//      const nameElements = document.querySelectorAll("td.codeName");
 
-     // Establecer un intervalo para actualizar solo los elementos que no tienen "codeName"
-     setInterval(() => {
-         if (partidaActiva) { // Solo actualizar si la partida está activa
-             nameElements.forEach(element => {
-                 if (element.classList.contains("codeName")) {
-                     getRandomCodeNumber(element);
-                 }
-             });
-         }
-     }, 100);
-});
+//      // Establecer un intervalo para actualizar solo los elementos que no tienen "codeName"
+//      setInterval(() => {
+//          if (partidaActiva) { // Solo actualizar si la partida está activa
+//              nameElements.forEach(element => {
+//                  if (element.classList.contains("codeName")) {
+//                      getRandomCodeNumber(element);
+//                  }
+//              });
+//          }
+//      }, 100);
+// });
 
 /* ****************** */
 /* MARK: Timer        */
@@ -878,7 +878,9 @@ function attackAdjacentCells(td, buttonId) {
         pos.r >= 1 && pos.r <= maxRows && pos.c >= 1 && pos.c <= maxCols
     );
 
+    // Modo munición
     if (practiceAmmoEnabled) {
+        practicePlayerAmmo++;
         // Menos de 4 de munición
         if (practicePlayerAmmo < 4) {
             if (gameMode = 'IA'){
@@ -959,10 +961,17 @@ function attackAdjacentCells(td, buttonId) {
 
                                 // Verificar si la celda es "armored"
                                 if (adjTd.classList.contains("cellArmored")) {
+
+                                    console.log("segundo hit con Special Attack --> servidor 111");
+
+
                                     barco.vida -= 1; 
                                     td.innerHTML = '<img src="images/servidor.png" alt="servidor" />';
                                     puntos += 50;
                                     playerHits++;
+                                    adjTd.classList.add("dado")
+
+
                                     barcoOcultoEncontrado = true;
                                     if (gameMode = 'IA'){
                                         showNotificationGame("Has trobat un punt d'accés","Left", "#3700ff");
@@ -1280,20 +1289,20 @@ function changeDataCell(td, gameMode = 'IA') {
                                 
                                 hitArmoredShip();
                                 
+                                console.log("primer hit sin Special Attack 222");
 
                                 if (gameMode = 'IA'){
                                     showNotificationGame("Antivirus trencat","Left", "#3700ff");
                                 }else{
                                     showNotificationGame("Antivirus trencat","Right", "#3700ff");
                                 }
+
                                 td.classList.remove("dado");
                                 td.innerHTML = '<img src="images/abierto.png" alt="Cerradura roto" />';
                                 td.classList.add("cellArmored");
                                 td.classList.add("cellArmoredHit");
                                 playerTurn = false;
                                 cambiarTurno();
-
-                                console.log("Cambio de turno 111");
 
                                 setTimeout(() => {
                                     iaSound();
@@ -1302,6 +1311,9 @@ function changeDataCell(td, gameMode = 'IA') {
                             } 
                             // Modo ArmoredShips primer hit con Special Attack
                             else if (practiceArmoredShips && !td.classList.contains("cellArmored") && practiceSpecialAttacks)   {
+                                
+                                console.log("primer hit con Special Attack --> candado 222");
+
                                 if (gameMode = 'IA'){
                                     showNotificationGame("Antivirus trencat","Left", "#3700ff");
                                 }else{
@@ -1309,7 +1321,9 @@ function changeDataCell(td, gameMode = 'IA') {
                                 }
                                 td.classList.remove("dado");
                                 td.innerHTML = '<img src="images/abierto.png" alt="Cerradura roto" />';
+                                console.log("entra aqui?? 111");
                                 td.classList.add("cellArmored");
+                                td.classList.add("cellArmoredHit");
 
                                 // No pasa turno a IA porque se activa la Special Attack
 
@@ -1329,10 +1343,14 @@ function changeDataCell(td, gameMode = 'IA') {
                             }
                             // Modo ArmoredShips segundo hit
                             else if (practiceArmoredShips && td.classList.contains("cellArmored") && td.classList.contains("cellArmoredHit")) {
+                                
+                                console.log("segundo hit con Special Attack --> servidor 222");
+
                                 barco.vida -= 1; 
                                 td.innerHTML = '<img src="images/servidor.png" alt="servidor" />';
                                 attackSoundIA();
                                 td.classList.add("dado");
+
                                 td.classList.remove("cellArmoredHit");
                                 td.classList.remove("cellArmored");
                                 casillasComprobadas.push({ row: row, col: col });
@@ -1349,6 +1367,9 @@ function changeDataCell(td, gameMode = 'IA') {
                             }
                             // Modo normal
                             else if (!practiceArmoredShips){
+
+                                console.log("modo normal");
+
                                 barco.vida -= 1; 
                                 td.innerHTML = '<img src="images/servidor.png" alt="servidor" />';
                                 casillasComprobadas.push({ row: row, col: col });
