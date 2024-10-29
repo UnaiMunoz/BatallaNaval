@@ -111,28 +111,26 @@
                 $points = $registros[$i]['points'];
                 $date = $registros[$i]['date'];
                 $status = $registros[$i]['status']; // Obtener estado del registro
-
-                // Verificar si el registro es el último de ranking.txt
-                $isLastRecord = ($name === $ultimoRegistro['name'] && 
-                                $points === $ultimoRegistro['points'] && 
-                                $date === $ultimoRegistro['date'] && 
-                                $status === $ultimoRegistro['status']); // Considerar estado
-
+            
+                // Verificar si el registro es el último de ranking.txt usando array_diff_assoc
+                $isLastRecord = empty(array_diff_assoc($registros[$i], $ultimoRegistro));
+            
                 // Asignar la clase basada en el estado
                 $extraClass = '';
                 if ($isLastRecord) {
                     $extraClass = ($status === 'W') ? 'win' : 'lose'; // Clase 'win' o 'lose' según el estado
                 }
-
+            
                 // Mostrar fila con la clase especial si es el último registro
                 echo "<tr class='keySound $extraClass'>"; // Aplica la clase según el estado
                 echo "<td class='selecRanking'>$posicion</td>";
                 echo "<td>$name</td>";
                 echo "<td>$points</td>";
                 echo "<td>$date</td></tr>";
-
+            
                 $posicion++; // Incrementar la posición
             }
+            
 
             echo "</table>";
             echo "</div>";
