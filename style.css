@@ -671,23 +671,29 @@ input[type="text"]:focus {
     opacity: 0.5;
 }
 
-#specialAttackButtons specialAttackButtonWannaCry::before{
+#specialAttackButtons #specialAttackButtonWannaCry::before{
     margin: 2% 0;
     content: "[ ] ";
 }
 
-#specialAttackButtons specialAttackButtonWannaCry:hover::before{
+#specialAttackButtons #specialAttackButtonWannaCry:hover::before{
     content: "[#] ";
 }
 
 
-#specialAttackButtons specialAttackButtonWannaCry:focus::before{
+#specialAttackButtons #specialAttackButtonWannaCry:focus::before{
     color: yellow !important;
     content: "[#] ";
 }
 
-#specialAttackButtons specialAttackButtonWannaCry:focus{
+#specialAttackButtons #specialAttackButtonWannaCry:focus{
     color: yellow !important;
+}
+
+#specialAttackButtons button:disabled #specialAttackButtonWannaCry::before {
+    content: "[/] ";
+    cursor: not-allowed;
+    opacity: 0.5;
 }
 
 /* ******************************* */

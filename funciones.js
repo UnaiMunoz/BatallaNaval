@@ -451,10 +451,7 @@ function turnoIA() {
         row = celdaAcorazada.row;
         col = celdaAcorazada.col;
 
-    }
-
-    // Cambiar sentido de ataque
-    else if (direccionEncontrada && cambioSentido) {
+    }else if (direccionEncontrada && cambioSentido) { // Cambiar sentido de ataque
         // Determinar si la dirección es horizontal o vertical
         const direccionHorizontal = firstHit.row === secondHit.row;
         let siguienteMovimiento;
@@ -690,22 +687,39 @@ function turnoIA() {
             if (practiceArmoredShips) {
                 // ArmoredShips --> ?
                 if (practiceArmoredShips === true && celdaAcorazadaEncontrada === false) {
-                    cellElement.innerHTML = '<img src="images/abiertoIA.png" alt="alerta" />'; 
+                    cellElement.innerHTML = '<img src="images/abiertoIA.png" alt="Candado roto" />'; 
                     hitArmoredShip();
                     cellElement.classList.add("playerCellArmored"); 
                     //cellElement.style.backgroundColor = "orange"; 
                     showNotificationGame("La IA a trencat a l'antivirus","Right","yellow");
                     celdaAcorazada = { row: row, col: col };
                     celdaAcorazadaEncontrada = true;
-                    setTimeout(() => {
-                        showNotification(`Torn de ${practicePlayerName}`,"Left","#3700ff");
-                        playerTurn = true;
-                        cambiarTurno(playerTurn)
-                    }, 3000);
-                    return;
-                } 
-    
-                else if (practiceArmoredShips === true && celdaAcorazadaEncontrada === true) {
+                    //MARK: Aqui
+                    // Pasar turno al Player
+                    if (practiceAmmoEnabled && practicePlayerAmmo === 0) {
+                        setTimeout(() => {
+                            playerTurn = true;
+                            cambiarTurno(playerTurn);
+                            showNotification(`${practicePlayerName} no te RAM. IA ataca de nou`,"Left","#3700ff");
+                            playerTurn = false;
+                            cambiarTurno(playerTurn);
+                        }, 2000);
+                        setTimeout(() => {
+                            setTimeout(() => {
+                                turnoIA();
+                            }, 2000);
+                        }, 2000);
+                    }
+                    else {
+                        setTimeout(() => {
+                            showNotification(`Torn de ${practicePlayerName}`,"Left","#3700ff");
+                            playerTurn = true;
+                            cambiarTurno(playerTurn)
+                        }, 3000);
+                        return;
+                    }
+                    //
+                } else if (practiceArmoredShips === true && celdaAcorazadaEncontrada === true) {
     
     
                     // Atacar la celda marcada con "?"
