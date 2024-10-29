@@ -694,32 +694,28 @@ function turnoIA() {
                     showNotificationGame("La IA a trencat a l'antivirus","Right","yellow");
                     celdaAcorazada = { row: row, col: col };
                     celdaAcorazadaEncontrada = true;
-                    //MARK: Aqui
-                    // Pasar turno al Player
-                    if (practiceAmmoEnabled && practicePlayerAmmo === 0) {
-                        setTimeout(() => {
-                            playerTurn = true;
-                            cambiarTurno(playerTurn);
-                            showNotification(`${practicePlayerName} no te RAM. IA ataca de nou`,"Left","#3700ff");
-                            playerTurn = false;
-                            cambiarTurno(playerTurn);
-                        }, 2000);
-                        setTimeout(() => {
+
+                    // Comprobar municion Player
+                    if (practiceAmmoEnabled) {
+                        if (practicePlayerAmmo > 0) {
                             setTimeout(() => {
-                                turnoIA();
+                                showNotification(`Torn de ${practicePlayerName}`,"Left","#3700ff");
+                                playerTurn = true;
+                                cambiarTurno(playerTurn)
+                            }, 3000);
+                            return;
+    
+                        } else {
+                            setTimeout(() => {
+                                showNotification(`${practicePlayerName} no te RAM. IA ataca de nou`,"Left","#3700ff");
+                                playerTurn = false;
+                                cambiarTurno(playerTurn);
                             }, 2000);
-                        }, 2000);
+                        }
                     }
-                    else {
-                        setTimeout(() => {
-                            showNotification(`Torn de ${practicePlayerName}`,"Left","#3700ff");
-                            playerTurn = true;
-                            cambiarTurno(playerTurn)
-                        }, 3000);
-                        return;
-                    }
-                    //
-                } else if (practiceArmoredShips === true && celdaAcorazadaEncontrada === true) {
+                } 
+    
+                else if (practiceArmoredShips === true && celdaAcorazadaEncontrada === true) {
     
     
                     // Atacar la celda marcada con "?"
@@ -943,7 +939,7 @@ function attackAdjacentCells(td, buttonId) {
             let adjTd = document.querySelector(`table#practiceEnemygameTable tr:nth-child(${pos.r + 1}) td:nth-child(${pos.c + 1})`);
 
             // Verifica que la celda exista y no haya sido atacada antes
-            if (adjTd && !casillasComprobadas.some(casilla => casilla.row === pos.r && casilla.col === pos.c)) {
+            if (adjTd) {
                 // Agrega la celda a las comprobadas para evitar ataques repetidos
 
                 // No agregar barcos si estan reforzados y no tienen la clase "cellArmored"
@@ -1293,6 +1289,7 @@ function changeDataCell(td, gameMode = 'IA') {
                                 td.classList.remove("dado");
                                 td.innerHTML = '<img src="images/abierto.png" alt="Cerradura roto" />';
                                 td.classList.add("cellArmored");
+                                td.classList.add("cellArmoredHit");
                                 playerTurn = false;
                                 cambiarTurno();
 
@@ -1331,10 +1328,13 @@ function changeDataCell(td, gameMode = 'IA') {
 
                             }
                             // Modo ArmoredShips segundo hit
-                            else if (practiceArmoredShips && td.classList.contains("cellArmored")) {
+                            else if (practiceArmoredShips && td.classList.contains("cellArmored") && td.classList.contains("cellArmoredHit")) {
                                 barco.vida -= 1; 
                                 td.innerHTML = '<img src="images/servidor.png" alt="servidor" />';
                                 attackSoundIA();
+                                td.classList.add("dado");
+                                td.classList.remove("cellArmoredHit");
+                                td.classList.remove("cellArmored");
                                 casillasComprobadas.push({ row: row, col: col });
                                 puntos += 50;
                                 playerHits++;
