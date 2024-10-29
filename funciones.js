@@ -880,7 +880,7 @@ function attackAdjacentCells(td, buttonId) {
 
     if (practiceAmmoEnabled) {
         // Menos de 4 de munición
-        if (practicePlayerAmmo < 4) {
+        if (practicePlayerAmmo < 3) {
             if (gameMode = 'IA'){
                 showNotificationGame("No tens suficient RAM per lançar WannaCry","Left", "#3700ff");
             }else{
@@ -893,7 +893,7 @@ function attackAdjacentCells(td, buttonId) {
         }
     
         // Menos de 6 de munición y no es un borde
-        if (practicePlayerAmmo < 6) {
+        if (practicePlayerAmmo < 5) {
             const row = td.parentElement.rowIndex; // Asegúrate de que `td` es el elemento correcto
             const col = td.cellIndex;
     
@@ -912,7 +912,7 @@ function attackAdjacentCells(td, buttonId) {
         }
     
         // Menos de 9 de munición y es una celda central
-        if (practicePlayerAmmo < 9) {
+        if (practicePlayerAmmo < 8) {
             const row = td.parentElement.rowIndex; // Asegúrate de que `td` es el elemento correcto
             const col = td.cellIndex;
     
@@ -1079,12 +1079,16 @@ function specialAttack(buttonId) {
         }
 
     } else if (buttonId === 'specialAttackButtonWannaCry') {
-        if (!specialAttackButtonWannaCry && practicePlayerAmmo > 3) {
+        if (specialAttackButtonWannaCry) {
+            specialAttackButtonWannaCry = false;
+            button.classList.remove('active');
+            button.blur(); // Quitar el focus del botón
+            comprobandoCeldas = false;
+        } else if (practicePlayerAmmo > 3) {
             specialAttackButtonWannaCry = true;
-            comprobandoCeldas = true;
             button.classList.add('active');
-            ataqueBasicoArmoredSpecialAttack = false;
-        } 
+            comprobandoCeldas = true;
+        }
     }
 }
 

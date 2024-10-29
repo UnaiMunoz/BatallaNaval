@@ -690,7 +690,7 @@ input[type="text"]:focus {
     color: yellow !important;
 }
 
-#specialAttackButtons button:disabled #specialAttackButtonWannaCry::before {
+#specialAttackButtons button:disabled #specialAttackButtonWannaCry .disabled::before {
     content: "[/] ";
     cursor: not-allowed;
     opacity: 0.5;
