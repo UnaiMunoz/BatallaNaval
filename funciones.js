@@ -942,7 +942,7 @@ function attackAdjacentCells(td, buttonId) {
             let adjTd = document.querySelector(`table#practiceEnemygameTable tr:nth-child(${pos.r + 1}) td:nth-child(${pos.c + 1})`);
 
             // Verifica que la celda exista y no haya sido atacada antes
-            if (adjTd && !casillasComprobadas.some(casilla => casilla.row === pos.r && casilla.col === pos.c)) {
+            if (adjTd) {
                 // Agrega la celda a las comprobadas para evitar ataques repetidos
 
                 // No agregar barcos si estan reforzados y no tienen la clase "cellArmored"
