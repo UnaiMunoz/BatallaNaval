@@ -699,24 +699,23 @@ function turnoIA() {
                     celdaAcorazadaEncontrada = true;
 
                     // Comprobar municion Player
-                    if (practicePlayerAmmo > 0) {
-                        setTimeout(() => {
-                            showNotification(`Torn de ${practicePlayerName}`,"Left","#3700ff");
-                            playerTurn = true;
-                            cambiarTurno(playerTurn)
-                        }, 3000);
-                        return;
-
-                    } else {
-                        setTimeout(() => {
-                            showNotification(`${practicePlayerName} no te RAM. IA ataca de nou`,"Left","#3700ff");
-                            playerTurn = false;
-                            cambiarTurno(playerTurn);
-                        }, 2000);
-                        
+                    if (practiceAmmoEnabled) {
+                        if (practicePlayerAmmo > 0) {
+                            setTimeout(() => {
+                                showNotification(`Torn de ${practicePlayerName}`,"Left","#3700ff");
+                                playerTurn = true;
+                                cambiarTurno(playerTurn)
+                            }, 3000);
+                            return;
+    
+                        } else {
+                            setTimeout(() => {
+                                showNotification(`${practicePlayerName} no te RAM. IA ataca de nou`,"Left","#3700ff");
+                                playerTurn = false;
+                                cambiarTurno(playerTurn);
+                            }, 2000);
+                        }
                     }
-
-                    
                 } 
     
                 else if (practiceArmoredShips === true && celdaAcorazadaEncontrada === true) {
@@ -1292,6 +1291,7 @@ function changeDataCell(td, gameMode = 'IA') {
                                 td.classList.remove("dado");
                                 td.innerHTML = "?";
                                 td.classList.add("cellArmored");
+                                td.classList.add("cellArmoredHit");
                                 playerTurn = false;
                                 cambiarTurno();
 
@@ -1330,10 +1330,13 @@ function changeDataCell(td, gameMode = 'IA') {
 
                             }
                             // Modo ArmoredShips segundo hit
-                            else if (practiceArmoredShips && td.classList.contains("cellArmored")) {
+                            else if (practiceArmoredShips && td.classList.contains("cellArmored") && td.classList.contains("cellArmoredHit")) {
                                 barco.vida -= 1; 
                                 td.innerHTML = "X";
                                 attackSoundIA();
+                                td.classList.add("dado");
+                                td.classList.remove("cellArmoredHit");
+                                td.classList.remove("cellArmored");
                                 casillasComprobadas.push({ row: row, col: col });
                                 puntos += 50;
                                 playerHits++;
