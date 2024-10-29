@@ -637,7 +637,7 @@ function turnoIA() {
             // Marcar la celda como atacada
             celdasAtacadas.push({ row: row, col: col });
             // Agua
-            cellElement.innerHTML = '<img src="images/alerta.png" alt="alerta" />'; // Marcar el agua
+            cellElement.innerHTML = '<img src="images/alertaIA.png" alt="alerta" />'; // Marcar el agua
             cellElement.classList.add("agua"); // Puedes añadir una clase CSS para el agua
             //cellElement.style.backgroundColor = "blue"; // Cambia el color a tu preferencia
 
@@ -690,7 +690,7 @@ function turnoIA() {
             if (practiceArmoredShips) {
                 // ArmoredShips --> ?
                 if (practiceArmoredShips === true && celdaAcorazadaEncontrada === false) {
-                    cellElement.innerHTML = "?"; 
+                    cellElement.innerHTML = '<img src="images/abiertoIA.png" alt="alerta" />'; 
                     cellElement.classList.add("playerCellArmored"); 
                     //cellElement.style.backgroundColor = "orange"; 
                     showNotificationGame("La IA a trencat a l'antivirus","Right","yellow");
@@ -712,7 +712,7 @@ function turnoIA() {
                     col = celdaAcorazada.col;
                 
                     // Lógica para atacar la celda y manejar el resultado
-                    cellElement.innerHTML = '<img src="images/tecnologia.png" alt="servidor" />';
+                    cellElement.innerHTML = '<img src="images/servidorIA.png" alt="servidor" />';
                     //cellElement.style.backgroundColor = "red"; 
                     showNotificationGame(`La IA ha trobat un punt d'accés`,"Right","yellow");
                     attackSoundIA();
@@ -739,7 +739,7 @@ function turnoIA() {
 
             // Modo normal
             if (!practiceArmoredShips) {
-                cellElement.innerHTML = '<img src="images/tecnologia.png" alt="servidor" />';
+                cellElement.innerHTML = '<img src="images/servidorIA.png" alt="servidor" />';
                 //cellElement.style.backgroundColor = "red"; 
                 showNotificationGame(`La IA ha trobat un punt d'accés`,"Right","yellow");
                 attackSoundIA();
@@ -945,7 +945,7 @@ function attackAdjacentCells(td, buttonId) {
                                 // Verificar si la celda es "armored"
                                 if (adjTd.classList.contains("cellArmored")) {
                                     barco.vida -= 1; 
-                                    td.innerHTML = '<img src="images/tecnologia.png" alt="servidor" />';
+                                    td.innerHTML = '<img src="images/servidor.png" alt="servidor" />';
                                     puntos += 50;
                                     playerHits++;
                                     barcoOcultoEncontrado = true;
@@ -1246,7 +1246,7 @@ function changeDataCell(td, gameMode = 'IA') {
                                     showNotificationGame("Antivirus trencat","Right", "#3700ff");
                                 }
                                 td.classList.remove("dado");
-                                td.innerHTML = "?";
+                                td.innerHTML = '<img src="images/abierto.png" alt="Cerradura roto" />';
                                 td.classList.add("cellArmored");
                                 playerTurn = false;
                                 cambiarTurno();
@@ -1264,7 +1264,7 @@ function changeDataCell(td, gameMode = 'IA') {
                                     showNotificationGame("Antivirus trencat","Right", "#3700ff");
                                 }
                                 td.classList.remove("dado");
-                                td.innerHTML = "?";
+                                td.innerHTML = '<img src="images/abierto.png" alt="Cerradura roto" />';
                                 td.classList.add("cellArmored");
 
                                 // No pasa turno a IA porque se activa la Special Attack
@@ -1273,7 +1273,7 @@ function changeDataCell(td, gameMode = 'IA') {
                             // Modo ArmoredShips segundo hit
                             else if (practiceArmoredShips && td.classList.contains("cellArmored")) {
                                 barco.vida -= 1; 
-                                td.innerHTML = '<img src="images/tecnologia.png" alt="servidor" />';
+                                td.innerHTML = '<img src="images/servidor.png" alt="servidor" />';
                                 casillasComprobadas.push({ row: row, col: col });
                                 puntos += 50;
                                 playerHits++;
@@ -1288,7 +1288,7 @@ function changeDataCell(td, gameMode = 'IA') {
                             // Modo normal
                             else if (!practiceArmoredShips){
                                 barco.vida -= 1; 
-                                td.innerHTML = '<img src="images/tecnologia.png" alt="servidor" />';
+                                td.innerHTML = '<img src="images/servidor.png" alt="servidor" />';
                                 casillasComprobadas.push({ row: row, col: col });
                                 puntos += 50;
                                 playerHits++;

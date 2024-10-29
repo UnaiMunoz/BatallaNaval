@@ -655,6 +655,25 @@ input[type="text"]:focus {
     opacity: 0.5;
 }
 
+#specialAttackButtons specialAttackButtonWannaCry::before{
+    margin: 2% 0;
+    content: "[ ] ";
+}
+
+#specialAttackButtons specialAttackButtonWannaCry:hover::before{
+    content: "[#] ";
+}
+
+
+#specialAttackButtons specialAttackButtonWannaCry:focus::before{
+    color: yellow !important;
+    content: "[#] ";
+}
+
+#specialAttackButtons specialAttackButtonWannaCry:focus{
+    color: yellow !important;
+}
+
 /* ******************************* */
 /* MARK: CSS for ranking.php */
 /* ******************************* */

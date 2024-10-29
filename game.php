@@ -742,7 +742,7 @@ Notas:
                                 echo "</div>";
                             } else {
                                 echo "<div id='specialAttackButtons'>";
-                                echo "<button id='specialAttackButton1' class='keySound' onclick='specialAttack(\"specialAttackButton1\")'>Llençar WannaCry</button>";
+                                echo "<button id='specialAttackButtonWannaCry' class='keySound' onclick='specialAttack(\"specialAttackButton1\")'>Llençar WannaCry</button>";
                                 echo "</div>";
                             }
                         } else {
