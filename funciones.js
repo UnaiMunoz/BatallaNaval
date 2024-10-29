@@ -697,12 +697,26 @@ function turnoIA() {
                     showNotificationGame("La IA a trencat a l'antivirus","Right","yellow");
                     celdaAcorazada = { row: row, col: col };
                     celdaAcorazadaEncontrada = true;
-                    setTimeout(() => {
-                        showNotification(`Torn de ${practicePlayerName}`,"Left","#3700ff");
-                        playerTurn = true;
-                        cambiarTurno(playerTurn)
-                    }, 3000);
-                    return;
+
+                    // Comprobar municion Player
+                    if (practicePlayerAmmo > 0) {
+                        setTimeout(() => {
+                            showNotification(`Torn de ${practicePlayerName}`,"Left","#3700ff");
+                            playerTurn = true;
+                            cambiarTurno(playerTurn)
+                        }, 3000);
+                        return;
+
+                    } else {
+                        setTimeout(() => {
+                            showNotification(`${practicePlayerName} no te RAM. IA ataca de nou`,"Left","#3700ff");
+                            playerTurn = false;
+                            cambiarTurno(playerTurn);
+                        }, 2000);
+                        
+                    }
+
+                    
                 } 
     
                 else if (practiceArmoredShips === true && celdaAcorazadaEncontrada === true) {
