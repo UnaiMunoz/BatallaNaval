@@ -772,8 +772,6 @@ Notas:
 
                 echo '</div>';
             echo '</div>';
-            } else {
-            echo "No se ha seleccionado ningún modo de juego.";
             }
         }
     ?>
