@@ -347,17 +347,17 @@ function determinarGanadorPorAciertos() {
     console.log("IA Hits: " + iaHits);
     
     if (playerHits > iaHits) {
-        mostrarMensaje("¡Has ganado la partida por tener más aciertos!", "green");
+        mostrarMissatge("Has guanyat la partida per tenir més encerts!", "green");
         setTimeout(() => {
             pageWin();
         }, 5000);
     } else if (iaHits > playerHits) {
-        mostrarMensaje("La IA ha ganado la partida por tener más aciertos.", "red");
+        mostrarMissatge("L'enemic ha guanyat la partida per tenir més encerts.", "red");
         setTimeout(() => {
             pageLose();
         }, 5000);    
     } else {
-        mostrarMensaje("La IA ha ganado por empate.", "red");
+        mostrarMissatge("L'enemic ha guanyat per empat.", "red");
         setTimeout(() => {
             pageLose();
         }, 5000);    
@@ -442,6 +442,7 @@ let cambioSentido = false;
 let celdasAtacadas = [];
 let celdaAcorazada = { row: null, col: null };
 let celdaAcorazadaEncontrada = false;
+let noQuitarVidaAcorazado = false;
 
 // Turno de la IA
 function turnoIA() {
@@ -691,7 +692,7 @@ function turnoIA() {
                     hitArmoredShip();
                     cellElement.classList.add("playerCellArmored"); 
                     //cellElement.style.backgroundColor = "orange"; 
-                    showNotificationGame("La IA a trencat a l'antivirus","Right","yellow");
+                    showNotificationGame("La IA a trencat l'antivirus","Right","yellow");
                     celdaAcorazada = { row: row, col: col };
                     celdaAcorazadaEncontrada = true;
 
@@ -713,6 +714,24 @@ function turnoIA() {
                             }, 2000);
                         }
                     }
+
+                     // Si se habilita la munición limitada y la IA se queda sin tiradas
+                    if (practiceAmmoEnabled && practicePlayerAmmo === 0) {
+                        // showNotification(`${practicePlayerName} no te més memòria RAM, torn de la IA`,"Left","#3700ff");
+                        playerTurn = false;
+                        cambiarTurno(playerTurn);
+                        setTimeout(() => {
+                            turnoIA();
+                        }, 3000);
+                        return;
+                    }
+                    setTimeout(() => {
+                        showNotification(`Torn de ${practicePlayerName}`,"Left","#3700ff");
+                        playerTurn = true;
+                        cambiarTurno(playerTurn);
+                    }, 2000);
+                    noQuitarVidaAcorazado = true;
+                    return;
                 } 
     
                 else if (practiceArmoredShips === true && celdaAcorazadaEncontrada === true) {
@@ -722,7 +741,12 @@ function turnoIA() {
                     row = celdaAcorazada.row;
                     col = celdaAcorazada.col;
 
-                
+                    if (firstHit.row === null && firstHit.col === null) {
+                        firstHit.row = row;
+                        firstHit.col = col;
+                        console.log("Primer impacto");
+                    }
+
                     // Lógica para atacar la celda y manejar el resultado
                     cellElement.innerHTML = '<img src="images/servidorIA.png" alt="servidor" />';
                     //cellElement.style.backgroundColor = "red"; 
@@ -732,6 +756,8 @@ function turnoIA() {
                     // Reiniciar el estado de la celda acorazada
                     celdaAcorazadaEncontrada = false;
                     celdaAcorazada = { row: null, col: null };
+
+                    noQuitarVidaAcorazado = false;
                 } 
 
             }
@@ -745,8 +771,14 @@ function turnoIA() {
                 direccionEncontrada = true;
                 secondHit.row = row;
                 secondHit.col = col;
-                console.log("Segundo impacto");
-                console.log("Direccion encontrada");
+                if (firstHit.row === secondHit.row && firstHit.col === secondHit.col) {
+                    secondHit.row = null;
+                    secondHit.col = null;
+                    direccionEncontrada = false;
+                } else {
+                    console.log("Segundo impacto");
+                    console.log("Direccion encontrada");
+                }
             }
 
             // Modo normal
@@ -772,7 +804,11 @@ function turnoIA() {
 
             if (barcoImpactado) {
 
-                barcoImpactado.vida -= 1;
+                if (noQuitarVidaAcorazado == false) {
+                    console.log("-1 Vida");
+                    barcoImpactado.vida -= 1;
+                }
+           
 
                 if (todosBarcosDestruidos(practicePlayerBoats)) {
                     partidaActiva = false;
@@ -781,7 +817,7 @@ function turnoIA() {
 
 
                 if (barcoImpactado.vida === 0) {
-                    showNotificationGame(`La IA ha destruït el un Servidor`,"Right","yellow"); //cambiar
+                    showNotificationGame(`La IA ha destruït un Servidor`,"Right","yellow"); //cambiar
 
                     // Resetear coordenadas de primer impacto
                     firstHit.row = null;
@@ -880,8 +916,8 @@ function attackAdjacentCells(td, buttonId) {
 
     // Modo munición
     if (practiceAmmoEnabled) {
-        practicePlayerAmmo++;
         // Menos de 4 de munición
+        console.log(practicePlayerAmmo);
         if (practicePlayerAmmo < 4) {
             if (gameMode = 'IA'){
                 showNotificationGame("No tens suficient RAM per lançar WannaCry","Left", "#3700ff");
@@ -1041,9 +1077,9 @@ function attackAdjacentCells(td, buttonId) {
     } else {
         repiteTurno = false;
         if (gameMode = 'IA'){
-            showNotificationGame("Connexió bloquejada","Left", "#3700ff");
+            showNotificationGame("No has trobat connexió","Left", "#3700ff");
         }else{
-            showNotificationGame("Connexió bloquejada","Right", "#3700ff");
+            showNotificationGame("No has trobat connexió","Right", "#3700ff");
         }
     }
     foundShip = false;
@@ -1159,14 +1195,31 @@ function changeDataCell(td, gameMode = 'IA') {
             // Municion limitada
             if (practiceAmmoEnabled) {  
                 if (practicePlayerAmmo > 3) {
-                    practicePlayerAmmo --;
                     specialAttackButtonWannaCry = false;
                     document.getElementById('specialAttackButtonWannaCry').classList.remove('active');
 
                     console.log("Entro en specialAttackButtonWannaCry");
                     attackAdjacentCells(td, 'specialAttackButtonWannaCry');
-
+                    practicePlayerAmmo --;
+                    console.log("Salgo de specialAttackButtonWannaCry, ammo:" + practicePlayerAmmo);
+                    var ammoPlayerElement = document.getElementById('practicePlayerAmmo');
+                    ammoPlayerElement.textContent = practicePlayerAmmo + "/40";
                     specialAttackButtonWannaCry === true;
+
+                    if (practicePlayerAmmo === 0) {
+                        showNotificationGame("No tens suficient munició","Left","#3700ff");
+                        document.getElementById('specialAttackButtonWannaCry').classList.remove('active');
+                        document.getElementById('specialAttackButtonWannaCry').classList.add('disabled');
+                        specialAttackButtonWannaCry === false;
+                        playerTurn = false;
+                        cambiarTurno(playerTurn);
+                
+                        setTimeout(() => {
+                            iaSound();
+                            turnoIA();
+                        }, 2000);
+                        return;
+                        }
 
                 } else {
                     showNotificationPlayerGame("No tens suficient munició");
@@ -1202,14 +1255,16 @@ function changeDataCell(td, gameMode = 'IA') {
         // Si toca agua
         if (name === " ") {
 
+            td.classList.remove("attackSound");
+
             td.innerHTML = '<img src="images/alerta.png" alt="alerta" />';
             waterSoundIA();
             
             if (comprobandoCeldas == false) {
                 if (gameMode = 'IA'){
-                    showNotificationGame("¡Connexió bloquejada!","Left","#3700ff");
+                    showNotificationGame("No has trobat connexió","Left","#3700ff");
                 }else{
-                    showNotificationGame("¡¡Connexió bloquejada!!","Right","#3700ff");
+                    showNotificationGame("No has trobat connexió","Right","#3700ff");
                 }
             }
 
