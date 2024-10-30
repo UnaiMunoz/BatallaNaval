@@ -731,7 +731,7 @@ Notas:
                             echo "<p class='ammoTitle'>RAM:</p>";
                             echo "<p id='practiceEnemyAmmo'>40/40</p>";
                             $enemyAmmo = 40;
-                            $playerAmmo = 9;
+                            $playerAmmo = 40;
                         
                             echo "<script>
                             var practicePlayerAmmo = " . json_encode($playerAmmo) . ";
@@ -751,7 +751,7 @@ Notas:
                                 echo "</div>";
                             } else {
                                 echo "<div id='specialAttackButtons'>";
-                                echo "<button id='specialAttackButtonWannaCry' class='keySound' onclick='specialAttack(\"specialAttackButton1\")'>Llençar WannaCry</button>";
+                                echo "<button id='specialAttackButtonWannaCry' class='keySound' onclick='specialAttack(\"specialAttackButtonWannaCry\")'>Llençar WannaCry</button>";
                                 echo "</div>";
                             }
                         } else {
