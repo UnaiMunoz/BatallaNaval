@@ -264,7 +264,7 @@ function applyEasterEgg() {
             partidaActiva = false; // Desactivar la partida
             calcularBonificacionPorTiempo(); // Llama a la bonificación final
             pageWin();
-            console.log("Easter Egg activado");
+            // console.log("Easter Egg activado");
             
         }
     };
@@ -343,8 +343,8 @@ function determinarGanadorPorAciertos() {
     clearInterval(cronometro);
     partidaActiva = false;
 
-    console.log("Player Hits: " + playerHits);
-    console.log("IA Hits: " + iaHits);
+    // console.log("Player Hits: " + playerHits);
+    // console.log("IA Hits: " + iaHits);
     
     if (playerHits > iaHits) {
         mostrarMensaje("Has guanyat la partida per tenir més encerts!", "green");
@@ -611,7 +611,7 @@ function turnoIA() {
     let cellElement = document.querySelector(`#practicePlayergameTable tr:nth-child(${row + 1}) td:nth-child(${col + 1})`);
 
 
-    showNotification("Torn de IA, pensant moviment...","Right","yellow");
+    showNotification("Torn de l'enemic, pensant moviment...","Right","yellow");
 
     // Lanzar tirada despues de 2 segundos
     setTimeout(() => {
@@ -624,7 +624,7 @@ function turnoIA() {
                 var ammoEnemyElement = document.getElementById('practiceEnemyAmmo');
                 ammoEnemyElement.textContent = practiceEnemyAmmo + "/40";
                 if (comprobarMunicionTerminada()) {
-                    mostrarMensaje("Ambos jugadores se han quedado sin munición", "yellow");
+                    mostrarMensaje("Tots dos jugadors s'han quedat sense munició.", "yellow");
                     setTimeout(() => {
                         determinarGanadorPorAciertos();
                     }, 3000);
@@ -644,13 +644,13 @@ function turnoIA() {
             cellElement.classList.add("agua"); // Puedes añadir una clase CSS para el agua
             //cellElement.style.backgroundColor = "blue"; // Cambia el color a tu preferencia
 
-            showNotificationGame("La IA no ha trobat connexió","Right","yellow");
+            showNotificationGame("L'enemic no ha trobat connexió","Right","yellow");
             waterSoundIA();
 
             // Cambiar el sentido si toca agua
             if (direccionEncontrada) {
                 cambioSentido = true; 
-                console.log("Cambio de sentido");
+                // console.log("Cambio de sentido");
             }
 
             // Pasar turno al Player
@@ -658,7 +658,7 @@ function turnoIA() {
                 setTimeout(() => {
                     playerTurn = true;
                     cambiarTurno(playerTurn);
-                    showNotification(`${practicePlayerName} no te RAM. IA ataca de nou`,"Left","#3700ff");
+                    showNotification(`${practicePlayerName} no te RAM. L'enemic ataca de nou`,"Left","#3700ff");
                     playerTurn = false;
                     cambiarTurno(playerTurn);
                 }, 2000);
@@ -697,7 +697,7 @@ function turnoIA() {
                     hitArmoredShip();
                     cellElement.classList.add("playerCellArmored"); 
                     //cellElement.style.backgroundColor = "orange"; 
-                    showNotificationGame("La IA a trencat l'antivirus","Right","yellow");
+                    showNotificationGame("L'enemic a trencat l'antivirus","Right","yellow");
                     celdaAcorazada = { row: row, col: col };
                     celdaAcorazadaEncontrada = true;
 
@@ -713,7 +713,7 @@ function turnoIA() {
     
                         } else {
                             setTimeout(() => {
-                                showNotification(`${practicePlayerName} no te RAM. IA ataca de nou`,"Left","#3700ff");
+                                showNotification(`${practicePlayerName} no te RAM. L'enemic ataca de nou`,"Left","#3700ff");
                                 playerTurn = false;
                                 cambiarTurno(playerTurn);
                             }, 2000);
@@ -749,13 +749,13 @@ function turnoIA() {
                     if (firstHit.row === null && firstHit.col === null) {
                         firstHit.row = row;
                         firstHit.col = col;
-                        console.log("Primer impacto");
+                        // console.log("Primer impacto");
                     }
 
                     // Lógica para atacar la celda y manejar el resultado
                     cellElement.innerHTML = '<img src="images/servidorIA.png" alt="servidor" />';
                     //cellElement.style.backgroundColor = "red"; 
-                    showNotificationGame(`La IA ha trobat un punt d'accés`,"Right","yellow");
+                    showNotificationGame(`L'enemic ha trobat un punt d'accés`,"Right","yellow");
                     attackSoundIA();
                 
                     // Reiniciar el estado de la celda acorazada
@@ -771,7 +771,7 @@ function turnoIA() {
             if (firstHit.row === null && firstHit.col === null) {
                 firstHit.row = row;
                 firstHit.col = col;
-                console.log("Primer impacto");
+                // console.log("Primer impacto");
             } else {
                 direccionEncontrada = true;
                 secondHit.row = row;
@@ -781,8 +781,8 @@ function turnoIA() {
                     secondHit.col = null;
                     direccionEncontrada = false;
                 } else {
-                    console.log("Segundo impacto");
-                    console.log("Direccion encontrada");
+                    // console.log("Segundo impacto");
+                    // console.log("Direccion encontrada");
                 }
             }
 
@@ -790,12 +790,12 @@ function turnoIA() {
             if (!practiceArmoredShips) {
                 cellElement.innerHTML = '<img src="images/servidorIA.png" alt="servidor" />';
                 //cellElement.style.backgroundColor = "red"; 
-                showNotificationGame(`La IA ha trobat un punt d'accés`,"Right","yellow");
+                showNotificationGame(`L'enemic ha trobat un punt d'accés`,"Right","yellow");
                 attackSoundIA();
                 if (firstHit.row === null && firstHit.col === null) {
                     firstHit.row = row;
                     firstHit.col = col;
-                    console.log("Primer impacto");
+                    // console.log("Primer impacto");
                 }
             }
             
@@ -810,7 +810,7 @@ function turnoIA() {
             if (barcoImpactado) {
 
                 if (noQuitarVidaAcorazado == false) {
-                    console.log("-1 Vida");
+                    // console.log("-1 Vida");
                     barcoImpactado.vida -= 1;
                 }
            
@@ -822,7 +822,7 @@ function turnoIA() {
 
 
                 if (barcoImpactado.vida === 0) {
-                    showNotificationGame(`La IA ha destruït un Servidor`,"Right","yellow"); //cambiar
+                    showNotificationGame(`L'enemic ha destruït un Servidor`,"Right","yellow"); //cambiar
 
                     // Resetear coordenadas de primer impacto
                     firstHit.row = null;
@@ -838,14 +838,14 @@ function turnoIA() {
                     celdaAcorazadaEncontrada = false;
                     celdaAcorazada = { row: null, col: null };
 
-                    console.log("Reset")
+                    // console.log("Reset")
 
                 }
             }
 
             // Si se habilita la munición limitada y la IA se queda sin tiradas
             if (practiceAmmoEnabled && practiceEnemyAmmo === 0) {
-                showNotification(`IA no te més RAM, torn de ${practicePlayerName}`,"Left","#3700ff");
+                showNotification(`L'enemic no te més RAM, torn de ${practicePlayerName}`,"Left","#3700ff");
                 setTimeout(() => {
                     showNotification(`Torn de ${practicePlayerName}`,"Left","#3700ff");
                     playerTurn = true;
@@ -1003,7 +1003,7 @@ function attackAdjacentCells(td, buttonId) {
                                 // Verificar si la celda es "armored"
                                 if (adjTd.classList.contains("cellArmored")) {
 
-                                    console.log("segundo hit con Special Attack --> servidor 111");
+                                    // console.log("segundo hit con Special Attack --> servidor 111");
 
 
                                     barco.vida -= 1; 
@@ -1042,7 +1042,8 @@ function attackAdjacentCells(td, buttonId) {
         playerTurn = false;
         cambiarTurno();
 
-        console.log("6");
+
+        // console.log("6");
         ataqueEspecialPasaTurno = true;
         setTimeout(() => {
             iaSound();
@@ -1213,10 +1214,10 @@ function changeDataCell(td, gameMode = 'IA') {
                     specialAttackButtonWannaCry = false;
                     document.getElementById('specialAttackButtonWannaCry').classList.remove('active');
 
-                    console.log("Entro en specialAttackButtonWannaCry");
+                    // console.log("Entro en specialAttackButtonWannaCry");
                     attackAdjacentCells(td, 'specialAttackButtonWannaCry');
                     practicePlayerAmmo --;
-                    console.log("Salgo de specialAttackButtonWannaCry, ammo:" + practicePlayerAmmo);
+                    // console.log("Salgo de specialAttackButtonWannaCry, ammo:" + practicePlayerAmmo);
                     var ammoPlayerElement = document.getElementById('practicePlayerAmmo');
                     ammoPlayerElement.textContent = practicePlayerAmmo + "/40";
                     specialAttackButtonWannaCry === true;
@@ -1231,7 +1232,7 @@ function changeDataCell(td, gameMode = 'IA') {
                 
                         setTimeout(() => {
                             iaSound();
-                            console.log("1");
+                            // console.log("1");
                             turnoIA();
                         }, 2000);
                         return;
@@ -1323,7 +1324,7 @@ function changeDataCell(td, gameMode = 'IA') {
         
                 setTimeout(() => {
                     iaSound();
-                    console.log("2");
+                    // console.log("2");
                     turnoIA();
                 }, 2000);
                 
@@ -1364,7 +1365,7 @@ function changeDataCell(td, gameMode = 'IA') {
                                 
                                 hitArmoredShip();
                                 
-                                console.log("primer hit sin Special Attack 222");
+                                // console.log("primer hit sin Special Attack 222");
 
                                 if (gameMode = 'IA'){
                                     showNotificationGame("Antivirus trencat","Left", "#3700ff");
@@ -1381,14 +1382,15 @@ function changeDataCell(td, gameMode = 'IA') {
 
                                 setTimeout(() => {
                                     iaSound();
-                                    console.log("3");
+                                    // console.log("3");
                                     turnoIA();
                                 }, 2000);
                             } 
                             // Modo ArmoredShips primer hit con Special Attack
                             else if (practiceArmoredShips && !td.classList.contains("cellArmored") && practiceSpecialAttacks)   {
                                 
-                                console.log("primer hit con Special Attack --> candado 222");
+                                // console.log("primer hit con Special Attack --> candado 222");
+                                hitArmoredShip();
 
                                 if (gameMode = 'IA'){
                                     showNotificationGame("Antivirus trencat","Left", "#3700ff");
@@ -1397,7 +1399,7 @@ function changeDataCell(td, gameMode = 'IA') {
                                 }
                                 td.classList.remove("dado");
                                 td.innerHTML = '<img src="images/abierto.png" alt="Cerradura roto" />';
-                                console.log("entra aqui?? 111");
+                                // console.log("entra aqui?? 111");
                                 td.classList.add("cellArmored");
                                 td.classList.add("cellArmoredHit");
 
@@ -1407,7 +1409,7 @@ function changeDataCell(td, gameMode = 'IA') {
                                     playerTurn = false;
                                     cambiarTurno();
                                     setTimeout(() => {
-                                        console.log("4");
+                                        // console.log("4");
                                         turnoIA();           
                                     }, 2000);
 
@@ -1417,7 +1419,7 @@ function changeDataCell(td, gameMode = 'IA') {
                             // Modo ArmoredShips segundo hit
                             else if (practiceArmoredShips && td.classList.contains("cellArmored") && td.classList.contains("cellArmoredHit")) {
                                 
-                                console.log("segundo hit con Special Attack --> servidor 222");
+                                // console.log("segundo hit con Special Attack --> servidor 222");
 
                                 barco.vida -= 1; 
                                 td.innerHTML = '<img src="images/servidor.png" alt="servidor" />';
@@ -1444,7 +1446,7 @@ function changeDataCell(td, gameMode = 'IA') {
                             // Modo normal
                             else if (!practiceArmoredShips){
 
-                                console.log("modo normal");
+                                // console.log("modo normal");
 
                                 barco.vida -= 1; 
                                 td.innerHTML = '<img src="images/servidor.png" alt="servidor" />';
@@ -1536,15 +1538,15 @@ function changeDataCell(td, gameMode = 'IA') {
                                 setTimeout(() => {
                                     if (!specialAttackActivate){
                                         if (gameMode = 'IA'){
-                                            showNotification(`${practicePlayerName} no te més memòria RAM, torn de la IA`,"Left","#3700ff");
+                                            showNotification(`${practicePlayerName} no te més memòria RAM, torn de l'enemic`,"Left","#3700ff");
                                         }else{
-                                            showNotification(`${practicePlayerName} no te més memòria RAM, torn de la IA`,"Right","#3700ff");
+                                            showNotification(`${practicePlayerName} no te més memòria RAM, torn de l'enemic`,"Right","#3700ff");
                                         } 
                                     } 
                                     specialAttackActivate = false;   
                                 }, 2000);
                                 setTimeout(() => {
-                                    console.log("5");
+                                    // console.log("5");
                                     turnoIA();           
                                 }, 4000);
 

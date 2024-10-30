@@ -15,7 +15,7 @@ if (!isset($_SERVER['HTTP_REFERER']) || strpos($_SERVER['HTTP_REFERER'], 'game.p
                 <link rel='icon' href='images/favicon.ico' type='image/x-icon'>
             </head>
             <body id='bodyForbidden'>
-                <h1>404 Forbidden</h1>
+                <h1>403 Forbidden</h1>
                 <p>Ho sentim, no tens permís per accedir a aquesta pàgina. Si creus que això és un error, si us plau contacta amb l'administrador del lloc.</p>
             </body>
             </html>";
