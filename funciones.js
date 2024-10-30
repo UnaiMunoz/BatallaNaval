@@ -869,6 +869,7 @@ function turnoIA() {
 let specialAttackButton1 = false;
 let specialAttackButton2 = false;
 let specialAttackButtonWannaCry = false;
+let specialAttackActivate = false;
 let casillasComprobadas = [];
 let comprobandoCeldas = false;
 let repiteTurno = false;
@@ -922,7 +923,7 @@ function attackAdjacentCells(td, buttonId) {
     // Modo munición
     if (practiceAmmoEnabled) {
         // Menos de 4 de munición
-        if (practicePlayerAmmo < 3) {
+        if (practicePlayerAmmo < 4) {
             if (gameMode = 'IA'){
                 showNotificationGame("No tens suficient RAM per lançar WannaCry","Left", "#3700ff");
             }else{
@@ -935,7 +936,7 @@ function attackAdjacentCells(td, buttonId) {
         }
     
         // Menos de 6 de munición y no es un borde
-        if (practicePlayerAmmo < 5) {
+        if (practicePlayerAmmo < 6) {
             const row = td.parentElement.rowIndex; // Asegúrate de que `td` es el elemento correcto
             const col = td.cellIndex;
     
@@ -954,7 +955,7 @@ function attackAdjacentCells(td, buttonId) {
         }
     
         // Menos de 9 de munición y es una celda central
-        if (practicePlayerAmmo < 8) {
+        if (practicePlayerAmmo < 9) {
             const row = td.parentElement.rowIndex; // Asegúrate de que `td` es el elemento correcto
             const col = td.cellIndex;
     
@@ -1075,9 +1076,9 @@ function attackAdjacentCells(td, buttonId) {
             }
         } else {
             if (gameMode = 'IA'){
-                showNotificationGame("Has trobat un Servidor","Left", "#3700ff");
+                showNotificationGame("Has destruït un Servidor","Left", "#3700ff");
             }else{
-                showNotificationGame("Has trobat un Servidor","Right", "#3700ff");
+                showNotificationGame("Has destruït un Servidor","Right", "#3700ff");
             }
         }
     } else {
@@ -1175,7 +1176,7 @@ function changeDataCell(td, gameMode = 'IA') {
             var ammoPlayerElement = document.getElementById('practicePlayerAmmo');
             ammoPlayerElement.textContent = practicePlayerAmmo + "/40";
             if (comprobarMunicionTerminada()) {
-                mostrarMensaje("Ambos jugadores se han quedado sin munición", "yellow");
+                mostrarMensaje("Tots dos jugadors s'han quedat sense munició", "yellow");
                 setTimeout(() => {
                     determinarGanadorPorAciertos();
                 }, 3000);
@@ -1190,16 +1191,20 @@ function changeDataCell(td, gameMode = 'IA') {
         ataqueBasicoArmoredSpecialAttack = false;
         attackAdjacentCells(td, 'specialAttackButton1');
         ataqueBasicoArmoredSpecialAttack = true;
+        specialAttackActivate = true;
+
     }
     if (specialAttackButton2 === true) {
         specialAttackButton2 = false;
         ataqueBasicoArmoredSpecialAttack = false;
         attackAdjacentCells(td, 'specialAttackButton2');
         ataqueBasicoArmoredSpecialAttack = true;
+        specialAttackActivate = true;
 
     }
     if (specialAttackButtonWannaCry === true) {
 
+        specialAttackActivate = true;
         ataqueBasicoArmoredSpecialAttack = false;
 
             // Municion limitada
@@ -1217,7 +1222,7 @@ function changeDataCell(td, gameMode = 'IA') {
                     specialAttackButtonWannaCry === true;
 
                     if (practicePlayerAmmo === 0) {
-                        showNotificationGame("No tens suficient munició","Left","#3700ff");
+                        showNotificationGame("No tens suficient memoria RAM","Left","#3700ff");
                         document.getElementById('specialAttackButtonWannaCry').classList.remove('active');
                         document.getElementById('specialAttackButtonWannaCry').classList.add('disabled');
                         specialAttackButtonWannaCry === false;
@@ -1233,7 +1238,7 @@ function changeDataCell(td, gameMode = 'IA') {
                         }
 
                 } else {
-                    showNotificationPlayerGame("No tens suficient munició");
+                    showNotificationGame("No tens suficient memoria RAM");
                     document.getElementById('specialAttackButtonWannaCry').classList.remove('active');
                     document.getElementById('specialAttackButtonWannaCry').classList.add('disabled');
                     practicePlayerAmmo --;
@@ -1272,11 +1277,14 @@ function changeDataCell(td, gameMode = 'IA') {
             waterSoundIA();
             
             if (comprobandoCeldas == false) {
-                if (gameMode = 'IA'){
-                    showNotificationGame("No has trobat connexió","Left","#3700ff");
-                }else{
-                    showNotificationGame("No has trobat connexió","Right","#3700ff");
+                if (!specialAttackActivate){
+                    if (gameMode = 'IA'){
+                        showNotificationGame("No has trobat connexió","Left","#3700ff");
+                    }else{
+                        showNotificationGame("No has trobat connexió","Right","#3700ff");
+                    }
                 }
+                specialAttackActivate = false; 
             }
 
             casillasComprobadas.push({ row: row, col: col });
@@ -1405,10 +1413,6 @@ function changeDataCell(td, gameMode = 'IA') {
 
                                 }
 
-
-
-
-
                             }
                             // Modo ArmoredShips segundo hit
                             else if (practiceArmoredShips && td.classList.contains("cellArmored") && td.classList.contains("cellArmoredHit")) {
@@ -1426,11 +1430,14 @@ function changeDataCell(td, gameMode = 'IA') {
                                 puntos += 50;
                                 playerHits++;
                                 
-                                if (gameMode = 'IA'){
-                                    showNotificationGame("Infiltració completada","Left", "#3700ff");
-                                }else{
-                                    showNotificationGame("Infiltració completada","Right", "#3700ff");
+                                if (!specialAttackActivate){
+                                    if (gameMode = 'IA'){
+                                        showNotificationGame("Has trobat un punt d'accés","Left", "#3700ff");
+                                    }else{
+                                        showNotificationGame("Has trobat un punt d'accés","Right", "#3700ff");
+                                    }
                                 }
+                                specialAttackActivate = false; 
                                 mostrarMensajePuntos("+50 punts per atacar un servidor\n");
                                 actualizarPuntos();
                             }
@@ -1446,11 +1453,14 @@ function changeDataCell(td, gameMode = 'IA') {
                                 playerHits++;
                                 attackSoundIA();
                                 if (practiceSpecialAttacks == false){
-                                    if (gameMode = 'IA'){
-                                        showNotificationGame("Infiltració completada!","Left", "#3700ff");
-                                    }else{
-                                        showNotificationGame("Infiltració completada!","Right", "#3700ff");
-                                    } 
+                                    if (!specialAttackActivate){
+                                        if (gameMode = 'IA'){
+                                            showNotificationGame("Has trobat un punt d'accés","Left", "#3700ff");
+                                        }else{
+                                            showNotificationGame("Has trobat un punt d'accés","Right", "#3700ff");
+                                        } 
+                                    }
+                                    specialAttackActivate = false; 
                                 }
                                 mostrarMensajePuntos("+50 punts per atacar un servidor\n");
                                 actualizarPuntos();
@@ -1463,11 +1473,14 @@ function changeDataCell(td, gameMode = 'IA') {
                             // Si el barco se hunde en la tirada
                             if (barco.vida === 0) {
                                 if (practiceSpecialAttacks == false){
-                                    if (gameMode = 'IA'){
-                                        showNotificationGame(`¡Has trobat un Servidor!`,"Left", "#3700ff");
-                                    }else{
-                                        showNotificationGame(`¡Has trobat un Servidor!`,"Right", "#3700ff");
+                                    if (!specialAttackActivate){
+                                        if (gameMode = 'IA'){
+                                            showNotificationGame(`Has destruït un Servidor`,"Left", "#3700ff");
+                                        }else{
+                                            showNotificationGame(`Has destruït un Servidor`,"Right", "#3700ff");
+                                        }
                                     } 
+                                    specialAttackActivate = false; 
                                 }
                                 debeVaciarMensajes = true;
 
@@ -1521,11 +1534,14 @@ function changeDataCell(td, gameMode = 'IA') {
                                 playerTurn = false;  
                                 cambiarTurno();    
                                 setTimeout(() => {
-                                    if (gameMode = 'IA'){
-                                        showNotification(`${practicePlayerName} no te més memòria RAM, torn de la IA`,"Left","#3700ff");
-                                    }else{
-                                        showNotification(`${practicePlayerName} no te més memòria RAM, torn de la IA`,"Right","#3700ff");
-                                    }     
+                                    if (!specialAttackActivate){
+                                        if (gameMode = 'IA'){
+                                            showNotification(`${practicePlayerName} no te més memòria RAM, torn de la IA`,"Left","#3700ff");
+                                        }else{
+                                            showNotification(`${practicePlayerName} no te més memòria RAM, torn de la IA`,"Right","#3700ff");
+                                        } 
+                                    } 
+                                    specialAttackActivate = false;   
                                 }, 2000);
                                 setTimeout(() => {
                                     console.log("5");

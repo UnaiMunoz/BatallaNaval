@@ -1,6 +1,6 @@
-/* ******************************* */
+/* ***************** */
 /* MARK: General CSS */
-/* ******************************* */
+/* ***************** */
 
 * {
     margin: 0;
@@ -108,25 +108,6 @@ body{
     background: url(images/fondoOjos.jpg);
     background-color: #00000093;
     background-blend-mode: overlay;
-}
-
-#bodyForbidden{
-    background: url(images/bocasRedondas.jpg);
-    background-color: #000000ab;
-    background-blend-mode: overlay;
-    background-size: cover;
-    color: white;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-}
-
-#bodyForbidden h1{
-    font-size: 100px;
-    color: red;
-    width: unset;
-    margin: unset;
 }
 
 h1{
@@ -690,10 +671,11 @@ input[type="text"]:focus {
     color: yellow !important;
 }
 
-#specialAttackButtons button:disabled #specialAttackButtonWannaCry .disabled::before {
-    content: "[/] ";
+#specialAttackButtonWannaCry.disabled::before {
+    color: white !important;
+    content: "[/] " !important;
     cursor: not-allowed;
-    opacity: 0.5;
+    opacity: 0.5 !;
 }
 
 /* ******************************* */
@@ -1171,4 +1153,32 @@ tr:hover .selecRanking::before {
 
 .animacion-text-lose {
     animation: parpadeoLose 1s infinite; /* Duración de la animación y que se repita indefinidamente */
+}
+
+/* *************** */
+/* MARK: Forbidden */
+/* *************** */
+
+#bodyForbidden{
+    background: url(images/bocasRedondas.jpg);
+    background-color: #000000ab;
+    background-blend-mode: overlay;
+    background-size: cover;
+    color: white;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#bodyForbidden h1{
+    font-size: 100px;
+    color: red;
+    width: unset;
+    margin: unset;
+}
+
+#bodyForbidden p{
+    width: 66%;
+    text-align: center;
 }

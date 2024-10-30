@@ -6,15 +6,19 @@ if (!isset($_SERVER['HTTP_REFERER']) || strpos($_SERVER['HTTP_REFERER'], 'game.p
     header('HTTP/1.0 403 Forbidden', true, 403);
     echo "<!DOCTYPE html>
             <html lang='ca'>
+            <html>
             <head>
                 <meta charset='utf-8'>
-                <title>Lose</title>
+                <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                <title>403 Forbidden</title>
+                <link rel='stylesheet' href='style.css'>
+                <link rel='icon' href='images/favicon.ico' type='image/x-icon'>
             </head>
-            <body>
-                <h1>403 Forbidden</h1>
-                <p>No tens permisos per accedir a aquesta pàgina</p>
+            <body id='bodyForbidden'>
+                <h1>404 Forbidden</h1>
+                <p>Ho sentim, no tens permís per accedir a aquesta pàgina. Si creus que això és un error, si us plau contacta amb l'administrador del lloc.</p>
             </body>
-        </html>";
+            </html>";
     die;
 }
 ?>

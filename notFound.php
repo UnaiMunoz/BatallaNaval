@@ -10,6 +10,6 @@
 </head>
 <body id='bodyForbidden'>
     <h1>404 Page not found</h1>
-    <p>La pàgina que estàs buscant no es troba provi amb una altra URL.</p>
+    <p>Sembla que la pàgina que estàs buscant no existeix. Verifica la URL o torna a la pàgina d'inici.</p>
 </body>
 </html>

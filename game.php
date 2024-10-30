@@ -497,15 +497,15 @@ Notas:
                                 }
                                 else{
                                     if($tabla[$i][$j] == "F"){
-                                        echo "<td name='Fragata'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name='Fragata'><img src='images/servidorGame.png' alt='servidor' /></td>";
                                     } elseif($tabla[$i][$j] == "B"){
-                                        echo "<td name='Barca'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name='Barca'><img src='images/servidorGame.png' alt='servidor' /></td>";
                                     }elseif($tabla[$i][$j] == "S"){
-                                        echo "<td name='Submarino'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name='Submarino'><img src='images/servidorGame.png' alt='servidor' /></td>";
                                     }elseif($tabla[$i][$j] == "D"){
-                                        echo "<td name='Destructor'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name='Destructor'><img src='images/servidorGame.png' alt='servidor' /></td>";
                                     }elseif($tabla[$i][$j] == "P"){
-                                        echo "<td name='Portaaviones'>" . $tabla[$i][$j] . "</td>";
+                                        echo "<td name='Portaaviones'><img src='images/servidorGame.png' alt='servidor' /></td>";
                                     }else{
                                         echo "<td name=' '>" . $tabla[$i][$j] . "</td>";
                                     }
