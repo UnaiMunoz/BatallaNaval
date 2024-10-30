@@ -443,9 +443,14 @@ let celdasAtacadas = [];
 let celdaAcorazada = { row: null, col: null };
 let celdaAcorazadaEncontrada = false;
 let noQuitarVidaAcorazado = false;
+let ataqueEspecialPasaTurno = false;
+
 
 // Turno de la IA
 function turnoIA() {
+
+    ataqueEspecialPasaTurno = false;
+
 
     // ArmoredShip encontrado
     if (celdaAcorazada.row !== null && celdaAcorazada.col !== null) {
@@ -1037,6 +1042,8 @@ function attackAdjacentCells(td, buttonId) {
         playerTurn = false;
         cambiarTurno();
 
+        console.log("6");
+        ataqueEspecialPasaTurno = true;
         setTimeout(() => {
             iaSound();
             turnoIA();
@@ -1216,6 +1223,7 @@ function changeDataCell(td, gameMode = 'IA') {
                 
                         setTimeout(() => {
                             iaSound();
+                            console.log("1");
                             turnoIA();
                         }, 2000);
                         return;
@@ -1297,13 +1305,14 @@ function changeDataCell(td, gameMode = 'IA') {
             } 
 
             // Modo normal
-            else if (gameMode == 'IA' && comprobandoCeldas === false && repiteTurno === false) {
+            else if (gameMode == 'IA' && comprobandoCeldas === false && repiteTurno === false && !ataqueEspecialPasaTurno) {
 
                 playerTurn = false;
                 cambiarTurno();
         
                 setTimeout(() => {
                     iaSound();
+                    console.log("2");
                     turnoIA();
                 }, 2000);
                 
@@ -1361,6 +1370,7 @@ function changeDataCell(td, gameMode = 'IA') {
 
                                 setTimeout(() => {
                                     iaSound();
+                                    console.log("3");
                                     turnoIA();
                                 }, 2000);
                             } 
@@ -1382,10 +1392,11 @@ function changeDataCell(td, gameMode = 'IA') {
 
                                 // No pasa turno a IA porque se activa la Special Attack
 
-                                if (ataqueBasicoArmoredSpecialAttack){
+                                if (ataqueBasicoArmoredSpecialAttack && !ataqueEspecialPasaTurno){
                                     playerTurn = false;
                                     cambiarTurno();
                                     setTimeout(() => {
+                                        console.log("4");
                                         turnoIA();           
                                     }, 2000);
 
@@ -1514,6 +1525,7 @@ function changeDataCell(td, gameMode = 'IA') {
                                     }     
                                 }, 2000);
                                 setTimeout(() => {
+                                    console.log("5");
                                     turnoIA();           
                                 }, 4000);
 
