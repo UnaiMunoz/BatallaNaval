@@ -838,8 +838,9 @@ tr:hover .selecRanking::before {
 }
 
 .win:hover{
-    background: linear-gradient(to right, green 0%, #3700ff00 50%, green 100%) !important;
+    background: linear-gradient(to right, #3700ff00 0%, green 50%, #3700ff00 100%) !important;
 }
+
 
 .lose{
     background: linear-gradient(to right, #3700ff00 0%, red 50%, #3700ff00 100%);
@@ -847,7 +848,7 @@ tr:hover .selecRanking::before {
 }
 
 .lose:hover{
-    background: linear-gradient(to right, red 0%, #3700ff00 50%, red 100%) !important;
+    background: linear-gradient(to right, #3700ff00 0%, red 50%, #3700ff00 100%) !important;
 }
 
 .last{
